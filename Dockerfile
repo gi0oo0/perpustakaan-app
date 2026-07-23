@@ -23,10 +23,6 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interactio
 
 COPY . .
 
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
-
 EXPOSE 8000
 
 CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
