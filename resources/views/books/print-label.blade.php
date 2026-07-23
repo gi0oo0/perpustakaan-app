@@ -29,8 +29,8 @@
             margin: 6px auto;
         }
         .barcode img {
-            max-width: 65mm;
-            height: auto;
+            width: 50mm;
+            height: 50mm;
         }
         .isbn-text {
             font-size: 8px;
@@ -52,7 +52,7 @@
         <div class="label-title">{{ $book->title }}</div>
         <div class="label-author">{{ $book->author }}</div>
         <div class="barcode">
-            <img src="data:image/png;base64,{{ $barcode }}" alt="Barcode {{ $book->isbn }}">
+            <img src="data:image/png;base64,{{ $barcode }}" alt="QR Code {{ $book->isbn }}">
         </div>
         <div class="isbn-text">{{ $book->isbn }}</div>
     </div>

@@ -72,8 +72,8 @@
                             </div>
 
                             <div class="mt-6 p-4 border rounded-lg bg-gray-50">
-                                <h4 class="text-sm font-medium text-gray-500 mb-2">Barcode (Code128)</h4>
-                                <img src="data:image/png;base64,{{ \Milon\Barcode\Facades\DNS1DFacade::getBarcodePNG($book->isbn, 'C128', 2, 40) }}" alt="Barcode {{ $book->isbn }}">
+                                <h4 class="text-sm font-medium text-gray-500 mb-2">QR Code</h4>
+                                <img src="data:image/png;base64,{{ \Milon\Barcode\Facades\DNS2DFacade::getBarcodePNG($book->isbn, 'QRCODE', 5, 5) }}" alt="QR Code {{ $book->isbn }}">
                                 <p class="text-xs text-gray-400 mt-1">{{ $book->isbn }}</p>
                             </div>
                         </div>

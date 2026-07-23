@@ -54,7 +54,7 @@
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap">
-                                        <img src="data:image/png;base64,{{ \Milon\Barcode\Facades\DNS1DFacade::getBarcodePNG($book->isbn, 'C128', 1.5, 25) }}" alt="Barcode" class="h-10">
+                                        <img src="data:image/png;base64,{{ \Milon\Barcode\Facades\DNS2DFacade::getBarcodePNG($book->isbn, 'QRCODE', 4, 4) }}" alt="QR" class="h-16 w-16">
                                     </td>
                                     <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $book->isbn }}</td>
                                     <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $book->title }}</td>

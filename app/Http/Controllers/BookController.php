@@ -116,7 +116,7 @@ class BookController extends Controller
 
     public function printLabel(Book $book)
     {
-        $barcode = DNS1D::getBarcodePNG($book->isbn, 'C128', 2, 30);
+        $barcode = DNS2D::getBarcodePNG($book->isbn, 'QRCODE', 4, 4);
         return view('books.print-label', compact('book', 'barcode'));
     }
 
@@ -124,7 +124,7 @@ class BookController extends Controller
     {
         $books = Book::latest()->get();
         foreach ($books as $book) {
-            $book->barcode_img = DNS1D::getBarcodePNG($book->isbn, 'C128', 2, 25);
+            $book->barcode_img = DNS2D::getBarcodePNG($book->isbn, 'QRCODE', 4, 4);
         }
         return view('books.print-label-batch', compact('books'));
     }
