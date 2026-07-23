@@ -1,0 +1,19 @@
+{
+  "folders": [
+	{
+		"path": "../typescript"
+	},
+	{
+		"path": "../Project-QR"
+	},
+	{
+		"path": "../../../../laragon/www"
+	},
+	{
+		"path": "../foto-kita-blur-main"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "photobooth"
+  }
+}
