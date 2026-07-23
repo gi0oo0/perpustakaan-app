@@ -1,14 +1,11 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "RAILPACK",
-    "config": {
-      "phpVersion": "8.2",
-      "phpExtensions": ["curl", "dom", "libxml", "mbstring", "xml", "pdo", "pdo_mysql", "gd", "bcmath", "zip", "fileinfo"]
-    }
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "Dockerfile"
   },
   "deploy": {
-    "startCommand": "php artisan migrate --force && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=$PORT",
+    "startCommand": "sh -c \"php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT\"",
     "numReplicas": 1
   }
 }
