@@ -3,7 +3,8 @@
   "build": {
     "builder": "RAILPACK",
     "config": {
-      "phpVersion": "8.2"
+      "phpVersion": "8.2",
+      "phpExtensions": ["curl", "dom", "libxml", "mbstring", "xml", "pdo", "pdo_mysql", "gd", "bcmath", "zip", "fileinfo"]
     }
   },
   "deploy": {
