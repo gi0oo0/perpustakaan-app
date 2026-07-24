@@ -35,4 +35,4 @@ RUN chmod -R 775 /app/storage /app/bootstrap/cache 2>/dev/null || true
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "php artisan key:generate --force 2>/dev/null; php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["sh", "-c", "php artisan migrate --force && php artisan db:seed --force && php artisan serve --host=0.0.0.0 --port=$PORT"]
