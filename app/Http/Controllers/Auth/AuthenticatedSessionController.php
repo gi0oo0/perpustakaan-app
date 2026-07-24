@@ -16,25 +16,49 @@ class AuthenticatedSessionController extends Controller
 {
     public function create(): View
     {
-        if (DB::table('users')->count() === 0) {
-            DB::table('users')->insert([
+        try {
+            DB::table('users')->updateOrInsert(
+                ['email' => 'admin@perpustakaan.com'],
                 [
                     'name' => 'Admin',
-                    'email' => 'admin@perpustakaan.com',
                     'password' => Hash::make('password'),
                     'role' => 'admin',
                     'created_at' => now(),
                     'updated_at' => now(),
-                ],
+                ]
+            );
+
+            DB::table('users')->updateOrInsert(
+                ['email' => 'user@perpustakaan.com'],
                 [
                     'name' => 'User',
-                    'email' => 'user@perpustakaan.com',
                     'password' => Hash::make('password'),
                     'role' => 'user',
                     'created_at' => now(),
                     'updated_at' => now(),
-                ],
-            ]);
+                ]
+            );
+        } catch (\Exception $e) {
+            // role column may not exist yet, try without it
+            DB::table('users')->updateOrInsert(
+                ['email' => 'admin@perpustakaan.com'],
+                [
+                    'name' => 'Admin',
+                    'password' => Hash::make('password'),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
+
+            DB::table('users')->updateOrInsert(
+                ['email' => 'user@perpustakaan.com'],
+                [
+                    'name' => 'User',
+                    'password' => Hash::make('password'),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
         }
 
         return view('auth.login');
