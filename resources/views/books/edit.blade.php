@@ -1,80 +1,88 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Buku') }}
+        <h2 class="font-heading font-bold text-2xl text-border leading-tight">
+            ✏ Edit Buku
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <form method="POST" action="{{ route('books.update', $book) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+    <div class="py-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <x-input-label for="isbn" :value="__('ISBN')" />
-                                <x-text-input id="isbn" name="isbn" type="text" class="mt-1 block w-full" :value="old('isbn', $book->isbn)" required />
-                                <x-input-error :messages="$errors->get('isbn')" class="mt-2" />
-                            </div>
-
-                            <div>
-                                <x-input-label for="title" :value="__('Judul')" />
-                                <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $book->title)" required />
-                                <x-input-error :messages="$errors->get('title')" class="mt-2" />
-                            </div>
-
-                            <div>
-                                <x-input-label for="author" :value="__('Penulis')" />
-                                <x-text-input id="author" name="author" type="text" class="mt-1 block w-full" :value="old('author', $book->author)" required />
-                                <x-input-error :messages="$errors->get('author')" class="mt-2" />
-                            </div>
-
-                            <div>
-                                <x-input-label for="publisher" :value="__('Penerbit')" />
-                                <x-text-input id="publisher" name="publisher" type="text" class="mt-1 block w-full" :value="old('publisher', $book->publisher)" />
-                                <x-input-error :messages="$errors->get('publisher')" class="mt-2" />
-                            </div>
-
-                            <div>
-                                <x-input-label for="publication_year" :value="__('Tahun Terbit')" />
-                                <x-text-input id="publication_year" name="publication_year" type="number" class="mt-1 block w-full" :value="old('publication_year', $book->publication_year)" min="1000" max="9999" />
-                                <x-input-error :messages="$errors->get('publication_year')" class="mt-2" />
-                            </div>
-
-                            <div>
-                                <x-input-label for="stock" :value="__('Stok')" />
-                                <x-text-input id="stock" name="stock" type="number" class="mt-1 block w-full" :value="old('stock', $book->stock)" min="0" required />
-                                <x-input-error :messages="$errors->get('stock')" class="mt-2" />
-                            </div>
-
-                            <div class="md:col-span-2">
-                                <x-input-label for="description" :value="__('Deskripsi')" />
-                                <textarea id="description" name="description" rows="4" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">{{ old('description', $book->description) }}</textarea>
-                                <x-input-error :messages="$errors->get('description')" class="mt-2" />
-                            </div>
-
-                            <div class="md:col-span-2">
-                                <x-input-label for="cover_image" :value="__('Sampul Buku')" />
-                                @if ($book->cover_image)
-                                    <div class="mb-2">
-                                        <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-32 w-24 object-cover rounded">
-                                    </div>
-                                @endif
-                                <input type="file" id="cover_image" name="cover_image" accept="image/*" class="mt-1 block w-full">
-                                <x-input-error :messages="$errors->get('cover_image')" class="mt-2" />
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-end mt-6">
-                            <a href="{{ route('books.index') }}" class="text-gray-600 hover:text-gray-900 mr-4">Batal</a>
-                            <x-primary-button>{{ __('Perbarui') }}</x-primary-button>
-                        </div>
-                    </form>
-                </div>
+            <div class="mb-6">
+                <a href="{{ route('books.show', $book) }}" class="neo-btn-secondary inline-flex items-center gap-2 text-xs">
+                    ← Kembali
+                </a>
             </div>
+
+            <div class="neo-card">
+                <form method="POST" action="{{ route('books.update', $book) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="isbn" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">ISBN</label>
+                            <input id="isbn" name="isbn" type="text" :value="old('isbn', $book->isbn)" required class="neo-input">
+                            @error('isbn') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="title" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Judul</label>
+                            <input id="title" name="title" type="text" :value="old('title', $book->title)" required class="neo-input">
+                            @error('title') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="author" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Penulis</label>
+                            <input id="author" name="author" type="text" :value="old('author', $book->author)" required class="neo-input">
+                            @error('author') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="publisher" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Penerbit</label>
+                            <input id="publisher" name="publisher" type="text" :value="old('publisher', $book->publisher)" class="neo-input">
+                            @error('publisher') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="publication_year" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Tahun Terbit</label>
+                            <input id="publication_year" name="publication_year" type="number" :value="old('publication_year', $book->publication_year)" min="1000" max="9999" class="neo-input">
+                            @error('publication_year') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div>
+                            <label for="stock" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Stok</label>
+                            <input id="stock" name="stock" type="number" :value="old('stock', $book->stock)" min="0" required class="neo-input">
+                            @error('stock') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="description" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Deskripsi</label>
+                            <textarea id="description" name="description" rows="4" class="neo-input">{{ old('description', $book->description) }}</textarea>
+                            @error('description') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="cover_image" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Sampul Buku</label>
+                            @if ($book->cover_image)
+                                <div class="mb-3">
+                                    <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-40 w-28 object-cover border-3 border-border shadow-neo-sm">
+                                </div>
+                            @endif
+                            <input type="file" id="cover_image" name="cover_image" accept="image/*" class="neo-input file:mr-4 file:py-2 file:px-4 file:border-3 file:border-border file:font-heading file:font-semibold file:text-xs file:uppercase file:bg-lemon file:hover:bg-lemon-100 file:cursor-pointer">
+                            @error('cover_image') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-3 mt-8 border-t-3 border-border pt-6">
+                        <a href="{{ route('books.show', $book) }}">
+                            <button type="button" class="neo-btn-secondary">Batal</button>
+                        </a>
+                        <button type="submit" class="neo-btn-primary">✓ Perbarui</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </x-app-layout>

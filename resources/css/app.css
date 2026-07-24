@@ -1,3 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        font-family: 'Outfit', sans-serif;
+        background-color: #FAFAFA;
+        color: #111827;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Space Grotesk', sans-serif;
+    }
+}
+
+@layer components {
+    .neo-card {
+        @apply bg-white border-3 border-border shadow-neo p-6;
+    }
+    .neo-btn-primary {
+        @apply bg-primary text-white font-heading font-semibold uppercase tracking-wide
+               px-6 py-3 border-3 border-border shadow-neo
+               hover:shadow-neo-hover hover:-translate-y-0.5
+               active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
+               transition-all duration-150 text-sm;
+    }
+    .neo-btn-secondary {
+        @apply bg-white text-border font-heading font-semibold uppercase tracking-wide
+               px-6 py-3 border-3 border-border shadow-neo
+               hover:shadow-neo-hover hover:-translate-y-0.5
+               active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
+               transition-all duration-150 text-sm;
+    }
+    .neo-btn-danger {
+        @apply bg-coral text-white font-heading font-semibold uppercase tracking-wide
+               px-6 py-3 border-3 border-border shadow-neo
+               hover:shadow-neo-hover hover:-translate-y-0.5
+               active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
+               transition-all duration-150 text-sm;
+    }
+    .neo-input {
+        @apply w-full border-3 border-border px-4 py-3 font-body text-sm
+               focus:border-primary focus:ring-0 focus:outline-none
+               shadow-neo-sm transition-all duration-150;
+    }
+    .neo-badge {
+        @apply inline-flex items-center px-4 py-1 font-heading font-semibold text-xs uppercase tracking-wide border-2 border-border;
+    }
+}
+
+/* Geometric background decorations */
+.geo-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+.geo-shapes::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #FF6B6B;
+    opacity: 0.15;
+}
+.geo-shapes::after {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    left: 8%;
+    width: 0;
+    height: 0;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    border-bottom: 100px solid #0D9488;
+    opacity: 0.15;
+}
+
+/* Scan pulse animation */
+@keyframes scan-pulse {
+    0%, 100% { box-shadow: 6px 6px 0px #111827; }
+    50% { box-shadow: 12px 12px 0px #111827, 0 0 40px rgba(253, 224, 71, 0.4); }
+}
+.scan-pulse {
+    animation: scan-pulse 2s ease-in-out infinite;
+}
+
+/* Book card hover */
+.book-card {
+    transition: all 150ms ease;
+}
+.book-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 10px 10px 0px #111827;
+}
+
+/* Tilt effect on hover */
+.tilt-hover:hover {
+    transform: rotate(-1deg);
+}

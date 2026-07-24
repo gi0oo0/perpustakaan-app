@@ -1,89 +1,106 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Buku') }}
+        <h2 class="font-heading font-bold text-2xl text-border leading-tight">
+            Daftar Buku
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
             @if (session('success'))
-                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-                    {{ session('success') }}
+                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm">
+                    ✓ {{ session('success') }}
                 </div>
             @endif
 
-            <div class="flex justify-between items-center mb-6">
-                <form method="GET" action="{{ route('books.index') }}" class="flex gap-2">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari buku..."
-                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                    <x-primary-button>{{ __('Cari') }}</x-primary-button>
+            {{-- Search & Actions --}}
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <form method="GET" action="{{ route('books.index') }}" class="flex w-full sm:w-auto">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="🔍 Cari buku..."
+                        class="neo-input flex-1 sm:w-80">
+                    <button type="submit" class="neo-btn-primary ms-2 whitespace-nowrap">Cari</button>
                 </form>
                 <div class="flex gap-2">
                     <a href="{{ route('books.create') }}">
-                        <x-primary-button>{{ __('Tambah Buku') }}</x-primary-button>
+                        <button type="button" class="neo-btn-primary">+ Tambah Buku</button>
                     </a>
                     <a href="{{ route('books.print-label-batch') }}" target="_blank">
-                        <x-secondary-button>{{ __('Cetak Label Semua') }}</x-secondary-button>
+                        <button type="button" class="neo-btn-secondary">🖨 Cetak Label</button>
                     </a>
                 </div>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sampul</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Barcode</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ISBN</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penulis</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stok</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($books as $book)
-                                <tr>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        @if ($book->cover_image)
-                                            <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-14 w-10 object-cover rounded">
-                                        @else
-                                            <div class="h-14 w-10 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">No</div>
-                                        @endif
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap">
-                                        <img src="data:image/png;base64,{{ \Milon\Barcode\Facades\DNS2DFacade::getBarcodePNG($book->isbn, 'QRCODE', 4, 4) }}" alt="QR" class="h-16 w-16">
-                                    </td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $book->isbn }}</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $book->title }}</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $book->author }}</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900">{{ $book->stock }}</td>
-                                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium space-x-2">
-                                        <a href="{{ route('books.show', $book) }}" class="text-indigo-600 hover:text-indigo-900">Detail</a>
-                                        <a href="{{ route('books.edit', $book) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
-                                        <a href="{{ route('books.print-label', $book) }}" target="_blank" class="text-green-600 hover:text-green-900">Cetak</a>
-                                        <form action="{{ route('books.destroy', $book) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Hapus</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="px-4 py-4 text-center text-gray-500">Belum ada buku.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+            {{-- Book Grid --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @forelse ($books as $book)
+                    <div class="book-card bg-white border-3 border-border shadow-neo overflow-hidden">
+                        {{-- Cover --}}
+                        <div class="relative h-48 bg-gray-100 border-b-3 border-border overflow-hidden">
+                            @if ($book->cover_image)
+                                <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center text-5xl bg-lem50">📖</div>
+                            @endif
+                            {{-- Availability Badge --}}
+                            <div class="absolute top-2 right-2">
+                                @if ($book->stock > 0)
+                                    <span class="neo-badge bg-primary text-white">Tersedia</span>
+                                @else
+                                    <span class="neo-badge bg-coral text-white">Habis</span>
+                                @endif
+                            </div>
+                        </div>
 
-                    <div class="mt-4">
-                        {{ $books->links() }}
+                        {{-- Info --}}
+                        <div class="p-4">
+                            <h3 class="font-heading font-bold text-base text-border leading-tight truncate" title="{{ $book->title }}">
+                                {{ $book->title }}
+                            </h3>
+                            <p class="font-body text-sm text-muted mt-1 truncate">{{ $book->author }}</p>
+
+                            <div class="mt-2 flex items-center justify-between">
+                                <span class="neo-badge {{ $book->stock > 0 ? 'bg-primary-50 text-primary border-primary' : 'bg-red-50 text-coral border-coral' }} text-xs">
+                                    Stok: {{ $book->stock }}
+                                </span>
+                            </div>
+
+                            <div class="mt-4 flex gap-2">
+                                <a href="{{ route('books.show', $book) }}" class="flex-1">
+                                    <button type="button" class="neo-btn-primary w-full text-xs py-2">Detail</button>
+                                </a>
+                                <a href="{{ route('books.edit', $book) }}" class="flex-1">
+                                    <button type="button" class="neo-btn-secondary w-full text-xs py-2">Edit</button>
+                                </a>
+                            </div>
+
+                            <div class="mt-2 flex gap-2">
+                                <a href="{{ route('books.print-label', $book) }}" target="_blank" class="flex-1">
+                                    <button type="button" class="neo-btn-secondary w-full text-xs py-2">🖨 Cetak</button>
+                                </a>
+                                <form action="{{ route('books.destroy', $book) }}" method="POST" class="flex-1" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="neo-btn-danger w-full text-xs py-2">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                @empty
+                    {{-- Empty State --}}
+                    <div class="col-span-full flex flex-col items-center justify-center py-16">
+                        <div class="w-24 h-24 bg-lemon border-3 border-border shadow-neo rounded-full flex items-center justify-center text-4xl mb-4">📚</div>
+                        <p class="font-heading font-semibold text-lg text-border">Belum ada buku</p>
+                        <p class="font-body text-sm text-muted mt-1">Tambahkan buku baru untuk memulai.</p>
+                    </div>
+                @endforelse
             </div>
+
+            {{-- Pagination --}}
+            <div class="mt-8">
+                {{ $books->links() }}
+            </div>
+
         </div>
     </div>
 </x-app-layout>
