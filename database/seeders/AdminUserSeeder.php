@@ -18,5 +18,14 @@ class AdminUserSeeder extends Seeder
                 'role' => 'admin',
             ]
         );
+
+        User::firstOrCreate(
+            ['email' => 'user@perpustakaan.com'],
+            [
+                'name' => 'User',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+            ]
+        );
     }
 }
