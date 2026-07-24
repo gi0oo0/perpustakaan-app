@@ -56,6 +56,17 @@
                             @error('stock') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
                         </div>
 
+                        <div>
+                            <label for="kategori" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Kategori</label>
+                            <select id="kategori" name="kategori" class="neo-input">
+                                <option value="">Pilih Kategori</option>
+                                @foreach ($kategoriList as $key => $label)
+                                    <option value="{{ $key }}" {{ old('kategori', $book->kategori) === $key ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            @error('kategori') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                        </div>
+
                         <div class="md:col-span-2">
                             <label for="description" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Deskripsi</label>
                             <textarea id="description" name="description" rows="4" class="neo-input">{{ old('description', $book->description) }}</textarea>

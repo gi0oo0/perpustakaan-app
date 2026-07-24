@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
-use Milon\Barcode\BarcodeServiceProvider;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
-use Milon\Barcode\Facades\DNS1DFacade as DNS1D;
 
 class BookController extends Controller
 {
@@ -23,13 +21,28 @@ class BookController extends Controller
             });
         }
 
-        $books = $query->latest()->paginate(10)->withQueryString();
-        return view('books.index', compact('books'));
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        if ($request->filled('status')) {
+            if ($request->status === 'available') {
+                $query->where('stock', '>', 0);
+            } elseif ($request->status === 'borrowed') {
+                $query->where('stock', '<=', 0);
+            }
+        }
+
+        $books = $query->latest()->paginate(12)->withQueryString();
+        $kategoriList = Book::getKategoriList();
+
+        return view('books.index', compact('books', 'kategoriList'));
     }
 
     public function create()
     {
-        return view('books.create');
+        $kategoriList = Book::getKategoriList();
+        return view('books.create', compact('kategoriList'));
     }
 
     public function store(Request $request)
@@ -43,6 +56,7 @@ class BookController extends Controller
             'description' => 'nullable|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'stock' => 'required|integer|min:0',
+            'kategori' => 'nullable|string',
         ]);
 
         $input = $request->all();
@@ -68,7 +82,8 @@ class BookController extends Controller
 
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $kategoriList = Book::getKategoriList();
+        return view('books.edit', compact('book', 'kategoriList'));
     }
 
     public function update(Request $request, Book $book)
@@ -82,6 +97,7 @@ class BookController extends Controller
             'description' => 'nullable|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'stock' => 'required|integer|min:0',
+            'kategori' => 'nullable|string',
         ]);
 
         $input = $request->all();

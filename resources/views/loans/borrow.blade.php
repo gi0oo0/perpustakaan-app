@@ -177,7 +177,12 @@
                 }).catch(function () {
                     return startCamera(true);
                 }).catch(function (err) {
-                    alert('Tidak bisa mengakses kamera.\n\nPastikan:\n1. Browser diizinkan akses kamera\n2. Kamera tidak dipakai aplikasi lain\n3. Gunakan HTTPS\n\nError: ' + err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Kamera Gagal',
+                        html: 'Tidak bisa mengakses kamera.<br><br><small>Pastikan:<br>1. Browser diizinkan akses kamera<br>2. Kamera tidak dipakai aplikasi lain<br>3. Gunakan HTTPS</small>',
+                        confirmButtonColor: '#FF6B6B'
+                    });
                     readerDiv.classList.add('hidden');
                     scanPlaceholder.classList.remove('hidden');
                     btnStart.classList.remove('hidden');

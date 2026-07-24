@@ -18,10 +18,27 @@ class Book extends Model
         'description',
         'cover_image',
         'stock',
+        'kategori',
     ];
 
     public function loans()
     {
         return $this->hasMany(Loan::class);
+    }
+
+    public static function getKategoriList(): array
+    {
+        return [
+            'Fiksi' => 'Fiksi',
+            'Non-Fiksi' => 'Non-Fiksi',
+            'Sains & Teknologi' => 'Sains & Teknologi',
+            'Sejarah' => 'Sejarah',
+            'Pendidikan' => 'Pendidikan',
+            'Agama' => 'Agama',
+            'Komik' => 'Komik',
+            'Novel' => 'Novel',
+            'Biografi' => 'Biografi',
+            'Lainnya' => 'Lainnya',
+        ];
     }
 }

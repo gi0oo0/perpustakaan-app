@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-heading font-bold text-2xl text-border leading-tight">
-            📚 Peminjaman
+            📚 Riwayat Peminjaman
         </h2>
     </x-slot>
 
@@ -14,13 +14,13 @@
                 </div>
             @endif
 
-            {{-- Summary Banner --}}
+            {{-- Summary --}}
             <div class="bg-lemon border-3 border-border shadow-neo p-6 mb-6 relative overflow-hidden">
                 <div class="absolute top-3 right-6 w-12 h-12 border-4 border-border rounded-full opacity-20"></div>
                 <div class="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
                     <div>
                         <h3 class="font-heading font-bold text-lg text-border uppercase tracking-wide">Riwayat Peminjaman</h3>
-                        <p class="font-body text-sm text-muted mt-1">Kelola peminjaman dan pengembalian buku</p>
+                        <p class="font-body text-sm text-muted mt-1">Total bulan ini: <strong class="text-border">{{ $totalThisMonth }}</strong> · Masih dipinjam: <strong class="text-border">{{ $activeCount }}</strong></p>
                     </div>
                     <div class="flex gap-2">
                         <a href="{{ route('loans.borrow.create') }}">
@@ -29,82 +29,114 @@
                         <a href="{{ route('loans.return.create') }}">
                             <button type="button" class="neo-btn-secondary text-xs">🔄 Kembalikan</button>
                         </a>
+                        @if (Auth::user()->isAdmin())
+                            <a href="{{ route('loans.export', array_filter(['status' => request('status'), 'date_from' => request('date_from'), 'date_to' => request('date_to')])) }}">
+                                <button type="button" class="neo-btn-secondary text-xs">📥 Export CSV</button>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            {{-- Filter Pills --}}
-            <div class="flex flex-wrap gap-2 mb-6">
-                <a href="{{ route('loans.index') }}"
-                   class="neo-badge {{ !request('status') ? 'bg-border text-white' : 'bg-white text-border hover:bg-gray-50' }} transition-all duration-150 cursor-pointer">
-                    Semua
-                </a>
-                <a href="{{ route('loans.index', ['status' => 'active']) }}"
-                   class="neo-badge {{ request('status') === 'active' ? 'bg-lemon text-border' : 'bg-white text-border hover:bg-gray-50' }} transition-all duration-150 cursor-pointer">
-                    📦 Dipinjam
-                </a>
-                <a href="{{ route('loans.index', ['status' => 'overdue']) }}"
-                   class="neo-badge {{ request('status') === 'overdue' ? 'bg-coral text-white' : 'bg-white text-border hover:bg-gray-50' }} transition-all duration-150 cursor-pointer">
-                    ⚠ Terlambat
-                </a>
-                <a href="{{ route('loans.index', ['status' => 'returned']) }}"
-                   class="neo-badge {{ request('status') === 'returned' ? 'bg-primary text-white' : 'bg-white text-border hover:bg-gray-50' }} transition-all duration-150 cursor-pointer">
-                    ✓ Dikembalikan
-                </a>
-            </div>
-
-            {{-- Loan Cards --}}
-            <div class="space-y-3">
-                @forelse ($loans as $loan)
-                    <div class="bg-white border-3 border-border shadow-neo p-4 flex flex-col sm:flex-row sm:items-center gap-4 tilt-hover transition-all duration-150">
-                        {{-- Cover --}}
-                        @if ($loan->book && $loan->book->cover_image)
-                            <img src="{{ asset($loan->book->cover_image) }}" alt="{{ $loan->book->title ?? '' }}" class="h-16 w-12 object-cover border-2 border-border flex-shrink-0">
-                        @else
-                            <div class="h-16 w-12 bg-gray-100 border-2 border-border flex items-center justify-center text-xl flex-shrink-0">📖</div>
-                        @endif
-
-                        {{-- Info --}}
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-heading font-bold text-base text-border truncate">{{ $loan->book->title ?? 'Buku dihapus' }}</h4>
-                            <div class="flex flex-wrap gap-x-4 gap-y-1 mt-1">
-                                <span class="font-body text-xs text-muted">📅 Pinjam: {{ $loan->loan_date->format('d/m/Y') }}</span>
-                                <span class="font-body text-xs {{ $loan->due_date < \Carbon\Carbon::today() && !$loan->returned_at ? 'text-coral font-semibold' : 'text-muted' }}">
-                                    ⏰ Tempo: {{ $loan->due_date->format('d/m/Y') }}
-                                </span>
-                                <span class="font-body text-xs text-muted">
-                                    {{ $loan->returned_at ? '✅ Kembali: '.$loan->returned_at->format('d/m/Y') : '' }}
-                                </span>
-                            </div>
-                        </div>
-
-                        {{-- Status --}}
-                        <div class="flex-shrink-0">
-                            @if ($loan->returned_at)
-                                <span class="neo-badge bg-primary text-white">✓ Dikembalikan</span>
-                            @elseif ($loan->due_date < \Carbon\Carbon::today())
-                                <span class="neo-badge bg-coral text-white">⚠ Terlambat</span>
-                            @else
-                                <span class="neo-badge bg-lemon text-border">📦 Dipinjam</span>
-                            @endif
-                        </div>
-                    </div>
-                @empty
-                    {{-- Empty State --}}
-                    <div class="bg-white border-3 border-border shadow-neo p-12 text-center">
-                        <div class="text-5xl mb-4">📭</div>
-                        <p class="font-heading font-semibold text-lg text-border">Belum ada riwayat</p>
-                        <p class="font-body text-sm text-muted mt-1 mb-4">Mulai pinjam buku untuk melihat riwayat di sini.</p>
-                        <a href="{{ route('loans.borrow.create') }}">
-                            <button type="button" class="neo-btn-primary">📦 Pinjam Buku Sekarang</button>
+            {{-- Filters --}}
+            <div class="neo-card mb-6">
+                <form method="GET" action="{{ route('loans.index') }}" class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="🔍 Cari judul, nama, ISBN..."
+                        class="neo-input flex-1">
+                    <select name="status" class="neo-input w-full sm:w-48">
+                        <option value="">Semua Status</option>
+                        <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Dipinjam</option>
+                        <option value="overdue" {{ request('status') === 'overdue' ? 'selected' : '' }}>Terlambat</option>
+                        <option value="returned_ontime" {{ request('status') === 'returned_ontime' ? 'selected' : '' }}>Dikembalikan (Tepat)</option>
+                        <option value="returned_late" {{ request('status') === 'returned_late' ? 'selected' : '' }}>Dikembalikan (Telat)</option>
+                        <option value="returned" {{ request('status') === 'returned' ? 'selected' : '' }}>Semua Dikembalikan</option>
+                    </select>
+                    <input type="date" name="date_from" value="{{ request('date_from') }}" class="neo-input w-full sm:w-40" placeholder="Dari">
+                    <input type="date" name="date_to" value="{{ request('date_to') }}" class="neo-input w-full sm:w-40" placeholder="Sampai">
+                    <div class="flex gap-2">
+                        <button type="submit" class="neo-btn-primary text-xs">Cari</button>
+                        <a href="{{ route('loans.index') }}">
+                            <button type="button" class="neo-btn-secondary text-xs">Reset</button>
                         </a>
                     </div>
-                @endforelse
+                </form>
             </div>
 
-            {{-- Pagination --}}
-            <div class="mt-8">
-                {{ $loans->links() }}
+            {{-- Loan Table --}}
+            <div class="neo-card overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b-3 border-border">
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Buku</th>
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Peminjam</th>
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Pinjam</th>
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Jatuh Tempo</th>
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Kembali</th>
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Status</th>
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Denda</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($loans as $loan)
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4">
+                                    <p class="font-heading font-semibold text-sm text-border truncate max-w-[150px]" title="{{ $loan->book->title ?? '-' }}">{{ $loan->book->title ?? '-' }}</p>
+                                    <p class="font-body text-xs text-muted">{{ $loan->book->isbn ?? '-' }}</p>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <a href="{{ Auth::user()->isAdmin() ? route('users.show', $loan->user) : '#' }}" class="font-body text-sm text-border {{ Auth::user()->isAdmin() ? 'hover:text-primary underline' : '' }}">
+                                        {{ $loan->user->name ?? '-' }}
+                                    </a>
+                                </td>
+                                <td class="py-3 px-4 font-body text-sm text-muted">{{ $loan->loan_date->format('d/m/Y') }}</td>
+                                <td class="py-3 px-4 font-body text-sm text-muted">{{ $loan->due_date->format('d/m/Y') }}</td>
+                                <td class="py-3 px-4 font-body text-sm text-muted">{{ $loan->returned_at ? $loan->returned_at->format('d/m/Y') : '-' }}</td>
+                                <td class="py-3 px-4">
+                                    @if ($loan->isReturned())
+                                        @if ($loan->denda > 0)
+                                            <span class="neo-badge bg-coral text-white text-xs">Telat</span>
+                                        @else
+                                            <span class="neo-badge bg-primary text-white text-xs">Tepat</span>
+                                        @endif
+                                    @elseif ($loan->isOverdue())
+                                        <span class="neo-badge bg-coral text-white text-xs">Terlambat ({{ $loan->getDaysLate() }}h)</span>
+                                    @else
+                                        <span class="neo-badge bg-lemon text-border text-xs">Dipinjam</span>
+                                    @endif
+                                </td>
+                                <td class="py-3 px-4">
+                                    @if ($loan->denda > 0)
+                                        <p class="font-heading font-bold text-sm text-coral">Rp{{ number_format($loan->denda, 0, ',', '.') }}</p>
+                                        @if ($loan->status_denda === 'belum_bayar')
+                                            <form method="POST" action="{{ route('loans.pay-denda', $loan) }}" class="mt-1">
+                                                @csrf
+                                                <button type="submit" class="text-xs font-heading font-semibold text-primary hover:underline">Tandai Lunas</button>
+                                            </form>
+                                        @else
+                                            <span class="text-xs font-heading font-semibold text-primary">Lunas ✓</span>
+                                        @endif
+                                    @elseif (!$loan->isReturned() && $loan->isOverdue())
+                                        <p class="font-heading font-bold text-sm text-coral">Rp{{ number_format($loan->getPotentialDenda(), 0, ',', '.') }}</p>
+                                        <p class="font-body text-xs text-muted">estimasi</p>
+                                    @else
+                                        <span class="font-body text-sm text-muted">-</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="py-8 text-center">
+                                    <div class="text-4xl mb-3">📭</div>
+                                    <p class="font-heading font-semibold text-border">Tidak ada data peminjaman</p>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+
+                <div class="mt-6">
+                    {{ $loans->links() }}
+                </div>
             </div>
 
         </div>

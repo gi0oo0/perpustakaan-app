@@ -12,6 +12,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body class="font-body antialiased bg-[#FAFAFA]">
         <div class="min-h-screen relative">
@@ -31,5 +32,30 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session('success'))
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: '{{ session('success') }}',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        confirmButtonColor: '#0D9488',
+                    });
+                @endif
+
+                @if (session('error'))
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: '{{ session('error') }}',
+                        confirmButtonColor: '#FF6B6B',
+                    });
+                @endif
+            });
+        </script>
     </body>
 </html>

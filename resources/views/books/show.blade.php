@@ -88,7 +88,7 @@
                             <a href="{{ route('books.print-label', $book) }}" target="_blank">
                                 <button type="button" class="neo-btn-secondary">🖨 Cetak Label</button>
                             </a>
-                            <form action="{{ route('books.destroy', $book) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                            <form action="{{ route('books.destroy', $book) }}" method="POST" class="delete-form-detail">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="neo-btn-danger">Hapus</button>
@@ -98,6 +98,30 @@
                 </div>
             </div>
 
+            </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.delete-form-detail').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Yakin ingin menghapus?',
+                    text: 'Data buku yang dihapus tidak dapat dikembalikan.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FF6B6B',
+                    cancelButtonColor: '#111827',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>

@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
+use App\Models\User;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -41,12 +42,27 @@ Route::middleware('auth')->group(function () {
         Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     });
 
-    // Loans - all authenticated users
+    // Loans
+    Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
     Route::get('/loans/borrow', [LoanController::class, 'createBorrow'])->name('loans.borrow.create');
     Route::post('/loans/borrow', [LoanController::class, 'storeBorrow'])->name('loans.borrow.store');
     Route::get('/loans/return', [LoanController::class, 'createReturn'])->name('loans.return.create');
+    Route::post('/loans/return/check', [LoanController::class, 'checkReturn'])->name('loans.return.check');
     Route::post('/loans/return', [LoanController::class, 'storeReturn'])->name('loans.return.store');
-    Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
+    Route::post('/loans/{loan}/pay-denda', [LoanController::class, 'payDenda'])->name('loans.pay-denda')->middleware('admin');
+    Route::get('/loans/export/csv', [LoanController::class, 'export'])->name('loans.export')->middleware('admin');
+
+    // User detail (admin only)
+    Route::middleware('admin')->group(function () {
+        Route::get('/users/{user}', function (User $user) {
+            $loans = $user->loans()->with('book')->latest()->paginate(15);
+            $totalLoans = $user->loans()->count();
+            $activeLoans = $user->loans()->whereNull('returned_at')->count();
+            $totalDenda = $user->loans()->sum('denda');
+            $overdueLoans = $user->loans()->whereNull('returned_at')->where('due_date', '<', now())->count();
+            return view('users.show', compact('user', 'loans', 'totalLoans', 'activeLoans', 'totalDenda', 'overdueLoans'));
+        })->name('users.show');
+    });
 });
 
 require __DIR__.'/auth.php';

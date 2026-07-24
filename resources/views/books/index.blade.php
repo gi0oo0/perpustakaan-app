@@ -14,23 +14,41 @@
                 </div>
             @endif
 
-            {{-- Search & Actions --}}
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <form method="GET" action="{{ route('books.index') }}" class="flex w-full sm:w-auto">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="🔍 Cari buku..."
-                        class="neo-input flex-1 sm:w-80">
-                    <button type="submit" class="neo-btn-primary ms-2 whitespace-nowrap">Cari</button>
-                </form>
-                <div class="flex gap-2">
-                    @if (Auth::user()->isAdmin())
-                        <a href="{{ route('books.create') }}">
-                            <button type="button" class="neo-btn-primary">+ Tambah Buku</button>
+            {{-- Filters --}}
+            <div class="neo-card mb-6">
+                <form method="GET" action="{{ route('books.index') }}" class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="🔍 Cari judul, penulis, ISBN..."
+                        class="neo-input flex-1">
+                    <select name="kategori" class="neo-input w-full sm:w-48">
+                        <option value="">Semua Kategori</option>
+                        @foreach ($kategoriList as $key => $label)
+                            <option value="{{ $key }}" {{ request('kategori') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <select name="status" class="neo-input w-full sm:w-48">
+                        <option value="">Semua Status</option>
+                        <option value="available" {{ request('status') === 'available' ? 'selected' : '' }}>Tersedia</option>
+                        <option value="borrowed" {{ request('status') === 'borrowed' ? 'selected' : '' }}>Habis</option>
+                    </select>
+                    <div class="flex gap-2">
+                        <button type="submit" class="neo-btn-primary text-xs">Cari</button>
+                        <a href="{{ route('books.index') }}">
+                            <button type="button" class="neo-btn-secondary text-xs">Reset</button>
                         </a>
-                    @endif
-                    <a href="{{ route('books.print-label-batch') }}" target="_blank">
-                        <button type="button" class="neo-btn-secondary">🖨 Cetak Label</button>
+                    </div>
+                </form>
+            </div>
+
+            {{-- Actions --}}
+            <div class="flex justify-end gap-2 mb-6">
+                @if (Auth::user()->isAdmin())
+                    <a href="{{ route('books.create') }}">
+                        <button type="button" class="neo-btn-primary">+ Tambah Buku</button>
                     </a>
-                </div>
+                @endif
+                <a href="{{ route('books.print-label-batch') }}" target="_blank">
+                    <button type="button" class="neo-btn-secondary">🖨 Cetak Label</button>
+                </a>
             </div>
 
             {{-- Book Grid --}}
@@ -44,7 +62,7 @@
                             @else
                                 <div class="w-full h-full flex items-center justify-center text-5xl bg-lem50">📖</div>
                             @endif
-                            {{-- Availability Badge --}}
+                            {{-- Badges --}}
                             <div class="absolute top-2 right-2">
                                 @if ($book->stock > 0)
                                     <span class="neo-badge bg-primary text-white">Tersedia</span>
@@ -52,6 +70,11 @@
                                     <span class="neo-badge bg-coral text-white">Habis</span>
                                 @endif
                             </div>
+                            @if ($book->kategori)
+                                <div class="absolute top-2 left-2">
+                                    <span class="neo-badge bg-lemon text-border text-xs">{{ $book->kategori }}</span>
+                                </div>
+                            @endif
                         </div>
 
                         {{-- Info --}}
@@ -83,7 +106,7 @@
                                     <a href="{{ route('books.print-label', $book) }}" target="_blank" class="flex-1">
                                         <button type="button" class="neo-btn-secondary w-full text-xs py-2">🖨 Cetak</button>
                                     </a>
-                                    <form action="{{ route('books.destroy', $book) }}" method="POST" class="flex-1" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                    <form action="{{ route('books.destroy', $book) }}" method="POST" class="flex-1 delete-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="neo-btn-danger w-full text-xs py-2">Hapus</button>
@@ -107,6 +130,30 @@
                 {{ $books->links() }}
             </div>
 
+            </div>
         </div>
     </div>
+
+    <script>
+        document.querySelectorAll('.delete-form').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Yakin ingin menghapus?',
+                    text: 'Data buku yang dihapus tidak dapat dikembalikan.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FF6B6B',
+                    cancelButtonColor: '#111827',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </x-app-layout>
