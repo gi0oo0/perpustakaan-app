@@ -22,6 +22,9 @@
                     </div>
                     <div class="flex-1">
                         <h3 class="font-heading font-bold text-xl text-border">{{ $user->name }}</h3>
+                        @if ($user->nisn)
+                            <p class="font-mono text-sm text-muted mt-1">NISN: {{ $user->nisn }}</p>
+                        @endif
                         <p class="font-body text-sm text-muted">{{ $user->email }}</p>
                         @if ($user->isAdmin())
                             <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>

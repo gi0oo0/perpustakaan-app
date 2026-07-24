@@ -29,6 +29,23 @@
 
                 {{-- Scan Station --}}
                 <div class="lg:col-span-2">
+                    {{-- Borrower Identity --}}
+                    <div class="neo-card mb-6 border-3 border-primary">
+                        <h3 class="font-heading font-bold text-sm text-border mb-3 uppercase tracking-wide">👤 Identitas Peminjam</h3>
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 bg-primary border-3 border-border shadow-neo-sm rounded-full flex items-center justify-center text-2xl font-heading font-bold text-white flex-shrink-0">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                            <div>
+                                <p class="font-heading font-bold text-lg text-border">{{ Auth::user()->name }}</p>
+                                @if (Auth::user()->nisn)
+                                    <p class="font-mono text-sm text-muted">NISN: {{ Auth::user()->nisn }}</p>
+                                @endif
+                                <p class="font-body text-xs text-muted">{{ Auth::user()->email }}</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="neo-card">
                         <h3 class="font-heading font-bold text-lg text-border mb-2 uppercase tracking-wide">Scan QR Code</h3>
                         <p class="font-body text-sm text-muted mb-6">Aktifkan kamera lalu arahkan ke QR Code buku untuk meminjam.</p>

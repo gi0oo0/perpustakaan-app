@@ -15,6 +15,13 @@
         </div>
 
         <div class="mt-4">
+            <label for="nisn" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">NISN</label>
+            <input id="nisn" type="text" name="nisn" :value="old('nisn')" autocomplete="nisn"
+                   class="neo-input" placeholder="0081234567 (opsional)">
+            @error('nisn') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        <div class="mt-4">
             <label for="email" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Email</label>
             <input id="email" type="email" name="email" :value="old('email')" required autocomplete="username"
                    class="neo-input" placeholder="email@contoh.com">

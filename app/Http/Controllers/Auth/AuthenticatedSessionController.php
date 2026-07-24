@@ -23,6 +23,7 @@ class AuthenticatedSessionController extends Controller
                     'name' => 'Admin',
                     'password' => Hash::make('password'),
                     'role' => 'admin',
+                    'nisn' => '0000000001',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
@@ -34,6 +35,7 @@ class AuthenticatedSessionController extends Controller
                     'name' => 'User',
                     'password' => Hash::make('password'),
                     'role' => 'user',
+                    'nisn' => '0000000002',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

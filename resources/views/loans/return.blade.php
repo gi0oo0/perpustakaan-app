@@ -29,6 +29,11 @@
 
                 {{-- Scan Station --}}
                 <div class="lg:col-span-2">
+                <div class="neo-card mb-6 border-3 border-primary">
+                        <h3 class="font-heading font-bold text-sm text-border mb-3 uppercase tracking-wide">🔄 Pengembalian Buku</h3>
+                        <p class="font-body text-sm text-muted">Scan QR Code buku yang akan dikembalikan. Identitas peminjam akan otomatis terdeteksi.</p>
+                    </div>
+
                     <div class="neo-card">
                         <h3 class="font-heading font-bold text-lg text-border mb-2 uppercase tracking-wide">Scan QR Code</h3>
                         <p class="font-body text-sm text-muted mb-6">Aktifkan kamera lalu arahkan ke QR Code buku yang akan dikembalikan.</p>
@@ -141,8 +146,8 @@
                                                 <div class="h-12 w-9 bg-gray-100 border-2 border-border flex items-center justify-center text-lg flex-shrink-0">📖</div>
                                             @endif
                                             <div class="flex-1 min-w-0">
-                                                <p class="font-heading font-semibold text-sm text-border truncate">{{ $loan->book->title }}</p>
-                                                <p class="font-body text-xs text-muted">oleh {{ $loan->user->name }}</p>
+                                            <p class="font-heading font-semibold text-sm text-border truncate">{{ $loan->book->title }}</p>
+                                            <p class="font-body text-xs text-muted">{{ $loan->user->name }}{{ $loan->user->nisn ? ' (' . $loan->user->nisn . ')' : '' }}</p>
                                                 <p class="font-body text-xs {{ $loan->isOverdue() ? 'text-coral font-semibold' : 'text-muted' }}">
                                                     Tempo: {{ $loan->due_date->format('d/m/Y') }}
                                                     @if ($loan->isOverdue())
@@ -203,7 +208,7 @@
                     }
 
                     document.getElementById('info-title').textContent = data.book_title;
-                    document.getElementById('info-borrower').textContent = data.borrower_name;
+                    document.getElementById('info-borrower').textContent = data.borrower_name + (data.borrower_nisn ? ' (NISN: ' + data.borrower_nisn + ')' : '');
                     document.getElementById('info-loan-date').textContent = data.loan_date;
                     document.getElementById('info-due-date').textContent = data.due_date;
                     document.getElementById('return-loan-id').value = data.loan_id;

@@ -1,11 +1,11 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+        <h2 class="font-heading font-bold text-lg text-border uppercase tracking-wide">
+            {{ __('Informasi Profil') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+        <p class="mt-1 font-body text-sm text-muted">
+            {{ __("Perbarui informasi profil akun Anda.") }}
         </p>
     </header>
 
@@ -18,29 +18,35 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <label for="name" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Nama</label>
+            <input id="name" name="name" type="text" class="neo-input" :value="old('name', $user->name)" required autofocus autocomplete="name">
+            @error('name') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <label for="nisn" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">NISN</label>
+            <input id="nisn" name="nisn" type="text" class="neo-input" :value="old('nisn', $user->nisn)" autocomplete="nisn" placeholder="0081234567">
+            @error('nisn') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+            <label for="email" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Email</label>
+            <input id="email" name="email" type="email" class="neo-input" :value="old('email', $user->email)" required autocomplete="username">
+            @error('email') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
                 <div>
-                    <p class="text-sm mt-2 text-gray-800">
-                        {{ __('Your email address is unverified.') }}
+                    <p class="font-body text-sm text-muted mt-2">
+                        {{ __('Email Anda belum terverifikasi.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            {{ __('Click here to re-send the verification email.') }}
+                        <button form="send-verification" class="font-heading font-semibold text-xs text-primary hover:underline">
+                            {{ __('Klik untuk kirim ulang email verifikasi.') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                        <p class="mt-2 font-heading font-semibold text-xs text-primary">
+                            {{ __('Link verifikasi baru telah dikirim ke email Anda.') }}
                         </p>
                     @endif
                 </div>
@@ -48,7 +54,7 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <button type="submit" class="neo-btn-primary">Simpan</button>
 
             @if (session('status') === 'profile-updated')
                 <p
@@ -56,8 +62,8 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                    class="font-heading font-semibold text-xs text-primary"
+                >Tersimpan ✓</p>
             @endif
         </div>
     </form>

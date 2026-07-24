@@ -140,6 +140,7 @@ class LoanController extends Controller
             'loan_id' => $loan->id,
             'book_title' => $loan->book->title,
             'borrower_name' => $loan->user->name,
+            'borrower_nisn' => $loan->user->nisn,
             'loan_date' => $loan->loan_date->format('d/m/Y'),
             'due_date' => $loan->due_date->format('d/m/Y'),
             'days_late' => $loan->getDaysLate(),

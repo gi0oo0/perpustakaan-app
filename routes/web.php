@@ -5,7 +5,7 @@ use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
-use App\Models\User;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -52,16 +52,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/loans/{loan}/pay-denda', [LoanController::class, 'payDenda'])->name('loans.pay-denda')->middleware('admin');
     Route::get('/loans/export/csv', [LoanController::class, 'export'])->name('loans.export')->middleware('admin');
 
-    // User detail (admin only)
+    // User management - admin only
     Route::middleware('admin')->group(function () {
-        Route::get('/users/{user}', function (User $user) {
-            $loans = $user->loans()->with('book')->latest()->paginate(15);
-            $totalLoans = $user->loans()->count();
-            $activeLoans = $user->loans()->whereNull('returned_at')->count();
-            $totalDenda = $user->loans()->sum('denda');
-            $overdueLoans = $user->loans()->whereNull('returned_at')->where('due_date', '<', now())->count();
-            return view('users.show', compact('user', 'loans', 'totalLoans', 'activeLoans', 'totalDenda', 'overdueLoans'));
-        })->name('users.show');
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
 });
 

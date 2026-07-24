@@ -69,6 +69,7 @@
                         <tr class="border-b-3 border-border">
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Buku</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Peminjam</th>
+                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">NISN</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Pinjam</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Jatuh Tempo</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Kembali</th>
@@ -88,6 +89,7 @@
                                         {{ $loan->user->name ?? '-' }}
                                     </a>
                                 </td>
+                                <td class="py-3 px-4 font-mono text-xs text-muted">{{ $loan->user->nisn ?? '-' }}</td>
                                 <td class="py-3 px-4 font-body text-sm text-muted">{{ $loan->loan_date->format('d/m/Y') }}</td>
                                 <td class="py-3 px-4 font-body text-sm text-muted">{{ $loan->due_date->format('d/m/Y') }}</td>
                                 <td class="py-3 px-4 font-body text-sm text-muted">{{ $loan->returned_at ? $loan->returned_at->format('d/m/Y') : '-' }}</td>
@@ -125,7 +127,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="py-8 text-center">
+                                <td colspan="8" class="py-8 text-center">
                                     <div class="text-4xl mb-3">📭</div>
                                     <p class="font-heading font-semibold text-border">Tidak ada data peminjaman</p>
                                 </td>

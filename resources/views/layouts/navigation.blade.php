@@ -30,6 +30,12 @@
                        class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.return.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                         Kembalikan
                     </a>
+                    @if (Auth::user()->isAdmin())
+                        <a href="{{ route('users.index') }}"
+                           class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('users.*') ? 'bg-yellow-400 text-border border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                            Anggota
+                        </a>
+                    @endif
                 </div>
             </div>
 
@@ -54,6 +60,9 @@
                         <div class="px-4 py-2 border-b border-gray-100">
                             <div class="font-heading font-semibold text-sm text-border">{{ Auth::user()->name }}</div>
                             <div class="font-body text-xs text-muted">{{ Auth::user()->email }}</div>
+                            @if (Auth::user()->nisn)
+                                <div class="font-mono text-xs text-muted mt-1">NISN: {{ Auth::user()->nisn }}</div>
+                            @endif
                             @if (Auth::user()->isAdmin())
                                 <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>
                             @else
@@ -105,12 +114,20 @@
             <a href="{{ route('loans.return.create') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('loans.return.*') ? 'bg-lemon text-border' : 'text-muted hover:bg-gray-50' }}">
                 Kembalikan
             </a>
+            @if (Auth::user()->isAdmin())
+                <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('users.*') ? 'bg-yellow-400 text-border' : 'text-muted hover:bg-gray-50' }}">
+                    Anggota
+                </a>
+            @endif
         </div>
 
         <div class="pt-4 pb-1 border-t-3 border-border">
             <div class="px-4">
                 <div class="font-heading font-semibold text-base text-border">{{ Auth::user()->name }}</div>
                 <div class="font-body text-sm text-muted">{{ Auth::user()->email }}</div>
+                @if (Auth::user()->nisn)
+                    <div class="font-mono text-xs text-muted mt-1">NISN: {{ Auth::user()->nisn }}</div>
+                @endif
                 @if (Auth::user()->isAdmin())
                     <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>
                 @else
