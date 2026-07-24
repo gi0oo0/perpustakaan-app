@@ -34,6 +34,10 @@
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                @if (Auth::user()->isAdmin())
+                    <span class="neo-badge bg-coral text-white mr-3 text-xs">Admin</span>
+                @endif
+
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-4 py-2 border-3 border-border bg-white shadow-neo-sm text-sm font-heading font-semibold uppercase tracking-wide text-border hover:bg-gray-50 transition-all duration-150">
@@ -47,6 +51,15 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <div class="px-4 py-2 border-b border-gray-100">
+                            <div class="font-heading font-semibold text-sm text-border">{{ Auth::user()->name }}</div>
+                            <div class="font-body text-xs text-muted">{{ Auth::user()->email }}</div>
+                            @if (Auth::user()->isAdmin())
+                                <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>
+                            @else
+                                <span class="neo-badge bg-gray-200 text-muted text-xs mt-1">User</span>
+                            @endif
+                        </div>
                         <x-dropdown-link :href="route('profile.edit')" class="font-body">
                             {{ __('Profile') }}
                         </x-dropdown-link>
@@ -98,6 +111,11 @@
             <div class="px-4">
                 <div class="font-heading font-semibold text-base text-border">{{ Auth::user()->name }}</div>
                 <div class="font-body text-sm text-muted">{{ Auth::user()->email }}</div>
+                @if (Auth::user()->isAdmin())
+                    <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>
+                @else
+                    <span class="neo-badge bg-gray-200 text-muted text-xs mt-1">User</span>
+                @endif
             </div>
 
             <div class="mt-3 space-y-1">

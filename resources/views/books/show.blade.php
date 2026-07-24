@@ -79,20 +79,22 @@
                         <p class="font-body text-xs text-muted mt-1 text-center">{{ $book->isbn }}</p>
                     </div>
 
-                    {{-- Actions --}}
-                    <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="{{ route('books.edit', $book) }}">
-                            <button type="button" class="neo-btn-primary">Edit Buku</button>
-                        </a>
-                        <a href="{{ route('books.print-label', $book) }}" target="_blank">
-                            <button type="button" class="neo-btn-secondary">🖨 Cetak Label</button>
-                        </a>
-                        <form action="{{ route('books.destroy', $book) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="neo-btn-danger">Hapus</button>
-                        </form>
-                    </div>
+                    {{-- Actions - Admin Only --}}
+                    @if (Auth::user()->isAdmin())
+                        <div class="mt-8 flex flex-wrap gap-3">
+                            <a href="{{ route('books.edit', $book) }}">
+                                <button type="button" class="neo-btn-primary">Edit Buku</button>
+                            </a>
+                            <a href="{{ route('books.print-label', $book) }}" target="_blank">
+                                <button type="button" class="neo-btn-secondary">🖨 Cetak Label</button>
+                            </a>
+                            <form action="{{ route('books.destroy', $book) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="neo-btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    @endif
                 </div>
             </div>
 

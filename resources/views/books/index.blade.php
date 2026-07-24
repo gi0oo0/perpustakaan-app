@@ -22,9 +22,11 @@
                     <button type="submit" class="neo-btn-primary ms-2 whitespace-nowrap">Cari</button>
                 </form>
                 <div class="flex gap-2">
-                    <a href="{{ route('books.create') }}">
-                        <button type="button" class="neo-btn-primary">+ Tambah Buku</button>
-                    </a>
+                    @if (Auth::user()->isAdmin())
+                        <a href="{{ route('books.create') }}">
+                            <button type="button" class="neo-btn-primary">+ Tambah Buku</button>
+                        </a>
+                    @endif
                     <a href="{{ route('books.print-label-batch') }}" target="_blank">
                         <button type="button" class="neo-btn-secondary">🖨 Cetak Label</button>
                     </a>
@@ -69,21 +71,25 @@
                                 <a href="{{ route('books.show', $book) }}" class="flex-1">
                                     <button type="button" class="neo-btn-primary w-full text-xs py-2">Detail</button>
                                 </a>
-                                <a href="{{ route('books.edit', $book) }}" class="flex-1">
-                                    <button type="button" class="neo-btn-secondary w-full text-xs py-2">Edit</button>
-                                </a>
+                                @if (Auth::user()->isAdmin())
+                                    <a href="{{ route('books.edit', $book) }}" class="flex-1">
+                                        <button type="button" class="neo-btn-secondary w-full text-xs py-2">Edit</button>
+                                    </a>
+                                @endif
                             </div>
 
-                            <div class="mt-2 flex gap-2">
-                                <a href="{{ route('books.print-label', $book) }}" target="_blank" class="flex-1">
-                                    <button type="button" class="neo-btn-secondary w-full text-xs py-2">🖨 Cetak</button>
-                                </a>
-                                <form action="{{ route('books.destroy', $book) }}" method="POST" class="flex-1" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="neo-btn-danger w-full text-xs py-2">Hapus</button>
-                                </form>
-                            </div>
+                            @if (Auth::user()->isAdmin())
+                                <div class="mt-2 flex gap-2">
+                                    <a href="{{ route('books.print-label', $book) }}" target="_blank" class="flex-1">
+                                        <button type="button" class="neo-btn-secondary w-full text-xs py-2">🖨 Cetak</button>
+                                    </a>
+                                    <form action="{{ route('books.destroy', $book) }}" method="POST" class="flex-1" onsubmit="return confirm('Yakin ingin menghapus buku ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="neo-btn-danger w-full text-xs py-2">Hapus</button>
+                                    </form>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @empty

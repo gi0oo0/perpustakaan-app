@@ -21,11 +21,22 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('books', BookController::class);
-
+    // Book viewing - all authenticated users
+    Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
     Route::get('/books/{book}/print-label', [BookController::class, 'printLabel'])->name('books.print-label');
     Route::get('/books-print-label-batch', [BookController::class, 'printLabelBatch'])->name('books.print-label-batch');
 
+    // Book management - admin only
+    Route::middleware('admin')->group(function () {
+        Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+        Route::post('/books', [BookController::class, 'store'])->name('books.store');
+        Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
+        Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
+        Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
+    });
+
+    // Loans - all authenticated users
     Route::get('/loans/borrow', [LoanController::class, 'createBorrow'])->name('loans.borrow.create');
     Route::post('/loans/borrow', [LoanController::class, 'storeBorrow'])->name('loans.borrow.store');
     Route::get('/loans/return', [LoanController::class, 'createReturn'])->name('loans.return.create');
