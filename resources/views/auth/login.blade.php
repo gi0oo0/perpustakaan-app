@@ -1,7 +1,8 @@
 <x-guest-layout>
-    <div class="mb-6 text-center">
-        <h2 class="font-heading font-bold text-xl text-border">Masuk</h2>
-        <p class="font-body text-sm text-muted mt-1">Selamat datang kembali!</p>
+    <div class="mb-8 text-center">
+        <div class="w-16 h-16 bg-lemon border-3 border-border shadow-neo mx-auto flex items-center justify-center text-3xl mb-4">📚</div>
+        <h2 class="font-heading font-bold text-2xl text-border">Selamat Datang</h2>
+        <p class="font-body text-sm text-muted mt-1">Masuk ke akun perpustakaan Anda</p>
     </div>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -30,16 +31,18 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-between mt-6">
+        <div class="mt-6">
+            <button type="submit" class="neo-btn-primary w-full">
+                Masuk →
+            </button>
+        </div>
+
+        <div class="mt-4 text-center">
             @if (Route::has('password.request'))
                 <a class="font-body text-sm text-primary hover:text-primary-700 underline" href="{{ route('password.request') }}">
                     Lupa password?
                 </a>
             @endif
-
-            <button type="submit" class="neo-btn-primary">
-                Masuk →
-            </button>
         </div>
     </form>
 </x-guest-layout>

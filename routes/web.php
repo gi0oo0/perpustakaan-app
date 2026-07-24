@@ -6,7 +6,10 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
