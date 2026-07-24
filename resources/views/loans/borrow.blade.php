@@ -111,7 +111,16 @@
                 html5QrCode = new Html5Qrcode("reader");
                 return html5QrCode.start(
                     config,
-                    { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 },
+                    {
+                        fps: 15,
+                        qrbox: function(viewfinderWidth, viewfinderHeight) {
+                            let minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+                            let size = Math.floor(minEdge * 0.7);
+                            return { width: size, height: size };
+                        },
+                        aspectRatio: 1.0,
+                        formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE]
+                    },
                     function onScanSuccess(decodedText) {
                         isbnInput.value = decodedText;
                         scanResult.classList.remove('hidden');
@@ -121,7 +130,7 @@
                             btnStart.classList.remove('hidden');
                             btnStop.classList.add('hidden');
                         }).catch(function () {});
-                        setTimeout(function () { borrowForm.submit(); }, 800);
+                        setTimeout(function () { borrowForm.submit(); }, 500);
                     },
                     function () {}
                 );
@@ -129,6 +138,7 @@
 
             btnStart.addEventListener('click', function () {
                 readerDiv.classList.remove('hidden');
+                readerDiv.style.height = '70vh';
                 btnStart.classList.add('hidden');
                 btnStop.classList.remove('hidden');
                 scanResult.classList.add('hidden');
@@ -138,7 +148,7 @@
                 }).catch(function () {
                     return startCamera(true);
                 }).catch(function (err) {
-                    alert('Tidak bisa mengakses kamera.\n\nPastikan:\n1. Browser diizinkan akses kamera\n2. Kamera tidak dipakai aplikasi lain\n3. Gunakan HTTPS atau localhost\n\nError: ' + err);
+                    alert('Tidak bisa mengakses kamera.\n\nPastikan:\n1. Browser diizinkan akses kamera\n2. Kamera tidak dipakai aplikasi lain\n3. Gunakan HTTPS\n\nError: ' + err);
                     readerDiv.classList.add('hidden');
                     btnStart.classList.remove('hidden');
                     btnStop.classList.add('hidden');
