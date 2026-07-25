@@ -21,6 +21,7 @@ class Loan extends Model
         'returned_at',
         'denda',
         'status_denda',
+        'processed_by',
     ];
 
     protected $casts = [
@@ -37,6 +38,11 @@ class Loan extends Model
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function processor()
+    {
+        return $this->belongsTo(User::class, 'processed_by');
     }
 
     public function isReturned(): bool

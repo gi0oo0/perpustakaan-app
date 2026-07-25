@@ -75,6 +75,9 @@
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Kembali</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Status</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Denda</th>
+                            @if (Auth::user()->isAdmin())
+                                <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Diproses Oleh</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -124,10 +127,20 @@
                                         <span class="font-body text-sm text-muted">-</span>
                                     @endif
                                 </td>
+                                @if (Auth::user()->isAdmin())
+                                    <td class="py-3 px-4">
+                                        @if ($loan->processor)
+                                            <p class="font-body text-xs text-border">{{ $loan->processor->name }}</p>
+                                            <p class="font-body text-xs text-muted">{{ $loan->returned_at ? $loan->returned_at->format('d/m H:i') : '' }}</p>
+                                        @else
+                                            <span class="font-body text-xs text-muted">-</span>
+                                        @endif
+                                    </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="py-8 text-center">
+                                <td colspan="9" class="py-8 text-center">
                                     <div class="text-4xl mb-3">📭</div>
                                     <p class="font-heading font-semibold text-border">Tidak ada data peminjaman</p>
                                 </td>

@@ -11,7 +11,7 @@ class LoanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Loan::with('book', 'user');
+        $query = Loan::with('book', 'user', 'processor');
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -20,7 +20,8 @@ class LoanController extends Controller
                     $q2->where('title', 'like', "%{$search}%")
                        ->orWhere('isbn', 'like', "%{$search}%");
                 })->orWhereHas('user', function ($q2) use ($search) {
-                    $q2->where('name', 'like', "%{$search}%");
+                    $q2->where('name', 'like', "%{$search}%")
+                       ->orWhere('nisn', 'like', "%{$search}%");
                 });
             });
         }
@@ -154,7 +155,12 @@ class LoanController extends Controller
         $request->validate([
             'loan_id' => 'required_without:isbn|nullable|exists:loans,id',
             'isbn' => 'required_without:loan_id|nullable|string',
+            'confirm_received' => 'required',
         ]);
+
+        if ($request->confirm_received !== '1') {
+            return back()->withErrors(['confirm_received' => 'Anda harus mengonfirmasi bahwa buku telah diterima secara fisik.'])->withInput();
+        }
 
         if ($request->filled('isbn')) {
             $book = Book::where('isbn', $request->isbn)->first();
@@ -181,11 +187,12 @@ class LoanController extends Controller
             'returned_at' => Carbon::today(),
             'denda' => $denda,
             'status_denda' => $denda > 0 ? 'belum_bayar' : 'lunas',
+            'processed_by' => $request->user()->id,
         ]);
 
         $loan->book->increment('stock');
 
-        $msg = 'Buku "' . $loan->book->title . '" berhasil dikembalikan.';
+        $msg = 'Buku "' . $loan->book->title . '" berhasil dikembalikan oleh ' . $request->user()->name . '.';
         if ($denda > 0) {
             $msg .= ' Denda: Rp' . number_format($denda, 0, ',', '.');
         }
@@ -202,7 +209,7 @@ class LoanController extends Controller
 
     public function export(Request $request)
     {
-        $query = Loan::with('book', 'user');
+        $query = Loan::with('book', 'user', 'processor');
 
         if ($request->filled('status')) {
             if ($request->status === 'active') {
@@ -235,7 +242,7 @@ class LoanController extends Controller
 
         $callback = function () use ($loans) {
             $file = fopen('php://output', 'w');
-            fputcsv($file, ['No', 'Judul Buku', 'ISBN', 'Peminjam', 'Tanggal Pinjam', 'Jatuh Tempo', 'Tanggal Kembali', 'Status', 'Denda (Rp)', 'Status Denda']);
+            fputcsv($file, ['No', 'Judul Buku', 'ISBN', 'Peminjam', 'NISN', 'Tanggal Pinjam', 'Jatuh Tempo', 'Tanggal Kembali', 'Status', 'Denda (Rp)', 'Status Denda', 'Diproses Oleh']);
 
             $no = 1;
             foreach ($loans as $loan) {
@@ -252,12 +259,14 @@ class LoanController extends Controller
                     $loan->book->title ?? '-',
                     $loan->book->isbn ?? '-',
                     $loan->user->name ?? '-',
+                    $loan->user->nisn ?? '-',
                     $loan->loan_date->format('d/m/Y'),
                     $loan->due_date->format('d/m/Y'),
                     $loan->returned_at ? $loan->returned_at->format('d/m/Y') : '-',
                     $status,
                     $loan->denda ?? 0,
                     $loan->denda > 0 ? ($loan->status_denda === 'lunas' ? 'Lunas' : 'Belum Bayar') : '-',
+                    $loan->processor ? $loan->processor->name : '-',
                 ]);
             }
 

@@ -26,10 +26,12 @@
                        class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.borrow.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                         Pinjam
                     </a>
-                    <a href="{{ route('loans.return.create') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.return.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
-                        Kembalikan
-                    </a>
+                    @if (Auth::user()->isAdmin())
+                        <a href="{{ route('loans.return.create') }}"
+                           class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.return.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                            Kembalikan
+                        </a>
+                    @endif
                     @if (Auth::user()->isAdmin())
                         <a href="{{ route('users.index') }}"
                            class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('users.*') ? 'bg-yellow-400 text-border border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
@@ -111,9 +113,11 @@
             <a href="{{ route('loans.borrow.create') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('loans.borrow.*') ? 'bg-lemon text-border' : 'text-muted hover:bg-gray-50' }}">
                 Pinjam
             </a>
-            <a href="{{ route('loans.return.create') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('loans.return.*') ? 'bg-lemon text-border' : 'text-muted hover:bg-gray-50' }}">
-                Kembalikan
-            </a>
+            @if (Auth::user()->isAdmin())
+                <a href="{{ route('loans.return.create') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('loans.return.*') ? 'bg-lemon text-border' : 'text-muted hover:bg-gray-50' }}">
+                    Kembalikan
+                </a>
+            @endif
             @if (Auth::user()->isAdmin())
                 <a href="{{ route('users.index') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('users.*') ? 'bg-yellow-400 text-border' : 'text-muted hover:bg-gray-50' }}">
                     Anggota

@@ -104,7 +104,22 @@
                                 <form id="return-form" method="POST" action="{{ route('loans.return.store') }}" class="mt-4">
                                     @csrf
                                     <input type="hidden" name="loan_id" id="return-loan-id">
-                                    <button type="submit" id="btn-confirm-return" class="neo-btn-primary w-full">
+
+                                    <div class="mb-4">
+                                        <label class="flex items-start gap-3 cursor-pointer bg-yellow-50 border-2 border-border p-3" style="box-shadow: 3px 3px 0px #111827;">
+                                            <input type="checkbox" name="confirm_received" value="1" id="confirm-received"
+                                                   class="mt-1 h-5 w-5 text-primary border-border focus:ring-primary">
+                                            <div>
+                                                <p class="font-heading font-semibold text-sm text-border">Buku diterima secara fisik</p>
+                                                <p class="font-body text-xs text-muted mt-1">Saya mengonfirmasi bahwa buku ini telah diterima dan dalam kondisi yang sesuai.</p>
+                                            </div>
+                                        </label>
+                                        @error('confirm_received')
+                                            <p class="font-body text-xs text-coral mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <button type="submit" id="btn-confirm-return" class="neo-btn-primary w-full" disabled>
                                         ✓ Konfirmasi Kembalikan
                                     </button>
                                 </form>
@@ -304,6 +319,20 @@
                     checkReturn(isbn);
                 }
             });
+
+            var confirmCheckbox = document.getElementById('confirm-received');
+            var confirmBtn = document.getElementById('btn-confirm-return');
+            if (confirmCheckbox && confirmBtn) {
+                confirmCheckbox.addEventListener('change', function() {
+                    confirmBtn.disabled = !this.checked;
+                    if (this.checked) {
+                        confirmBtn.classList.remove('opacity-50');
+                    } else {
+                        confirmBtn.classList.add('opacity-50');
+                    }
+                });
+                confirmBtn.classList.add('opacity-50');
+            }
         });
     </script>
 </x-app-layout>

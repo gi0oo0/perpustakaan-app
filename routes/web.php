@@ -46,9 +46,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
     Route::get('/loans/borrow', [LoanController::class, 'createBorrow'])->name('loans.borrow.create');
     Route::post('/loans/borrow', [LoanController::class, 'storeBorrow'])->name('loans.borrow.store');
-    Route::get('/loans/return', [LoanController::class, 'createReturn'])->name('loans.return.create');
-    Route::post('/loans/return/check', [LoanController::class, 'checkReturn'])->name('loans.return.check');
-    Route::post('/loans/return', [LoanController::class, 'storeReturn'])->name('loans.return.store');
+
+    // Return - admin only
+    Route::middleware('admin')->group(function () {
+        Route::get('/loans/return', [LoanController::class, 'createReturn'])->name('loans.return.create');
+        Route::post('/loans/return/check', [LoanController::class, 'checkReturn'])->name('loans.return.check');
+        Route::post('/loans/return', [LoanController::class, 'storeReturn'])->name('loans.return.store');
+    });
+
     Route::post('/loans/{loan}/pay-denda', [LoanController::class, 'payDenda'])->name('loans.pay-denda')->middleware('admin');
     Route::get('/loans/export/csv', [LoanController::class, 'export'])->name('loans.export')->middleware('admin');
 
