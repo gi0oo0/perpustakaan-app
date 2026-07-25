@@ -28,6 +28,8 @@
                         <p class="font-body text-sm text-muted">{{ $user->email }}</p>
                         @if ($user->isAdmin())
                             <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>
+                        @elseif ($user->role === 'staff')
+                            <span class="neo-badge bg-lemon text-border text-xs mt-1">Staff</span>
                         @else
                             <span class="neo-badge bg-primary text-white text-xs mt-1">Anggota</span>
                         @endif
@@ -96,7 +98,7 @@
                                     <td class="py-3 px-4">
                                         @if ($loan->denda > 0)
                                             <p class="font-heading font-bold text-sm text-coral">Rp{{ number_format($loan->denda, 0, ',', '.') }}</p>
-                                            @if ($loan->status_denda === 'belum_bayar')
+                                            @if ($loan->status_denda === 'belum_bayar' && Auth::user()->isStaff())
                                                 <form method="POST" action="{{ route('loans.pay-denda', $loan) }}" class="mt-1">
                                                     @csrf
                                                     <button type="submit" class="text-xs font-heading font-semibold text-primary hover:underline">Tandai Lunas</button>

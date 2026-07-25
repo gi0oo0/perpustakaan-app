@@ -28,6 +28,7 @@
                     <select name="role" class="neo-input w-full sm:w-40">
                         <option value="">Semua Role</option>
                         <option value="admin" {{ request('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+                        <option value="staff" {{ request('role') === 'staff' ? 'selected' : '' }}>Staff</option>
                         <option value="user" {{ request('role') === 'user' ? 'selected' : '' }}>Anggota</option>
                     </select>
                     <div class="flex gap-2">
@@ -74,6 +75,8 @@
                                 <td class="py-3 px-4">
                                     @if ($user->isAdmin())
                                         <span class="neo-badge bg-coral text-white text-xs">Admin</span>
+                                    @elseif ($user->role === 'staff')
+                                        <span class="neo-badge bg-lemon text-border text-xs">Staff</span>
                                     @else
                                         <span class="neo-badge bg-primary text-white text-xs">Anggota</span>
                                     @endif

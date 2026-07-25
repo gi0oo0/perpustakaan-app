@@ -43,7 +43,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'nisn' => 'nullable|string|unique:users,nisn|max:255',
             'password' => ['required', 'confirmed', Password::min(6)],
-            'role' => 'required|in:admin,user',
+            'role' => 'required|in:admin,staff,user',
         ]);
 
         User::create([
@@ -80,7 +80,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'nisn' => 'nullable|string|unique:users,nisn,' . $user->id . '|max:255',
-            'role' => 'required|in:admin,user',
+            'role' => 'required|in:admin,staff,user',
         ]);
 
         $data = [

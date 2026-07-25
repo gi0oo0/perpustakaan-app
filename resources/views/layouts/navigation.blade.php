@@ -26,7 +26,7 @@
                        class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.borrow.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                         Pinjam
                     </a>
-                    @if (Auth::user()->isAdmin())
+                    @if (Auth::user()->isStaff())
                         <a href="{{ route('loans.return.create') }}"
                            class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.return.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                             Kembalikan
@@ -44,6 +44,8 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @if (Auth::user()->isAdmin())
                     <span class="neo-badge bg-coral text-white mr-3 text-xs">Admin</span>
+                @elseif (Auth::user()->role === 'staff')
+                    <span class="neo-badge bg-lemon text-border mr-3 text-xs">Staff</span>
                 @endif
 
                 <x-dropdown align="right" width="48">
@@ -67,6 +69,8 @@
                             @endif
                             @if (Auth::user()->isAdmin())
                                 <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>
+                            @elseif (Auth::user()->role === 'staff')
+                                <span class="neo-badge bg-lemon text-border text-xs mt-1">Staff</span>
                             @else
                                 <span class="neo-badge bg-gray-200 text-muted text-xs mt-1">User</span>
                             @endif
@@ -113,7 +117,7 @@
             <a href="{{ route('loans.borrow.create') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('loans.borrow.*') ? 'bg-lemon text-border' : 'text-muted hover:bg-gray-50' }}">
                 Pinjam
             </a>
-            @if (Auth::user()->isAdmin())
+            @if (Auth::user()->isStaff())
                 <a href="{{ route('loans.return.create') }}" class="block px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide {{ request()->routeIs('loans.return.*') ? 'bg-lemon text-border' : 'text-muted hover:bg-gray-50' }}">
                     Kembalikan
                 </a>
@@ -134,6 +138,8 @@
                 @endif
                 @if (Auth::user()->isAdmin())
                     <span class="neo-badge bg-coral text-white text-xs mt-1">Admin</span>
+                @elseif (Auth::user()->role === 'staff')
+                    <span class="neo-badge bg-lemon text-border text-xs mt-1">Staff</span>
                 @else
                     <span class="neo-badge bg-gray-200 text-muted text-xs mt-1">User</span>
                 @endif

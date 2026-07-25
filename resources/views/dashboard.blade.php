@@ -49,7 +49,7 @@
                         <div class="font-heading font-semibold text-border uppercase tracking-wide text-sm">Pinjam Buku</div>
                         <p class="font-body text-xs text-muted mt-1">Scan & pinjam buku baru</p>
                     </a>
-                    @if (Auth::user()->isAdmin())
+                    @if (Auth::user()->isStaff())
                         <a href="{{ route('loans.return.create') }}" class="book-card neo-card text-center group">
                             <div class="w-14 h-14 bg-coral border-3 border-border shadow-neo-sm mx-auto flex items-center justify-center text-2xl mb-3 group-hover:shadow-neo-hover transition-all duration-150">🔄</div>
                             <div class="font-heading font-semibold text-border uppercase tracking-wide text-sm">Kembalikan Buku</div>

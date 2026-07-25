@@ -34,6 +34,11 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function isStaff(): bool
+    {
+        return in_array($this->role, ['admin', 'staff']);
+    }
+
     public function loans()
     {
         return $this->hasMany(Loan::class);

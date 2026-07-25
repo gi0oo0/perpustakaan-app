@@ -40,7 +40,8 @@
                         <div>
                             <label for="role" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Role</label>
                             <select id="role" name="role" class="neo-input">
-                                <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>Anggota</option>
+                                <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>Anggota (Siswa)</option>
+                                <option value="staff" {{ old('role') === 'staff' ? 'selected' : '' }}>Staff Perpustakaan</option>
                                 <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
                             </select>
                             @error('role') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror

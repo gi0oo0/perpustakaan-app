@@ -29,7 +29,7 @@
                         <a href="{{ route('loans.return.create') }}">
                             <button type="button" class="neo-btn-secondary text-xs">🔄 Kembalikan</button>
                         </a>
-                        @if (Auth::user()->isAdmin())
+                        @if (Auth::user()->isStaff())
                             <a href="{{ route('loans.export', array_filter(['status' => request('status'), 'date_from' => request('date_from'), 'date_to' => request('date_to')])) }}">
                                 <button type="button" class="neo-btn-secondary text-xs">📥 Export CSV</button>
                             </a>
@@ -75,7 +75,7 @@
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Kembali</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Status</th>
                             <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Denda</th>
-                            @if (Auth::user()->isAdmin())
+                            @if (Auth::user()->isStaff())
                                 <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Diproses Oleh</th>
                             @endif
                         </tr>
@@ -112,7 +112,7 @@
                                 <td class="py-3 px-4">
                                     @if ($loan->denda > 0)
                                         <p class="font-heading font-bold text-sm text-coral">Rp{{ number_format($loan->denda, 0, ',', '.') }}</p>
-                                        @if ($loan->status_denda === 'belum_bayar')
+                                        @if ($loan->status_denda === 'belum_bayar' && Auth::user()->isStaff())
                                             <form method="POST" action="{{ route('loans.pay-denda', $loan) }}" class="mt-1">
                                                 @csrf
                                                 <button type="submit" class="text-xs font-heading font-semibold text-primary hover:underline">Tandai Lunas</button>
@@ -127,7 +127,7 @@
                                         <span class="font-body text-sm text-muted">-</span>
                                     @endif
                                 </td>
-                                @if (Auth::user()->isAdmin())
+                                @if (Auth::user()->isStaff())
                                     <td class="py-3 px-4">
                                         @if ($loan->processor)
                                             <p class="font-body text-xs text-border">{{ $loan->processor->name }}</p>
