@@ -17,36 +17,36 @@
 
 @layer components {
     .neo-card {
-        @apply bg-white border-3 border-border shadow-neo p-6;
+        @apply bg-white border-3 border-border shadow-neo p-6 rounded-neo;
     }
     .neo-btn-primary {
         @apply bg-primary text-white font-heading font-semibold uppercase tracking-wide
-               px-6 py-3 border-3 border-border shadow-neo
+               px-6 py-3 border-3 border-border shadow-neo rounded-neo-sm
                hover:shadow-neo-hover hover:-translate-y-0.5
                active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
                transition-all duration-150 text-sm;
     }
     .neo-btn-secondary {
         @apply bg-white text-border font-heading font-semibold uppercase tracking-wide
-               px-6 py-3 border-3 border-border shadow-neo
+               px-6 py-3 border-3 border-border shadow-neo rounded-neo-sm
                hover:shadow-neo-hover hover:-translate-y-0.5
                active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
                transition-all duration-150 text-sm;
     }
     .neo-btn-danger {
         @apply bg-coral text-white font-heading font-semibold uppercase tracking-wide
-               px-6 py-3 border-3 border-border shadow-neo
+               px-6 py-3 border-3 border-border shadow-neo rounded-neo-sm
                hover:shadow-neo-hover hover:-translate-y-0.5
                active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
                transition-all duration-150 text-sm;
     }
     .neo-input {
-        @apply w-full border-3 border-border px-4 py-3 font-body text-sm
+        @apply w-full border-3 border-border px-4 py-3 font-body text-sm rounded-neo-sm
                focus:border-primary focus:ring-0 focus:outline-none
                shadow-neo-sm transition-all duration-150;
     }
     .neo-badge {
-        @apply inline-flex items-center px-4 py-1 font-heading font-semibold text-xs uppercase tracking-wide border-2 border-border;
+        @apply inline-flex items-center px-4 py-1 font-heading font-semibold text-xs uppercase tracking-wide border-2 border-border rounded-full;
     }
 }
 

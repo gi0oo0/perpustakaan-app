@@ -16,7 +16,7 @@
             </div>
 
             {{-- Book Detail Split --}}
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-0 bg-white border-3 border-border shadow-neo overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-0 bg-white border-3 border-border shadow-neo overflow-hidden rounded-neo">
 
                 {{-- Left: Cover --}}
                 <div class="lg:col-span-2 bg-gray-50 border-b-3 lg:border-b-0 lg:border-r-3 border-border p-8 flex items-center justify-center">
@@ -27,7 +27,7 @@
                                  class="relative w-full max-w-xs border-4 border-white border-3 border-border shadow-neo-hover group-hover:rotate-2 transition-transform duration-300">
                         </div>
                     @else
-                        <div class="w-full max-w-xs h-80 bg-gray-200 border-3 border-border shadow-neo flex items-center justify-center text-6xl">
+                        <div class="w-full max-w-xs h-80 bg-gray-200 border-3 border-border shadow-neo flex items-center justify-center text-6xl rounded-neo">
                             📖
                         </div>
                     @endif
@@ -73,7 +73,7 @@
                     @endif
 
                     {{-- QR Code --}}
-                    <div class="mt-8 bg-lemon border-3 border-border shadow-neo-sm p-4 inline-block">
+                    <div class="mt-8 bg-lemon border-3 border-border shadow-neo-sm p-4 inline-block rounded-neo-sm">
                         <div class="font-heading text-xs uppercase tracking-wide text-border mb-2">QR Code</div>
                         <img src="data:image/png;base64,{{ \Milon\Barcode\Facades\DNS2DFacade::getBarcodePNG($book->isbn, 'QRCODE', 5, 5) }}" alt="QR Code {{ $book->isbn }}" class="w-32 h-32">
                         <p class="font-body text-xs text-muted mt-1 text-center">{{ $book->isbn }}</p>

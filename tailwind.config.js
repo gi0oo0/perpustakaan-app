@@ -40,7 +40,9 @@ export default {
                 '3': '3px',
             },
             borderRadius: {
-                'none': '0px',
+                'neo': '12px',
+                'neo-lg': '16px',
+                'neo-sm': '8px',
             },
         },
     },

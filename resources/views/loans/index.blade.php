@@ -9,13 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
-                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm">
+                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm rounded-neo">
                     ✓ {{ session('success') }}
                 </div>
             @endif
 
             {{-- Summary --}}
-            <div class="bg-lemon border-3 border-border shadow-neo p-6 mb-6 relative overflow-hidden">
+            <div class="bg-lemon border-3 border-border shadow-neo p-6 mb-6 relative overflow-hidden rounded-neo">
                 <div class="absolute top-3 right-6 w-12 h-12 border-4 border-border rounded-full opacity-20"></div>
                 <div class="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
                     <div>

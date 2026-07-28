@@ -9,13 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
-                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm">
+                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm rounded-neo">
                     ✓ {{ session('success') }}
                 </div>
             @endif
 
             @if ($errors->any())
-                <div class="mb-6 bg-coral text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm">
+                <div class="mb-6 bg-coral text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm rounded-neo">
                     ✗ Error:
                     <ul class="list-disc list-inside mt-1 font-body font-normal normal-case">
                         @foreach ($errors->all() as $error)
@@ -75,7 +75,7 @@
 
                         {{-- Scan Result --}}
                         <div id="scan-result" class="mt-4 hidden">
-                            <div class="bg-primary text-white border-3 border-border shadow-neo px-4 py-3 font-heading font-semibold text-sm">
+                            <div class="bg-primary text-white border-3 border-border shadow-neo px-4 py-3 font-heading font-semibold text-sm rounded-neo">
                                 ✓ Tergagal! ISBN: <span id="scan-result-text" class="font-mono"></span>
                             </div>
                         </div>
@@ -107,7 +107,7 @@
                         @else
                             <div class="space-y-2 max-h-[600px] overflow-y-auto pr-1">
                                 @foreach ($books as $book)
-                                    <div class="border-2 border-border p-3 flex items-center gap-3 hover:bg-lemon-50 transition-colors duration-100 cursor-pointer book-card" style="box-shadow: 3px 3px 0px #111827;">
+                                    <div class="border-2 border-border p-3 flex items-center gap-3 hover:bg-lemon-50 transition-colors duration-100 cursor-pointer book-card rounded-neo-sm" style="box-shadow: 3px 3px 0px #111827;">
                                         @if ($book->cover_image)
                                             <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-12 w-9 object-cover border-2 border-border flex-shrink-0">
                                         @else

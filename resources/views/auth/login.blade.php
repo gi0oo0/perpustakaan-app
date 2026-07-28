@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="mb-8 text-center">
-        <div class="w-16 h-16 bg-lemon border-3 border-border shadow-neo mx-auto flex items-center justify-center text-3xl mb-4">📚</div>
+        <div class="w-16 h-16 bg-lemon border-3 border-border shadow-neo mx-auto flex items-center justify-center text-3xl mb-4 rounded-full">📚</div>
         <h2 class="font-heading font-bold text-2xl text-border">Selamat Datang</h2>
         <p class="font-body text-sm text-muted mt-1">Masuk ke akun perpustakaan Anda</p>
     </div>

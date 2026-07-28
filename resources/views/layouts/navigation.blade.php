@@ -11,30 +11,30 @@
 
                 <div class="hidden space-x-2 sm:flex sm:items-center sm:ms-8">
                     <a href="{{ route('dashboard') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('dashboard') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent rounded-neo-sm {{ request()->routeIs('dashboard') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                         Dashboard
                     </a>
                     <a href="{{ route('books.index') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('books.*') ? 'bg-primary text-white border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent rounded-neo-sm {{ request()->routeIs('books.*') ? 'bg-primary text-white border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                         Buku
                     </a>
                     <a href="{{ route('loans.index') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.index') ? 'bg-coral text-white border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent rounded-neo-sm {{ request()->routeIs('loans.index') ? 'bg-coral text-white border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                         Peminjaman
                     </a>
                     <a href="{{ route('loans.borrow.create') }}"
-                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.borrow.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                       class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent rounded-neo-sm {{ request()->routeIs('loans.borrow.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                         Pinjam
                     </a>
                     @if (Auth::user()->isStaff())
                         <a href="{{ route('loans.return.create') }}"
-                           class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('loans.return.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                           class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent rounded-neo-sm {{ request()->routeIs('loans.return.*') ? 'bg-lemon border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                             Kembalikan
                         </a>
                     @endif
                     @if (Auth::user()->isAdmin())
                         <a href="{{ route('users.index') }}"
-                           class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent {{ request()->routeIs('users.*') ? 'bg-yellow-400 text-border border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
+                           class="inline-flex items-center px-4 py-2 text-sm font-heading font-semibold uppercase tracking-wide border-3 border-transparent rounded-neo-sm {{ request()->routeIs('users.*') ? 'bg-yellow-400 text-border border-border shadow-neo-sm' : 'text-muted hover:text-border hover:bg-gray-50' }} transition-all duration-150">
                             Anggota
                         </a>
                     @endif
@@ -50,7 +50,7 @@
 
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-4 py-2 border-3 border-border bg-white shadow-neo-sm text-sm font-heading font-semibold uppercase tracking-wide text-border hover:bg-gray-50 transition-all duration-150">
+                        <button class="inline-flex items-center px-4 py-2 border-3 border-border bg-white shadow-neo-sm text-sm font-heading font-semibold uppercase tracking-wide text-border hover:bg-gray-50 transition-all duration-150 rounded-neo-sm">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -93,7 +93,7 @@
             </div>
 
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 border-3 border-border bg-white shadow-neo-sm text-border hover:bg-gray-50 transition-all duration-150">
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 border-3 border-border bg-white shadow-neo-sm text-border hover:bg-gray-50 transition-all duration-150 rounded-neo-sm">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

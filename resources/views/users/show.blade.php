@@ -38,19 +38,19 @@
 
                 {{-- Stats --}}
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 border-t-3 border-border pt-6">
-                    <div class="bg-lemon border-2 border-border p-3 text-center" style="box-shadow: 3px 3px 0px #111827;">
+                    <div class="bg-lemon border-2 border-border p-3 text-center rounded-neo-sm" style="box-shadow: 3px 3px 0px #111827;">
                         <p class="font-heading font-bold text-2xl text-border">{{ $totalLoans }}</p>
                         <p class="font-body text-xs text-muted uppercase">Total Pinjam</p>
                     </div>
-                    <div class="bg-yellow-50 border-2 border-border p-3 text-center" style="box-shadow: 3px 3px 0px #111827;">
+                    <div class="bg-yellow-50 border-2 border-border p-3 text-center rounded-neo-sm" style="box-shadow: 3px 3px 0px #111827;">
                         <p class="font-heading font-bold text-2xl text-border">{{ $activeLoans }}</p>
                         <p class="font-body text-xs text-muted uppercase">Dipinjam</p>
                     </div>
-                    <div class="bg-red-50 border-2 border-coral p-3 text-center" style="box-shadow: 3px 3px 0px #111827;">
+                    <div class="bg-red-50 border-2 border-coral p-3 text-center rounded-neo-sm" style="box-shadow: 3px 3px 0px #111827;">
                         <p class="font-heading font-bold text-2xl text-coral">{{ $overdueLoans }}</p>
                         <p class="font-body text-xs text-muted uppercase">Terlambat</p>
                     </div>
-                    <div class="bg-white border-2 {{ $totalDenda > 0 ? 'border-coral' : 'border-border' }} p-3 text-center" style="box-shadow: 3px 3px 0px #111827;">
+                    <div class="bg-white border-2 {{ $totalDenda > 0 ? 'border-coral' : 'border-border' }} p-3 text-center rounded-neo-sm" style="box-shadow: 3px 3px 0px #111827;">
                         <p class="font-heading font-bold text-2xl {{ $totalDenda > 0 ? 'text-coral' : 'text-border' }}">Rp{{ number_format($totalDenda, 0, ',', '.') }}</p>
                         <p class="font-body text-xs text-muted uppercase">Total Denda</p>
                     </div>

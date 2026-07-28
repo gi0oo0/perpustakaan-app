@@ -77,7 +77,7 @@
                             <label for="cover_image" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Sampul Buku</label>
                             @if ($book->cover_image)
                                 <div class="mb-3">
-                                    <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-40 w-28 object-cover border-3 border-border shadow-neo-sm">
+                                    <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-40 w-28 object-cover border-3 border-border shadow-neo-sm rounded-neo-sm">
                                 </div>
                             @endif
                             <input type="file" id="cover_image" name="cover_image" accept="image/*" class="neo-input file:mr-4 file:py-2 file:px-4 file:border-3 file:border-border file:font-heading file:font-semibold file:text-xs file:uppercase file:bg-lemon file:hover:bg-lemon-100 file:cursor-pointer">

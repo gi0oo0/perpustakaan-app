@@ -23,7 +23,7 @@
                 </h1>
             </div>
 
-            <div class="relative z-10 w-full sm:max-w-md px-6 py-8 bg-white border-3 border-border shadow-neo">
+            <div class="relative z-10 w-full sm:max-w-md px-6 py-8 bg-white border-3 border-border shadow-neo rounded-neo">
                 {{ $slot }}
             </div>
         </div>

@@ -9,13 +9,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
-                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm">
+                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm rounded-neo">
                     ✓ {{ session('success') }}
                 </div>
             @endif
 
             @if ($errors->any())
-                <div class="mb-6 bg-coral text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm">
+                <div class="mb-6 bg-coral text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm rounded-neo">
                     ✗ Error:
                     <ul class="list-disc list-inside mt-1 font-body font-normal normal-case">
                         @foreach ($errors->all() as $error)
@@ -63,7 +63,7 @@
 
                         {{-- Return Info Box (hidden until scan) --}}
                         <div id="return-info" class="mt-6 hidden">
-                            <div id="return-info-box" class="border-3 border-border shadow-neo p-6">
+                            <div id="return-info-box" class="border-3 border-border shadow-neo p-6 rounded-neo">
                                 <h4 class="font-heading font-bold text-sm text-border uppercase tracking-wide mb-4">📦 Info Pengembalian</h4>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
@@ -86,7 +86,7 @@
 
                                 {{-- Denda Warning --}}
                                 <div id="denda-warning" class="mt-4 hidden">
-                                    <div class="bg-coral text-white border-3 border-border px-4 py-3 font-heading font-semibold text-sm">
+                                    <div class="bg-coral text-white border-3 border-border px-4 py-3 font-heading font-semibold text-sm rounded-neo-sm">
                                         ⚠ TERLAMBAT! <span id="days-late-text">-</span>
                                     </div>
                                     <div class="bg-red-50 border-3 border-coral border-t-0 px-4 py-3">
@@ -96,7 +96,7 @@
                                 </div>
 
                                 <div id="denda-ok" class="mt-4 hidden">
-                                    <div class="bg-primary text-white border-3 border-border px-4 py-3 font-heading font-semibold text-sm">
+                                    <div class="bg-primary text-white border-3 border-border px-4 py-3 font-heading font-semibold text-sm rounded-neo-sm">
                                         ✓ Tidak ada denda — dikembalikan tepat waktu!
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
                                     <input type="hidden" name="loan_id" id="return-loan-id">
 
                                     <div class="mb-4">
-                                        <label class="flex items-start gap-3 cursor-pointer bg-yellow-50 border-2 border-border p-3" style="box-shadow: 3px 3px 0px #111827;">
+                                        <label class="flex items-start gap-3 cursor-pointer bg-yellow-50 border-2 border-border p-3 rounded-neo-sm" style="box-shadow: 3px 3px 0px #111827;">
                                             <input type="checkbox" name="confirm_received" value="1" id="confirm-received"
                                                    class="mt-1 h-5 w-5 text-primary border-border focus:ring-primary">
                                             <div>
@@ -153,7 +153,7 @@
                         @else
                             <div class="space-y-2 max-h-[600px] overflow-y-auto pr-1">
                                 @foreach ($activeLoans as $loan)
-                                    <div class="border-2 border-border p-3 {{ $loan->isOverdue() ? 'bg-red-50 border-coral' : '' }} transition-colors duration-100" style="box-shadow: 3px 3px 0px #111827;">
+                                    <div class="border-2 border-border p-3 {{ $loan->isOverdue() ? 'bg-red-50 border-coral' : '' }} transition-colors duration-100 rounded-neo-sm" style="box-shadow: 3px 3px 0px #111827;">
                                         <div class="flex items-center gap-3">
                                             @if ($loan->book->cover_image)
                                                 <img src="{{ asset($loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="h-12 w-9 object-cover border-2 border-border flex-shrink-0">
