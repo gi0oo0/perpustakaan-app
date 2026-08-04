@@ -7,23 +7,18 @@
 
         <title>{{ config('app.name', 'Perpustakaan') }}</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-body antialiased bg-[#FAFAFA]">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 relative">
-            <div class="geo-shapes"></div>
-
-            <div class="relative z-10 mb-6">
-                <h1 class="font-heading font-bold text-4xl text-border tracking-tight">
-                    <span class="text-primary">📚</span> Perpustakaan
+    <body class="antialiased bg-surface-light text-text">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+            <div class="mb-apple-xl">
+                <h1 class="font-display text-heading-xl text-text tracking-tight">
+                    Perpustakaan
                 </h1>
+                <p class="font-body text-body-sm text-text-tertiary mt-2 text-center">Sistem Manajemen Peminjaman Buku</p>
             </div>
 
-            <div class="relative z-10 w-full sm:max-w-md px-6 py-8 bg-white border-3 border-border shadow-neo rounded-neo">
+            <div class="w-full sm:max-w-md px-apple-lg py-apple-xl bg-white rounded-apple-lg shadow-apple">
                 {{ $slot }}
             </div>
         </div>

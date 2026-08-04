@@ -1,142 +1,151 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-heading font-bold text-2xl text-border leading-tight">
-            👥 Kelola Anggota
-        </h2>
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-display font-semibold text-text-primary">Manajemen Pengguna</h1>
+                <p class="mt-1 text-text-tertiary">Kelola data pengguna perpustakaan</p>
+            </div>
+            <a href="{{ route('users.create') }}" class="apple-btn-primary">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Tambah Pengguna
+            </a>
+        </div>
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
-            @if (session('success'))
-                <div class="mb-6 bg-primary text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm rounded-neo">
-                    ✓ {{ session('success') }}
+        <div class="max-w-7xl mx-auto px-apple-lg">
+            <div class="bg-white rounded-apple-lg p-6">
+                <!-- Filters -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <form action="{{ route('users.index') }}" method="GET" class="flex-1 flex gap-4">
+                        <div class="flex-1">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari pengguna..."
+                                class="apple-input w-full">
+                        </div>
+                        <div class="w-48">
+                            <select name="role" class="apple-input w-full">
+                                <option value="">Semua Role</option>
+                                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="staff" {{ request('role') == 'staff' ? 'selected' : '' }}>Staff</option>
+                                <option value="anggota" {{ request('role') == 'anggota' ? 'selected' : '' }}>Anggota</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="apple-btn-primary">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            Cari
+                        </button>
+                        @if(request('search') || request('role'))
+                            <a href="{{ route('users.index') }}" class="apple-btn-secondary">
+                                Reset
+                            </a>
+                        @endif
+                    </form>
                 </div>
-            @endif
 
-            @if (session('error'))
-                <div class="mb-6 bg-coral text-white border-3 border-border shadow-neo px-6 py-4 font-heading font-semibold uppercase tracking-wide text-sm rounded-neo">
-                    ✗ {{ session('error') }}
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-surface-lighter">
+                                <th class="text-left py-3 px-4 text-sm font-display font-semibold text-text-tertiary">NISN</th>
+                                <th class="text-left py-3 px-4 text-sm font-display font-semibold text-text-tertiary">Nama</th>
+                                <th class="text-left py-3 px-4 text-sm font-display font-semibold text-text-tertiary">Email</th>
+                                <th class="text-left py-3 px-4 text-sm font-display font-semibold text-text-tertiary">Role</th>
+                                <th class="text-right py-3 px-4 text-sm font-display font-semibold text-text-tertiary">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($users as $user)
+                                <tr class="border-b border-surface-lighter hover:bg-surface-light transition-colors">
+                                    <td class="py-4 px-4 text-sm text-text-primary">{{ $user->nisn }}</td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 bg-surface-light rounded-full flex items-center justify-center">
+                                                <span class="text-sm font-medium text-text">{{ substr($user->name, 0, 1) }}</span>
+                                            </div>
+                                            <span class="text-sm font-medium text-text-primary">{{ $user->name }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 text-sm text-text-tertiary">{{ $user->email }}</td>
+                                    <td class="py-4 px-4">
+                                        @if($user->role == 'admin')
+                                            <span class="apple-badge-red">Admin</span>
+                                        @elseif($user->role == 'staff')
+                                            <span class="apple-badge-yellow">Staff</span>
+                                        @else
+                                            <span class="apple-badge-blue">Anggota</span>
+                                        @endif
+                                    </td>
+                                    <td class="py-4 px-4">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <a href="{{ route('users.show', $user) }}" class="apple-btn-secondary text-sm py-1.5 px-3">
+                                                Detail
+                                            </a>
+                                            <a href="{{ route('users.edit', $user) }}" class="apple-btn-secondary text-sm py-1.5 px-3">
+                                                Edit
+                                            </a>
+                                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="inline"
+                                                onsubmit="return confirmDelete(event, this)">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="apple-btn-danger text-sm py-1.5 px-3">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="py-12 text-center text-text-tertiary">
+                                        <div class="flex flex-col items-center gap-2">
+                                            <svg class="w-12 h-12 text-text-quaternary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                            <span>Tidak ada data pengguna ditemukan</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-            @endif
 
-            {{-- Filters --}}
-            <div class="neo-card mb-6">
-                <form method="GET" action="{{ route('users.index') }}" class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="🔍 Cari nama, email, NISN..."
-                        class="neo-input flex-1">
-                    <select name="role" class="neo-input w-full sm:w-40">
-                        <option value="">Semua Role</option>
-                        <option value="admin" {{ request('role') === 'admin' ? 'selected' : '' }}>Admin</option>
-                        <option value="staff" {{ request('role') === 'staff' ? 'selected' : '' }}>Staff</option>
-                        <option value="user" {{ request('role') === 'user' ? 'selected' : '' }}>Anggota</option>
-                    </select>
-                    <div class="flex gap-2">
-                        <button type="submit" class="neo-btn-primary text-xs">Cari</button>
-                        <a href="{{ route('users.index') }}">
-                            <button type="button" class="neo-btn-secondary text-xs">Reset</button>
-                        </a>
+                <!-- Pagination -->
+                @if($users->hasPages())
+                    <div class="mt-6">
+                        {{ $users->withQueryString()->links() }}
                     </div>
-                </form>
+                @endif
             </div>
-
-            {{-- Actions --}}
-            <div class="flex justify-end gap-2 mb-6">
-                <a href="{{ route('users.create') }}">
-                    <button type="button" class="neo-btn-primary">+ Tambah Anggota</button>
-                </a>
-            </div>
-
-            {{-- Users Table --}}
-            <div class="neo-card overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="border-b-3 border-border">
-                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">NISN</th>
-                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Nama</th>
-                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Email</th>
-                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Role</th>
-                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Total Pinjam</th>
-                            <th class="py-3 px-4 font-heading font-bold text-xs uppercase tracking-wide text-border">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($users as $user)
-                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td class="py-3 px-4">
-                                    <span class="font-mono text-sm text-border">{{ $user->nisn ?? '-' }}</span>
-                                </td>
-                                <td class="py-3 px-4">
-                                    <a href="{{ route('users.show', $user) }}" class="font-heading font-semibold text-sm text-border hover:text-primary underline">
-                                        {{ $user->name }}
-                                    </a>
-                                </td>
-                                <td class="py-3 px-4 font-body text-sm text-muted">{{ $user->email }}</td>
-                                <td class="py-3 px-4">
-                                    @if ($user->isAdmin())
-                                        <span class="neo-badge bg-coral text-white text-xs">Admin</span>
-                                    @elseif ($user->role === 'staff')
-                                        <span class="neo-badge bg-lemon text-border text-xs">Staff</span>
-                                    @else
-                                        <span class="neo-badge bg-primary text-white text-xs">Anggota</span>
-                                    @endif
-                                </td>
-                                <td class="py-3 px-4 font-body text-sm text-border">{{ $user->loans()->count() }}</td>
-                                <td class="py-3 px-4">
-                                    <div class="flex gap-2">
-                                        <a href="{{ route('users.show', $user) }}">
-                                            <button type="button" class="neo-btn-primary text-xs py-1 px-2">Detail</button>
-                                        </a>
-                                        <a href="{{ route('users.edit', $user) }}">
-                                            <button type="button" class="neo-btn-secondary text-xs py-1 px-2">Edit</button>
-                                        </a>
-                                        <form action="{{ route('users.destroy', $user) }}" method="POST" class="delete-form-user">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="neo-btn-danger text-xs py-1 px-2">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="py-8 text-center">
-                                    <div class="text-4xl mb-3">👥</div>
-                                    <p class="font-heading font-semibold text-border">Belum ada anggota</p>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-
-                <div class="mt-6">
-                    {{ $users->links() }}
-                </div>
-            </div>
-
         </div>
     </div>
 
-    <script>
-        document.querySelectorAll('.delete-form-user').forEach(function(form) {
-            form.addEventListener('submit', function(e) {
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            function confirmDelete(e, form) {
                 e.preventDefault();
                 Swal.fire({
-                    title: 'Yakin ingin menghapus?',
-                    text: 'Akun yang dihapus tidak dapat dikembalikan.',
+                    title: 'Hapus Pengguna?',
+                    text: "Data pengguna yang dihapus tidak dapat dikembalikan.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#FF6B6B',
-                    cancelButtonColor: '#111827',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal',
-                    reverseButtons: true
-                }).then(function(result) {
+                    confirmButtonColor: '#FF3B30',
+                    cancelButtonColor: '#6E6E73',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
                     }
                 });
-            });
-        });
-    </script>
+                return false;
+            }
+        </script>
+    @endpush
 </x-app-layout>

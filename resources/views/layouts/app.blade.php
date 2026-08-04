@@ -7,28 +7,22 @@
 
         <title>{{ config('app.name', 'Perpustakaan') }}</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
-    <body class="font-body antialiased bg-[#FAFAFA]">
-        <div class="min-h-screen relative">
-            <div class="geo-shapes"></div>
-
+    <body class="antialiased bg-surface-light text-text">
+        <div class="min-h-screen">
             @include('layouts.navigation')
 
             @if (isset($header))
-                <header class="relative z-10 border-b-3 border-border bg-white">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-white border-b border-surface-lighter">
+                    <div class="apple-container py-apple-xl px-apple-lg">
                         {{ $header }}
                     </div>
                 </header>
             @endif
 
-            <main class="relative z-10">
+            <main>
                 {{ $slot }}
             </main>
         </div>
@@ -43,7 +37,7 @@
                         timer: 3000,
                         timerProgressBar: true,
                         showConfirmButton: false,
-                        confirmButtonColor: '#0D9488',
+                        confirmButtonColor: '#0071E3',
                     });
                 @endif
 
@@ -52,7 +46,7 @@
                         icon: 'error',
                         title: 'Gagal!',
                         text: '{{ session('error') }}',
-                        confirmButtonColor: '#FF6B6B',
+                        confirmButtonColor: '#FF3B30',
                     });
                 @endif
             });

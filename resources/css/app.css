@@ -1,109 +1,138 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
     body {
-        font-family: 'Outfit', sans-serif;
-        background-color: #FAFAFA;
-        color: #111827;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica Neue, sans-serif;
+        background-color: #FAFAFC;
+        color: #1D1D1F;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 }
 
 @layer components {
-    .neo-card {
-        @apply bg-white border-3 border-border shadow-neo p-6 rounded-neo;
+    .apple-card {
+        @apply bg-white rounded-apple-lg overflow-hidden;
     }
-    .neo-btn-primary {
-        @apply bg-primary text-white font-heading font-semibold uppercase tracking-wide
-               px-6 py-3 border-3 border-border shadow-neo rounded-neo-sm
-               hover:shadow-neo-hover hover:-translate-y-0.5
-               active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
-               transition-all duration-150 text-sm;
+    .apple-btn-primary {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-text text-white
+               font-body text-body-sm font-light rounded-apple
+               hover:bg-text-secondary active:bg-text-black
+               focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
+               transition-all duration-200 ease-in-out;
     }
-    .neo-btn-secondary {
-        @apply bg-white text-border font-heading font-semibold uppercase tracking-wide
-               px-6 py-3 border-3 border-border shadow-neo rounded-neo-sm
-               hover:shadow-neo-hover hover:-translate-y-0.5
-               active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
-               transition-all duration-150 text-sm;
+    .apple-btn-secondary {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-transparent text-text
+               font-body text-body-sm font-normal rounded-apple border border-surface-lighter
+               hover:bg-surface-light active:bg-surface-lighter
+               focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
+               transition-all duration-200 ease-in-out;
     }
-    .neo-btn-danger {
-        @apply bg-coral text-white font-heading font-semibold uppercase tracking-wide
-               px-6 py-3 border-3 border-border shadow-neo rounded-neo-sm
-               hover:shadow-neo-hover hover:-translate-y-0.5
-               active:shadow-neo-press active:translate-x-0.5 active:translate-y-0.5
-               transition-all duration-150 text-sm;
+    .apple-btn-blue {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-primary text-white
+               font-body text-body-sm font-normal rounded-full
+               hover:bg-primary-hover active:bg-primary-active
+               focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-4
+               transition-all duration-200 ease-in-out;
     }
-    .neo-input {
-        @apply w-full border-3 border-border px-4 py-3 font-body text-sm rounded-neo-sm
+    .apple-btn-danger {
+        @apply inline-flex items-center justify-center px-6 py-3 bg-danger text-white
+               font-body text-body-sm font-light rounded-apple
+               hover:opacity-90 active:opacity-100
+               focus:outline-none focus:ring-2 focus:ring-danger focus:ring-offset-2
+               transition-all duration-200 ease-in-out;
+    }
+    .apple-btn-ghost {
+        @apply inline-flex items-center justify-center px-0 py-0 bg-transparent text-primary
+               font-body text-body-sm font-normal
+               hover:underline active:text-primary-hover
+               transition-all duration-200 ease-in-out;
+    }
+    .apple-input {
+        @apply w-full border border-surface-lighter rounded-apple px-4 py-3
+               font-body text-body-sm text-text
+               placeholder:text-text-tertiary placeholder:opacity-60
                focus:border-primary focus:ring-0 focus:outline-none
-               shadow-neo-sm transition-all duration-150;
+               focus:shadow-[0_0_0_3px_rgba(0,113,227,0.1)]
+               disabled:bg-surface-light disabled:text-text-tertiary
+               transition-all duration-200;
+        height: 44px;
     }
-    .neo-badge {
-        @apply inline-flex items-center px-4 py-1 font-heading font-semibold text-xs uppercase tracking-wide border-2 border-border rounded-full;
+    .apple-select {
+        @apply w-full border border-surface-lighter rounded-apple px-4 py-3
+               font-body text-body-sm text-text bg-white
+               focus:border-primary focus:ring-0 focus:outline-none
+               focus:shadow-[0_0_0_3px_rgba(0,113,227,0.1)]
+               transition-all duration-200;
+        height: 44px;
+    }
+    .apple-badge {
+        @apply inline-flex items-center px-3 py-1 font-body text-body-xs font-normal rounded-full;
+    }
+    .apple-badge-blue {
+        @apply apple-badge bg-primary/10 text-primary;
+    }
+    .apple-badge-green {
+        @apply apple-badge bg-success/10 text-success;
+    }
+    .apple-badge-red {
+        @apply apple-badge bg-danger/10 text-danger;
+    }
+    .apple-badge-yellow {
+        @apply apple-badge bg-warning/10 text-warning;
+    }
+    .apple-badge-gray {
+        @apply apple-badge bg-surface-lighter text-text-tertiary;
+    }
+    .apple-table {
+        @apply w-full text-left;
+    }
+    .apple-table thead {
+        @apply border-b border-surface-lighter;
+    }
+    .apple-table thead th {
+        @apply px-6 py-3 font-body text-body-xs font-normal text-text-tertiary;
+    }
+    .apple-table tbody tr {
+        @apply border-b border-surface-lighter last:border-b-0;
+    }
+    .apple-table tbody td {
+        @apply px-6 py-4 font-body text-body-sm text-text;
+    }
+    .apple-table tbody tr:hover {
+        @apply bg-surface-light;
+    }
+    .apple-divider {
+        @apply h-px bg-surface-lighter w-full;
+    }
+    .apple-section {
+        @apply py-apple-5xl px-apple-lg;
+    }
+    .apple-container {
+        @apply max-w-[1200px] mx-auto;
     }
 }
 
-/* Geometric background decorations */
-.geo-shapes {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-}
-.geo-shapes::before {
-    content: '';
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: #FF6B6B;
-    opacity: 0.15;
-}
-.geo-shapes::after {
-    content: '';
-    position: absolute;
-    bottom: 15%;
-    left: 8%;
-    width: 0;
-    height: 0;
-    border-left: 60px solid transparent;
-    border-right: 60px solid transparent;
-    border-bottom: 100px solid #0D9488;
-    opacity: 0.15;
-}
-
-/* Scan pulse animation */
-@keyframes scan-pulse {
-    0%, 100% { box-shadow: 6px 6px 0px #111827; }
-    50% { box-shadow: 12px 12px 0px #111827, 0 0 40px rgba(253, 224, 71, 0.4); }
+@keyframes scan-pulse-apple {
+    0%, 100% { box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08); }
+    50% { box-shadow: 0px 4px 16px rgba(0, 113, 227, 0.3); }
 }
 .scan-pulse {
-    animation: scan-pulse 2s ease-in-out infinite;
+    animation: scan-pulse-apple 2s ease-in-out infinite;
 }
 
-/* Book card hover */
 .book-card {
-    transition: all 150ms ease;
+    transition: all 200ms ease;
 }
 .book-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 10px 10px 0px #111827;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* Tilt effect on hover */
-.tilt-hover:hover {
-    transform: rotate(-1deg);
+.apple-nav {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
 }

@@ -1,78 +1,110 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-heading font-bold text-2xl text-border leading-tight">
-            ✏ Edit Anggota
-        </h2>
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-display font-semibold text-text-primary">Edit Pengguna</h1>
+                <p class="mt-1 text-text-tertiary">Perbarui data pengguna</p>
+            </div>
+            <a href="{{ route('users.index') }}" class="apple-btn-secondary">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Kembali
+            </a>
+        </div>
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-
-            <div class="mb-6">
-                <a href="{{ route('users.index') }}" class="neo-btn-secondary inline-flex items-center gap-2 text-xs">
-                    ← Kembali
-                </a>
-            </div>
-
-            <div class="neo-card">
-                <form method="POST" action="{{ route('users.update', $user) }}">
+        <div class="max-w-2xl mx-auto px-apple-lg">
+            <div class="bg-white rounded-apple-lg p-8">
+                <form action="{{ route('users.update', $user) }}" method="POST">
                     @csrf
                     @method('PUT')
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-6">
+                        <!-- NISN -->
                         <div>
-                            <label for="nisn" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">NISN</label>
-                            <input id="nisn" name="nisn" type="text" :value="old('nisn', $user->nisn)" class="neo-input" placeholder="0081234567">
-                            @error('nisn') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                            <label for="nisn" class="block text-sm font-display font-semibold text-text-primary mb-2">NISN</label>
+                            <input type="text" id="nisn" name="nisn" value="{{ old('nisn', $user->nisn) }}" required
+                                class="apple-input w-full @error('nisn') border-danger @enderror"
+                                placeholder="Masukkan NISN">
+                            @error('nisn')
+                                <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
+                        <!-- Name -->
                         <div>
-                            <label for="name" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Nama Lengkap</label>
-                            <input id="name" name="name" type="text" :value="old('name', $user->name)" required class="neo-input">
-                            @error('name') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                            <label for="name" class="block text-sm font-display font-semibold text-text-primary mb-2">Nama Lengkap</label>
+                            <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" required
+                                class="apple-input w-full @error('name') border-danger @enderror"
+                                placeholder="Masukkan nama lengkap">
+                            @error('name')
+                                <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
+                        <!-- Email -->
                         <div>
-                            <label for="email" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Email</label>
-                            <input id="email" name="email" type="email" :value="old('email', $user->email)" required class="neo-input">
-                            @error('email') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                            <label for="email" class="block text-sm font-display font-semibold text-text-primary mb-2">Email</label>
+                            <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" required
+                                class="apple-input w-full @error('email') border-danger @enderror"
+                                placeholder="Masukkan email">
+                            @error('email')
+                                <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
+                        <!-- Role -->
                         <div>
-                            <label for="role" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Role</label>
-                            <select id="role" name="role" class="neo-input">
-                                <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>Anggota (Siswa)</option>
-                                <option value="staff" {{ old('role', $user->role) === 'staff' ? 'selected' : '' }}>Staff Perpustakaan</option>
-                                <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
+                            <label for="role" class="block text-sm font-display font-semibold text-text-primary mb-2">Role</label>
+                            <select id="role" name="role" required
+                                class="apple-input w-full @error('role') border-danger @enderror">
+                                <option value="">Pilih Role</option>
+                                <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="staff" {{ old('role', $user->role) == 'staff' ? 'selected' : '' }}>Staff</option>
+                                <option value="anggota" {{ old('role', $user->role) == 'anggota' ? 'selected' : '' }}>Anggota</option>
                             </select>
-                            @error('role') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
+                            @error('role')
+                                <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
-                        <div class="md:col-span-2 border-t-3 border-border pt-6">
-                            <p class="font-heading font-semibold text-xs text-muted uppercase tracking-wide mb-3">Kosongkan jika tidak ingin mengubah password</p>
+                        <!-- Password -->
+                        <div class="pt-6 border-t border-surface-lighter">
+                            <label for="password" class="block text-sm font-display font-semibold text-text-primary mb-2">Password</label>
+                            <input type="password" id="password" name="password"
+                                class="apple-input w-full @error('password') border-danger @enderror"
+                                placeholder="Kosongkan jika tidak ingin mengubah password">
+                            <p class="mt-1 text-sm text-text-tertiary">Kosongkan jika tidak ingin mengubah password</p>
+                            @error('password')
+                                <p class="mt-1 text-sm text-danger">{{ $message }}</p>
+                            @enderror
                         </div>
 
+                        <!-- Password Confirmation -->
                         <div>
-                            <label for="password" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Password Baru</label>
-                            <input id="password" name="password" type="password" class="neo-input" placeholder="Minimal 6 karakter">
-                            @error('password') <p class="font-body text-xs text-coral mt-1">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div>
-                            <label for="password_confirmation" class="block font-heading font-semibold text-xs text-border uppercase tracking-wide mb-1">Konfirmasi Password</label>
-                            <input id="password_confirmation" name="password_confirmation" type="password" class="neo-input" placeholder="Ulangi password">
+                            <label for="password_confirmation" class="block text-sm font-display font-semibold text-text-primary mb-2">Konfirmasi Password</label>
+                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                class="apple-input w-full"
+                                placeholder="Ulangi password">
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-end gap-3 mt-8 border-t-3 border-border pt-6">
-                        <a href="{{ route('users.index') }}">
-                            <button type="button" class="neo-btn-secondary">Batal</button>
+                    <!-- Actions -->
+                    <div class="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-surface-lighter">
+                        <a href="{{ route('users.index') }}" class="apple-btn-secondary">
+                            Batal
                         </a>
-                        <button type="submit" class="neo-btn-primary">✓ Perbarui</button>
+                        <button type="submit" class="apple-btn-primary">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Perbarui
+                        </button>
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 </x-app-layout>
