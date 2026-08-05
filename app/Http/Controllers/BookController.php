@@ -54,7 +54,7 @@ class BookController extends Controller
             'publisher' => 'nullable|string|max:255',
             'publication_year' => 'nullable|integer|digits:4',
             'description' => 'nullable|string',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'stock' => 'required|integer|min:0',
             'kategori' => 'nullable|string',
         ]);
@@ -95,7 +95,7 @@ class BookController extends Controller
             'publisher' => 'nullable|string|max:255',
             'publication_year' => 'nullable|integer|digits:4',
             'description' => 'nullable|string',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'stock' => 'required|integer|min:0',
             'kategori' => 'nullable|string',
         ]);
@@ -120,6 +120,11 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+        $activeLoans = $book->loans()->whereNull('returned_at')->count();
+        if ($activeLoans > 0) {
+            return back()->with('error', 'Tidak dapat menghapus "' . $book->title . '" karena masih memiliki ' . $activeLoans . ' peminjaman aktif.');
+        }
+
         if ($book->cover_image && file_exists(public_path($book->cover_image))) {
             unlink(public_path($book->cover_image));
         }

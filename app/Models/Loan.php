@@ -12,6 +12,7 @@ class Loan extends Model
 
     const TARIF_DENDA_PER_HARI = 500;
     const MAX_DENDA = 5000;
+    const MAX_ACTIVE_LOANS = 3;
 
     protected $fillable = [
         'user_id',

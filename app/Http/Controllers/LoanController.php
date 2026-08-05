@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Loan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class LoanController extends Controller
@@ -12,6 +13,10 @@ class LoanController extends Controller
     public function index(Request $request)
     {
         $query = Loan::with('book', 'user', 'processor');
+
+        if (!$request->user()->isStaff()) {
+            $query->where('user_id', $request->user()->id);
+        }
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -49,10 +54,15 @@ class LoanController extends Controller
 
         $loans = $query->latest()->paginate(15)->withQueryString();
 
-        $totalThisMonth = Loan::whereMonth('loan_date', Carbon::now()->month)
+        $statsQuery = Loan::query();
+        if (!$request->user()->isStaff()) {
+            $statsQuery->where('user_id', $request->user()->id);
+        }
+
+        $totalThisMonth = (clone $statsQuery)->whereMonth('loan_date', Carbon::now()->month)
             ->whereYear('loan_date', Carbon::now()->year)
             ->count();
-        $activeCount = Loan::whereNull('returned_at')->count();
+        $activeCount = (clone $statsQuery)->whereNull('returned_at')->count();
 
         return view('loans.index', compact('loans', 'totalThisMonth', 'activeCount'));
     }
@@ -75,40 +85,54 @@ class LoanController extends Controller
             return back()->withErrors(['isbn' => 'Buku dengan ISBN tersebut tidak ditemukan.'])->withInput();
         }
 
-        if ($book->stock <= 0) {
-            return back()->withErrors(['isbn' => 'Stok buku "' . $book->title . '" sudah habis.'])->withInput();
-        }
-
-        $existingActiveLoan = Loan::where('book_id', $book->id)
+        $activeLoanCount = Loan::where('user_id', $request->user()->id)
             ->whereNull('returned_at')
-            ->first();
+            ->count();
 
-        if ($existingActiveLoan) {
+        if ($activeLoanCount >= Loan::MAX_ACTIVE_LOANS) {
             return back()->withErrors([
-                'isbn' => 'Buku "' . $book->title . '" sedang dipinjam oleh ' . $existingActiveLoan->user->name . '. Harus dikembalikan pada ' . $existingActiveLoan->due_date->format('d/m/Y') . '.'
+                'isbn' => 'Anda sudah mencapai batas maksimal ' . Loan::MAX_ACTIVE_LOANS . ' buku yang dipinjam. Kembalikan dulu buku yang sudah dipinjam.'
             ])->withInput();
         }
 
-        $myExistingLoan = Loan::where('user_id', $request->user()->id)
-            ->where('book_id', $book->id)
-            ->whereNull('returned_at')
-            ->first();
+        return DB::transaction(function () use ($request, $book) {
+            $book = Book::where('isbn', $book->isbn)->lockForUpdate()->first();
 
-        if ($myExistingLoan) {
-            return back()->withErrors(['isbn' => 'Anda sudah meminjam buku "' . $book->title . '" dan belum dikembalikan.'])->withInput();
-        }
+            if ($book->stock <= 0) {
+                return back()->withErrors(['isbn' => 'Stok buku "' . $book->title . '" sudah habis.'])->withInput();
+            }
 
-        Loan::create([
-            'user_id' => $request->user()->id,
-            'book_id' => $book->id,
-            'loan_date' => Carbon::today(),
-            'due_date' => Carbon::today()->addDays(7),
-        ]);
+            $existingActiveLoan = Loan::where('book_id', $book->id)
+                ->whereNull('returned_at')
+                ->first();
 
-        $book->decrement('stock');
+            if ($existingActiveLoan) {
+                return back()->withErrors([
+                    'isbn' => 'Buku "' . $book->title . '" sedang dipinjam oleh ' . $existingActiveLoan->user->name . '. Harus dikembalikan pada ' . $existingActiveLoan->due_date->format('d/m/Y') . '.'
+                ])->withInput();
+            }
 
-        return redirect()->route('loans.index')
-                         ->with('success', 'Buku "' . $book->title . '" berhasil dipinjam. Harus dikembalikan pada ' . Carbon::today()->addDays(7)->format('d/m/Y') . '.');
+            $myExistingLoan = Loan::where('user_id', $request->user()->id)
+                ->where('book_id', $book->id)
+                ->whereNull('returned_at')
+                ->first();
+
+            if ($myExistingLoan) {
+                return back()->withErrors(['isbn' => 'Anda sudah meminjam buku "' . $book->title . '" dan belum dikembalikan.'])->withInput();
+            }
+
+            Loan::create([
+                'user_id' => $request->user()->id,
+                'book_id' => $book->id,
+                'loan_date' => Carbon::today(),
+                'due_date' => Carbon::today()->addDays(7),
+            ]);
+
+            $book->decrement('stock');
+
+            return redirect()->route('loans.index')
+                             ->with('success', 'Buku "' . $book->title . '" berhasil dipinjam. Harus dikembalikan pada ' . Carbon::today()->addDays(7)->format('d/m/Y') . '.');
+        });
     }
 
     public function createReturn()
@@ -203,6 +227,10 @@ class LoanController extends Controller
 
     public function payDenda(Loan $loan)
     {
+        if ($loan->status_denda !== 'belum_bayar') {
+            return back()->with('error', 'Denda untuk "' . $loan->book->title . '" tidak berstatus belum bayar.');
+        }
+
         $loan->update(['status_denda' => 'lunas']);
         return back()->with('success', 'Denda untuk "' . $loan->book->title . '" ditandai sebagai lunas.');
     }
