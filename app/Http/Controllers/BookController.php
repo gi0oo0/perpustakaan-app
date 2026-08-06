@@ -54,16 +54,25 @@ class BookController extends Controller
             'publisher' => 'nullable|string|max:255',
             'publication_year' => 'nullable|integer|digits:4',
             'description' => 'nullable|string',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|dimensions:min_width=50,min_height=50|max:2048',
             'stock' => 'required|integer|min:0',
             'kategori' => 'nullable|string',
         ]);
 
-        $input = $request->all();
+        $input = $request->only([
+            'isbn',
+            'title',
+            'author',
+            'publisher',
+            'publication_year',
+            'description',
+            'stock',
+            'kategori',
+        ]);
 
         if ($image = $request->file('cover_image')) {
             $destinationPath = 'images/covers/';
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $profileImage = date('YmdHis') . "." . $image->guessExtension();
             $image->move(public_path($destinationPath), $profileImage);
             $input['cover_image'] = $destinationPath . $profileImage;
         }
@@ -95,19 +104,26 @@ class BookController extends Controller
             'publisher' => 'nullable|string|max:255',
             'publication_year' => 'nullable|integer|digits:4',
             'description' => 'nullable|string',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|dimensions:min_width=50,min_height=50|max:2048',
             'stock' => 'required|integer|min:0',
             'kategori' => 'nullable|string',
         ]);
 
-        $input = $request->all();
+        $input = $request->only([
+            'isbn',
+            'title',
+            'author',
+            'publisher',
+            'publication_year',
+            'description',
+            'stock',
+            'kategori',
+        ]);
 
         if ($image = $request->file('cover_image')) {
-            if ($book->cover_image && file_exists(public_path($book->cover_image))) {
-                unlink(public_path($book->cover_image));
-            }
+            $this->deleteCover($book->cover_image);
             $destinationPath = 'images/covers/';
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $profileImage = date('YmdHis') . "." . $image->guessExtension();
             $image->move(public_path($destinationPath), $profileImage);
             $input['cover_image'] = $destinationPath . $profileImage;
         }
@@ -125,9 +141,7 @@ class BookController extends Controller
             return back()->with('error', 'Tidak dapat menghapus "' . $book->title . '" karena masih memiliki ' . $activeLoans . ' peminjaman aktif.');
         }
 
-        if ($book->cover_image && file_exists(public_path($book->cover_image))) {
-            unlink(public_path($book->cover_image));
-        }
+        $this->deleteCover($book->cover_image);
 
         $book->delete();
 
@@ -148,5 +162,17 @@ class BookController extends Controller
             $book->barcode_img = DNS2D::getBarcodePNG($book->isbn, 'QRCODE', 4, 4);
         }
         return view('books.print-label-batch', compact('books'));
+    }
+
+    private function deleteCover(?string $coverImage): void
+    {
+        if (!$coverImage || !str_starts_with($coverImage, 'images/covers/')) {
+            return;
+        }
+
+        $path = public_path($coverImage);
+        if (file_exists($path)) {
+            unlink($path);
+        }
     }
 }

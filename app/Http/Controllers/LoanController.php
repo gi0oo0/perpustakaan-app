@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Loan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -96,10 +97,21 @@ class LoanController extends Controller
         }
 
         return DB::transaction(function () use ($request, $book) {
+            $user = User::whereKey($request->user()->id)->lockForUpdate()->first();
             $book = Book::where('isbn', $book->isbn)->lockForUpdate()->first();
 
             if ($book->stock <= 0) {
                 return back()->withErrors(['isbn' => 'Stok buku "' . $book->title . '" sudah habis.'])->withInput();
+            }
+
+            $activeLoanCount = Loan::where('user_id', $user->id)
+                ->whereNull('returned_at')
+                ->count();
+
+            if ($activeLoanCount >= Loan::MAX_ACTIVE_LOANS) {
+                return back()->withErrors([
+                    'isbn' => 'Anda sudah mencapai batas maksimal ' . Loan::MAX_ACTIVE_LOANS . ' buku yang dipinjam. Kembalikan dulu buku yang sudah dipinjam.'
+                ])->withInput();
             }
 
             $existingActiveLoan = Loan::where('book_id', $book->id)
@@ -269,6 +281,14 @@ class LoanController extends Controller
         ];
 
         $callback = function () use ($loans) {
+            $sanitize = function ($value): string {
+                $value = (string) $value;
+                if ($value !== '' && str_contains('=+-@', $value[0])) {
+                    return "'" . $value;
+                }
+                return $value;
+            };
+
             $file = fopen('php://output', 'w');
             fputcsv($file, ['No', 'Judul Buku', 'ISBN', 'Peminjam', 'NISN', 'Tanggal Pinjam', 'Jatuh Tempo', 'Tanggal Kembali', 'Status', 'Denda (Rp)', 'Status Denda', 'Diproses Oleh']);
 
@@ -284,17 +304,17 @@ class LoanController extends Controller
 
                 fputcsv($file, [
                     $no++,
-                    $loan->book->title ?? '-',
-                    $loan->book->isbn ?? '-',
-                    $loan->user->name ?? '-',
-                    $loan->user->nisn ?? '-',
+                    $sanitize($loan->book->title ?? '-'),
+                    $sanitize($loan->book->isbn ?? '-'),
+                    $sanitize($loan->user->name ?? '-'),
+                    $sanitize($loan->user->nisn ?? '-'),
                     $loan->loan_date->format('d/m/Y'),
                     $loan->due_date->format('d/m/Y'),
                     $loan->returned_at ? $loan->returned_at->format('d/m/Y') : '-',
                     $status,
                     $loan->denda ?? 0,
                     $loan->denda > 0 ? ($loan->status_denda === 'lunas' ? 'Lunas' : 'Belum Bayar') : '-',
-                    $loan->processor ? $loan->processor->name : '-',
+                    $sanitize($loan->processor ? $loan->processor->name : '-'),
                 ]);
             }
 

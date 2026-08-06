@@ -176,8 +176,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        <button type="button" onclick="document.getElementById('isbn-manual').value='{{ $loan->book->isbn }}'; document.getElementById('manual-return-form').dispatchEvent(new Event('submit'));"
-                                            class="apple-btn-secondary w-full text-xs py-1 mt-2">Pilih untuk dikembalikan</button>
+                                        <button type="button" data-isbn="{{ $loan->book->isbn }}" class="apple-btn-secondary w-full text-xs py-1 mt-2 return-select-btn">Pilih untuk dikembalikan</button>
                                     </div>
                                 @endforeach
                             </div>
@@ -333,6 +332,13 @@
                 });
                 confirmBtn.classList.add('opacity-50');
             }
+
+            document.querySelectorAll('.return-select-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    document.getElementById('isbn-manual').value = btn.dataset.isbn;
+                    manualForm.dispatchEvent(new Event('submit'));
+                });
+            });
         });
     </script>
 </x-app-layout>

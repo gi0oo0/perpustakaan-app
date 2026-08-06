@@ -117,8 +117,7 @@
                                             <p class="font-display font-semibold text-sm text-text truncate">{{ $book->title }}</p>
                                             <p class="text-xs text-text-tertiary">{{ $book->author }} · Stok: {{ $book->stock }}</p>
                                         </div>
-                                        <button type="button" onclick="document.getElementById('isbn').value='{{ $book->isbn }}'"
-                                            class="apple-btn-secondary text-xs py-1 px-2 flex-shrink-0">Pilih</button>
+                                        <button type="button" data-isbn="{{ $book->isbn }}" class="apple-btn-secondary text-xs py-1 px-2 flex-shrink-0 book-select-btn">Pilih</button>
                                     </div>
                                 @endforeach
                             </div>
@@ -216,6 +215,12 @@
                         btnStop.classList.add('hidden');
                     }).catch(function () {});
                 }
+            });
+
+            document.querySelectorAll('.book-select-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    isbnInput.value = btn.dataset.isbn;
+                });
             });
         });
     </script>
