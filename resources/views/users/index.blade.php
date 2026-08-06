@@ -5,12 +5,20 @@
                 <h1 class="text-3xl font-display text-text">Manajemen Pengguna</h1>
                 <p class="mt-1 text-text-tertiary">Kelola data pengguna perpustakaan</p>
             </div>
-            <a href="{{ route('users.create') }}" class="apple-btn-primary">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                </svg>
-                Tambah Pengguna
-            </a>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('users.import') }}" class="apple-btn-secondary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                    Import CSV
+                </a>
+                <a href="{{ route('users.create') }}" class="apple-btn-primary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Tambah Pengguna
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -29,7 +37,7 @@
                                 <option value="">Semua Role</option>
                                 <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                                 <option value="staff" {{ request('role') == 'staff' ? 'selected' : '' }}>Staff</option>
-                                <option value="anggota" {{ request('role') == 'anggota' ? 'selected' : '' }}>Anggota</option>
+                                <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>Anggota</option>
                             </select>
                         </div>
                         <button type="submit" class="apple-btn-primary">

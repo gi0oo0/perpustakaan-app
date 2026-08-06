@@ -63,7 +63,7 @@
                                 <option value="">Pilih Role</option>
                                 <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
                                 <option value="staff" {{ old('role', $user->role) == 'staff' ? 'selected' : '' }}>Staff</option>
-                                <option value="anggota" {{ old('role', $user->role) == 'anggota' ? 'selected' : '' }}>Anggota</option>
+                                <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>Anggota</option>
                             </select>
                             @error('role')
                                 <p class="mt-1 text-sm text-danger">{{ $message }}</p>

@@ -59,6 +59,9 @@ Route::middleware('auth')->group(function () {
     // User management - admin only
     Route::middleware('admin')->group(function () {
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/import', [UserController::class, 'showImport'])->name('users.import');
+        Route::post('/users/import', [UserController::class, 'import'])->name('users.import.store');
+        Route::get('/users/import/template', [UserController::class, 'downloadTemplate'])->name('users.import.template');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
         Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
