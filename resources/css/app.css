@@ -139,8 +139,13 @@
 }
 
 .apple-nav {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    box-shadow: rgba(3, 3, 2, 0.10) 0px 12px 12px -18px, rgba(3, 3, 2, 0.06) 0px 2px 4px -1px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: rgba(3, 3, 2, 0.06) 0px 4px 30px;
+}
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .apple-nav {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.55));
+        backdrop-filter: saturate(180%) blur(32px);
+        -webkit-backdrop-filter: saturate(180%) blur(32px);
+    }
 }

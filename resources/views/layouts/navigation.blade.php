@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="apple-nav border-b border-surface-lighter sticky top-0 z-50">
+<nav x-data="{ open: false }" class="apple-nav border-b border-white/40 sticky top-0 z-50">
     <div class="apple-container mx-auto px-apple-lg">
         <div class="flex justify-between h-[60px]">
             <div class="flex">
@@ -101,7 +101,7 @@
         </div>
     </div>
 
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-surface-lighter">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-white/40 bg-white/70 backdrop-blur-2xl">
         <div class="pt-2 pb-3 space-y-1">
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('dashboard') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
                 Dashboard
