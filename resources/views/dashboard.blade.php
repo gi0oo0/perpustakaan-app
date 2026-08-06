@@ -98,12 +98,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const appleColors = {
-                primary: '#0071E3',
-                danger: '#FF3B30',
-                warning: '#FF9500',
-                border: '#EDEDF2',
-                text: '#1D1D1F',
-                muted: '#86868B',
+                primary: '#3B82F6',
+                danger: '#E5484D',
+                warning: '#F5A623',
+                border: '#E5E7EB',
+                text: '#030302',
+                muted: '#6E6E6A',
             };
 
             Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif';
@@ -159,7 +159,7 @@
                                 label: 'Peminjaman',
                                 data: data.monthlyLoans.data,
                                 borderColor: appleColors.primary,
-                                backgroundColor: 'rgba(0, 113, 227, 0.08)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.08)',
                                 borderWidth: 2,
                                 fill: true,
                                 tension: 0.4,

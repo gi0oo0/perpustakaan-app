@@ -37,7 +37,7 @@
                         timer: 3000,
                         timerProgressBar: true,
                         showConfirmButton: false,
-                        confirmButtonColor: '#0071E3',
+                        confirmButtonColor: '#3B82F6',
                     });
                 @endif
 
@@ -46,7 +46,7 @@
                         icon: 'error',
                         title: 'Gagal!',
                         text: '{{ session('error') }}',
-                        confirmButtonColor: '#FF3B30',
+                        confirmButtonColor: '#E5484D',
                     });
                 @endif
             });

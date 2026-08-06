@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="apple-nav border-b border-surface-lighter sticky top-0 z-50">
     <div class="apple-container mx-auto px-apple-lg">
-        <div class="flex justify-between h-apple-6xl">
+        <div class="flex justify-between h-[60px]">
             <div class="flex">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="font-display text-heading-sm text-text flex items-center gap-2">

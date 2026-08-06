@@ -135,7 +135,7 @@
                     text: "Data pengguna yang dihapus tidak dapat dikembalikan.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#FF3B30',
+                    confirmButtonColor: '#E5484D',
                     cancelButtonColor: '#6E6E73',
                     confirmButtonText: 'Ya, Hapus',
                     cancelButtonText: 'Batal'

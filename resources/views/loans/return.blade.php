@@ -218,7 +218,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.error) {
-                        Swal.fire({ icon: 'error', title: 'Gagal!', text: data.error, confirmButtonColor: '#FF3B30' });
+                        Swal.fire({ icon: 'error', title: 'Gagal!', text: data.error, confirmButtonColor: '#E5484D' });
                         return;
                     }
 
@@ -246,7 +246,7 @@
                 })
                 .catch(err => {
                     console.error(err);
-                    Swal.fire({ icon: 'error', title: 'Gagal!', text: 'Gagal memeriksa data peminjaman.', confirmButtonColor: '#FF3B30' });
+                    Swal.fire({ icon: 'error', title: 'Gagal!', text: 'Gagal memeriksa data peminjaman.', confirmButtonColor: '#E5484D' });
                 });
             }
 
@@ -293,7 +293,7 @@
                 }).catch(function () {
                     return startCamera(true);
                 }).catch(function (err) {
-                    Swal.fire({ icon: 'error', title: 'Kamera Gagal', text: 'Tidak bisa mengakses kamera.', confirmButtonColor: '#FF3B30' });
+                    Swal.fire({ icon: 'error', title: 'Kamera Gagal', text: 'Tidak bisa mengakses kamera.', confirmButtonColor: '#E5484D' });
                     readerDiv.classList.add('hidden');
                     scanPlaceholder.classList.remove('hidden');
                     btnStart.classList.remove('hidden');

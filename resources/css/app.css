@@ -4,9 +4,9 @@
 
 @layer base {
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica Neue, sans-serif;
-        background-color: #FAFAFC;
-        color: #1D1D1F;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica Neue, Arial, sans-serif;
+        background-color: #FCF9F7;
+        color: #030302;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
@@ -18,7 +18,7 @@
     }
     .apple-btn-primary {
         @apply inline-flex items-center justify-center px-6 py-3 bg-text text-white
-               font-body text-body-sm font-light rounded-apple
+               font-body text-body-sm font-medium rounded-apple
                hover:bg-text-secondary active:bg-text-black
                focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
                transition-all duration-200 ease-in-out;
@@ -26,20 +26,20 @@
     .apple-btn-secondary {
         @apply inline-flex items-center justify-center px-6 py-3 bg-transparent text-text
                font-body text-body-sm font-normal rounded-apple border border-surface-lighter
-               hover:bg-surface-light active:bg-surface-lighter
+               hover:bg-surface-light hover:border-text active:bg-surface-lighter
                focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
                transition-all duration-200 ease-in-out;
     }
     .apple-btn-blue {
         @apply inline-flex items-center justify-center px-6 py-3 bg-primary text-white
-               font-body text-body-sm font-normal rounded-full
+               font-body text-body-sm font-medium rounded-full
                hover:bg-primary-hover active:bg-primary-active
                focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-4
                transition-all duration-200 ease-in-out;
     }
     .apple-btn-danger {
         @apply inline-flex items-center justify-center px-6 py-3 bg-danger text-white
-               font-body text-body-sm font-light rounded-apple
+               font-body text-body-sm font-medium rounded-apple
                hover:opacity-90 active:opacity-100
                focus:outline-none focus:ring-2 focus:ring-danger focus:ring-offset-2
                transition-all duration-200 ease-in-out;
@@ -52,10 +52,10 @@
     }
     .apple-input {
         @apply w-full border border-surface-lighter rounded-apple px-4 py-3
-               font-body text-body-sm text-text
+               font-body text-body-sm text-text bg-surface-light
                placeholder:text-text-tertiary placeholder:opacity-60
                focus:border-primary focus:ring-0 focus:outline-none
-               focus:shadow-[0_0_0_3px_rgba(0,113,227,0.1)]
+               focus:shadow-[0_0_0_3px_rgba(59,130,246,0.10)]
                disabled:bg-surface-light disabled:text-text-tertiary
                transition-all duration-200;
         height: 44px;
@@ -64,7 +64,7 @@
         @apply w-full border border-surface-lighter rounded-apple px-4 py-3
                font-body text-body-sm text-text bg-white
                focus:border-primary focus:ring-0 focus:outline-none
-               focus:shadow-[0_0_0_3px_rgba(0,113,227,0.1)]
+               focus:shadow-[0_0_0_3px_rgba(59,130,246,0.10)]
                transition-all duration-200;
         height: 44px;
     }
@@ -116,8 +116,8 @@
 }
 
 @keyframes scan-pulse-apple {
-    0%, 100% { box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08); }
-    50% { box-shadow: 0px 4px 16px rgba(0, 113, 227, 0.3); }
+    0%, 100% { box-shadow: 0px 1px 3px rgba(3, 3, 2, 0.08); }
+    50% { box-shadow: 0px 4px 16px rgba(59, 130, 246, 0.3); }
 }
 .scan-pulse {
     animation: scan-pulse-apple 2s ease-in-out infinite;
@@ -128,11 +128,11 @@
 }
 .book-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 20px 40px rgba(3, 3, 2, 0.08), 0px 3px 10px rgba(3, 3, 2, 0.06);
 }
 
 .apple-nav {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
 }

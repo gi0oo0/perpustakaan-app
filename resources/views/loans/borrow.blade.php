@@ -198,7 +198,7 @@
                         icon: 'error',
                         title: 'Kamera Gagal',
                         html: 'Tidak bisa mengakses kamera.<br><br><small>Pastikan:<br>1. Browser diizinkan akses kamera<br>2. Kamera tidak dipakai aplikasi lain<br>3. Gunakan HTTPS</small>',
-                        confirmButtonColor: '#FF3B30'
+                        confirmButtonColor: '#E5484D'
                     });
                     readerDiv.classList.add('hidden');
                     scanPlaceholder.classList.remove('hidden');
