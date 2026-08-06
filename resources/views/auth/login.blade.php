@@ -32,7 +32,7 @@
         </div>
 
         <div class="mt-6">
-            <button type="submit" class="apple-btn-primary w-full">
+            <button type="submit" class="apple-btn-pill w-full">
                 Masuk →
             </button>
         </div>

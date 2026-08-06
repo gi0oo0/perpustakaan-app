@@ -10,30 +10,30 @@
 
                 <div class="hidden space-x-1 sm:flex sm:items-center sm:ms-8">
                     <a href="{{ route('dashboard') }}"
-                       class="inline-flex items-center px-3 py-2 text-body-xs font-body rounded-apple {{ request()->routeIs('dashboard') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
+                       class="inline-flex items-center px-4 py-2 text-body-xs font-body rounded-full {{ request()->routeIs('dashboard') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
                         Dashboard
                     </a>
                     <a href="{{ route('books.index') }}"
-                       class="inline-flex items-center px-3 py-2 text-body-xs font-body rounded-apple {{ request()->routeIs('books.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
+                       class="inline-flex items-center px-4 py-2 text-body-xs font-body rounded-full {{ request()->routeIs('books.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
                         Buku
                     </a>
                     <a href="{{ route('loans.index') }}"
-                       class="inline-flex items-center px-3 py-2 text-body-xs font-body rounded-apple {{ request()->routeIs('loans.index') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
+                       class="inline-flex items-center px-4 py-2 text-body-xs font-body rounded-full {{ request()->routeIs('loans.index') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
                         Peminjaman
                     </a>
                     <a href="{{ route('loans.borrow.create') }}"
-                       class="inline-flex items-center px-3 py-2 text-body-xs font-body rounded-apple {{ request()->routeIs('loans.borrow.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
+                       class="inline-flex items-center px-4 py-2 text-body-xs font-body rounded-full {{ request()->routeIs('loans.borrow.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
                         Pinjam
                     </a>
                     @if (Auth::user()->isStaff())
                         <a href="{{ route('loans.return.create') }}"
-                           class="inline-flex items-center px-3 py-2 text-body-xs font-body rounded-apple {{ request()->routeIs('loans.return.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
+                           class="inline-flex items-center px-4 py-2 text-body-xs font-body rounded-full {{ request()->routeIs('loans.return.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
                             Kembalikan
                         </a>
                     @endif
                     @if (Auth::user()->isAdmin())
                         <a href="{{ route('users.index') }}"
-                           class="inline-flex items-center px-3 py-2 text-body-xs font-body rounded-apple {{ request()->routeIs('users.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
+                           class="inline-flex items-center px-4 py-2 text-body-xs font-body rounded-full {{ request()->routeIs('users.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }} transition-all duration-200">
                             Anggota
                         </a>
                     @endif
@@ -103,25 +103,25 @@
 
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-surface-lighter">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('dashboard') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
+            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('dashboard') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
                 Dashboard
             </a>
-            <a href="{{ route('books.index') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('books.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
+            <a href="{{ route('books.index') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('books.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
                 Buku
             </a>
-            <a href="{{ route('loans.index') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('loans.index') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
+            <a href="{{ route('loans.index') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('loans.index') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
                 Peminjaman
             </a>
-            <a href="{{ route('loans.borrow.create') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('loans.borrow.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
+            <a href="{{ route('loans.borrow.create') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('loans.borrow.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
                 Pinjam
             </a>
             @if (Auth::user()->isStaff())
-                <a href="{{ route('loans.return.create') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('loans.return.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
+                <a href="{{ route('loans.return.create') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('loans.return.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
                     Kembalikan
                 </a>
             @endif
             @if (Auth::user()->isAdmin())
-                <a href="{{ route('users.index') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('users.*') ? 'text-primary' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
+                <a href="{{ route('users.index') }}" class="block px-4 py-2 text-body-xs font-body {{ request()->routeIs('users.*') ? 'bg-surface-lighter text-text' : 'text-text-tertiary hover:text-text hover:bg-surface-light' }}">
                     Anggota
                 </a>
             @endif

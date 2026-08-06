@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-display font-semibold text-2xl text-text leading-tight">
+        <h2 class="font-display text-heading-lg text-text leading-tight">
             Dashboard
         </h2>
     </x-slot>
@@ -9,27 +9,26 @@
         <div class="max-w-7xl mx-auto px-apple-lg space-y-8">
 
             {{-- Summary Banner --}}
-            <div class="bg-surface-light rounded-apple-lg p-8 relative overflow-hidden">
+            <div class="bg-white rounded-apple-lg p-8 relative overflow-hidden border border-text/10 shadow-apple">
                 <div class="absolute top-4 right-8 w-16 h-16 rounded-full opacity-10 bg-text"></div>
-                <div class="absolute bottom-4 right-24 w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[30px] border-b-primary opacity-10"></div>
-                <h3 class="font-display font-semibold text-xl text-text mb-2">Selamat Datang! 👋</h3>
+                <h3 class="font-display text-3xl text-text mb-2">Selamat Datang! 👋</h3>
                 <p class="font-body text-text-tertiary">Kelola perpustakaan Anda dengan mudah dan menyenangkan.</p>
 
                 <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div class="bg-white rounded-apple-lg p-4 text-center shadow-sm">
-                        <div class="font-display font-semibold text-3xl text-primary">{{ $totalBooks }}</div>
+                    <div class="bg-white rounded-apple-lg p-4 text-center border border-text/10">
+                        <div class="font-display font-semibold text-3xl text-text">{{ $totalBooks }}</div>
                         <div class="font-body text-xs text-text-tertiary mt-1">Total Buku</div>
                     </div>
-                    <div class="bg-white rounded-apple-lg p-4 text-center shadow-sm">
+                    <div class="bg-white rounded-apple-lg p-4 text-center border border-text/10">
                         <div class="font-display font-semibold text-3xl text-text">{{ $activeLoans }}</div>
                         <div class="font-body text-xs text-text-tertiary mt-1">Dipinjam</div>
                     </div>
-                    <div class="bg-white rounded-apple-lg p-4 text-center shadow-sm">
+                    <div class="bg-white rounded-apple-lg p-4 text-center border border-text/10">
                         <div class="font-display font-semibold text-3xl text-danger">{{ $overdueLoans }}</div>
                         <div class="font-body text-xs text-text-tertiary mt-1">Terlambat</div>
                     </div>
-                    <div class="bg-white rounded-apple-lg p-4 text-center shadow-sm">
-                        <div class="font-display font-semibold text-3xl text-primary">{{ $returnedLoans }}</div>
+                    <div class="bg-white rounded-apple-lg p-4 text-center border border-text/10">
+                        <div class="font-display font-semibold text-3xl text-text">{{ $returnedLoans }}</div>
                         <div class="font-body text-xs text-text-tertiary mt-1">Dikembalikan</div>
                     </div>
                 </div>
@@ -39,18 +38,18 @@
             <div>
                 <h3 class="font-display font-semibold text-lg text-text mb-4">Akses Cepat</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <a href="{{ route('books.index') }}" class="bg-white rounded-apple-lg p-6 text-center group hover:shadow-md transition-all duration-200">
+                    <a href="{{ route('books.index') }}" class="bg-white rounded-apple-lg p-6 text-center group hover:shadow-apple-raised transition-all duration-200 border border-text/10">
                         <div class="w-14 h-14 bg-primary mx-auto flex items-center justify-center text-2xl mb-3 group-hover:scale-105 transition-transform duration-200 rounded-full">📖</div>
                         <div class="font-display font-semibold text-text text-sm">Daftar Buku</div>
                         <p class="font-body text-xs text-text-tertiary mt-1">Lihat & kelola koleksi buku</p>
                     </a>
-                    <a href="{{ route('loans.borrow.create') }}" class="bg-white rounded-apple-lg p-6 text-center group hover:shadow-md transition-all duration-200">
+                    <a href="{{ route('loans.borrow.create') }}" class="bg-white rounded-apple-lg p-6 text-center group hover:shadow-apple-raised transition-all duration-200 border border-text/10">
                         <div class="w-14 h-14 bg-surface-light mx-auto flex items-center justify-center text-2xl mb-3 group-hover:scale-105 transition-transform duration-200 rounded-full">📦</div>
                         <div class="font-display font-semibold text-text text-sm">Pinjam Buku</div>
                         <p class="font-body text-xs text-text-tertiary mt-1">Scan & pinjam buku baru</p>
                     </a>
                     @if (Auth::user()->isStaff())
-                        <a href="{{ route('loans.return.create') }}" class="bg-white rounded-apple-lg p-6 text-center group hover:shadow-md transition-all duration-200">
+                        <a href="{{ route('loans.return.create') }}" class="bg-white rounded-apple-lg p-6 text-center group hover:shadow-apple-raised transition-all duration-200 border border-text/10">
                             <div class="w-14 h-14 bg-danger mx-auto flex items-center justify-center text-2xl mb-3 group-hover:scale-105 transition-transform duration-200 rounded-full">🔄</div>
                             <div class="font-display font-semibold text-text text-sm">Kembalikan Buku</div>
                             <p class="font-body text-xs text-text-tertiary mt-1">Scan & kembalikan buku</p>
@@ -65,7 +64,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                     {{-- Bar Chart: Buku Terpopuler --}}
-                    <div class="bg-white rounded-apple-lg p-6">
+                    <div class="bg-white rounded-apple-lg p-6 border border-text/10 shadow-apple">
                         <h4 class="font-display font-semibold text-sm text-text mb-4">📖 Buku Terpopuler</h4>
                         <div class="relative" style="height: 250px;">
                             <canvas id="chartTopBooks"></canvas>
@@ -73,7 +72,7 @@
                     </div>
 
                     {{-- Line Chart: Peminjaman Per Bulan --}}
-                    <div class="bg-white rounded-apple-lg p-6">
+                    <div class="bg-white rounded-apple-lg p-6 border border-text/10 shadow-apple">
                         <h4 class="font-display font-semibold text-sm text-text mb-4">📈 Peminjaman / Bulan</h4>
                         <div class="relative" style="height: 250px;">
                             <canvas id="chartMonthly"></canvas>
@@ -81,7 +80,7 @@
                     </div>
 
                     {{-- Doughnut Chart: Status Buku --}}
-                    <div class="bg-white rounded-apple-lg p-6">
+                    <div class="bg-white rounded-apple-lg p-6 border border-text/10 shadow-apple">
                         <h4 class="font-display font-semibold text-sm text-text mb-4">📊 Status Buku</h4>
                         <div class="relative" style="height: 250px;">
                             <canvas id="chartStatus"></canvas>

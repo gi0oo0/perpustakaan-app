@@ -12,8 +12,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                display: ['Georgia', 'Cambria', '"Times New Roman"', 'serif'],
-                body: ['UntitledSans', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                display: ['"Source Serif 4"', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
+                body: ['Inter', 'UntitledSans', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
             },
             colors: {
                 primary: {
@@ -71,14 +71,14 @@ export default {
                 'apple-8xl': '88px',
             },
             fontSize: {
-                'display-xl': ['5rem', { lineHeight: '5.25rem', fontWeight: '500' }],
-                'display-lg': ['4rem', { lineHeight: '4.25rem', fontWeight: '500' }],
-                'display-md': ['3rem', { lineHeight: '3.25rem', fontWeight: '500' }],
-                'heading-xl': ['2.5rem', { lineHeight: '2.75rem', fontWeight: '500' }],
+                'display-xl': ['5rem', { lineHeight: '5.25rem', fontWeight: '400' }],
+                'display-lg': ['4rem', { lineHeight: '4.25rem', fontWeight: '400' }],
+                'display-md': ['3rem', { lineHeight: '3.25rem', fontWeight: '400' }],
+                'heading-xl': ['2.5rem', { lineHeight: '2.75rem', fontWeight: '400' }],
                 'heading-lg': ['1.75rem', { lineHeight: '2rem', fontWeight: '500' }],
                 'heading-md': ['1.5rem', { lineHeight: '1.5rem', fontWeight: '500' }],
                 'heading-sm': ['1.1875rem', { lineHeight: '1.4375rem', fontWeight: '500' }],
-                'heading-xs': ['0.875rem', { lineHeight: '1.1875rem', fontWeight: '500' }],
+                'heading-xs': ['0.875rem', { lineHeight: '1.1875rem', fontWeight: '600' }],
                 'body-lg': ['1.75rem', { lineHeight: '2rem', fontWeight: '400' }],
                 'body-md': ['1.3125rem', { lineHeight: '1.8125rem', fontWeight: '400' }],
                 'body-sm': ['1.0625rem', { lineHeight: '1.5625rem', fontWeight: '400' }],

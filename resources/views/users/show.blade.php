@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-display font-semibold text-text-primary">Detail Pengguna</h1>
+                <h1 class="text-3xl font-display text-text">Detail Pengguna</h1>
                 <p class="mt-1 text-text-tertiary">Informasi lengkap pengguna</p>
             </div>
             <div class="flex items-center gap-3">
@@ -32,7 +32,7 @@
                             <div class="w-20 h-20 bg-surface-light rounded-full flex items-center justify-center mb-4">
                                 <span class="text-2xl font-display font-semibold text-text">{{ substr($user->name, 0, 1) }}</span>
                             </div>
-                            <h2 class="text-xl font-display font-semibold text-text-primary">{{ $user->name }}</h2>
+                            <h2 class="text-xl font-display font-semibold text-text">{{ $user->name }}</h2>
                             <p class="text-text-tertiary text-sm mt-1">{{ $user->email }}</p>
 
                             <div class="mt-4">
@@ -49,19 +49,19 @@
                         <div class="mt-6 pt-6 border-t border-surface-lighter space-y-4">
                             <div class="flex justify-between">
                                 <span class="text-sm text-text-tertiary">NISN</span>
-                                <span class="text-sm font-medium text-text-primary">{{ $user->nisn }}</span>
+                                <span class="text-sm font-medium text-text">{{ $user->nisn }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-sm text-text-tertiary">Email</span>
-                                <span class="text-sm font-medium text-text-primary">{{ $user->email }}</span>
+                                <span class="text-sm font-medium text-text">{{ $user->email }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-sm text-text-tertiary">Role</span>
-                                <span class="text-sm font-medium text-text-primary capitalize">{{ $user->role }}</span>
+                                <span class="text-sm font-medium text-text capitalize">{{ $user->role }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-sm text-text-tertiary">Terdaftar</span>
-                                <span class="text-sm font-medium text-text-primary">{{ $user->created_at->format('d M Y') }}</span>
+                                <span class="text-sm font-medium text-text">{{ $user->created_at->format('d M Y') }}</span>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <div class="bg-white rounded-apple-lg p-5 shadow-sm">
                             <div class="text-sm text-text-tertiary">Total Pinjam</div>
-                            <div class="text-2xl font-display font-semibold text-text-primary mt-1">{{ $totalPinjam }}</div>
+                            <div class="text-2xl font-display font-semibold text-text mt-1">{{ $totalPinjam }}</div>
                         </div>
                         <div class="bg-white rounded-apple-lg p-5 shadow-sm">
                             <div class="text-sm text-text-tertiary">Dipinjam</div>
@@ -85,13 +85,13 @@
                         </div>
                         <div class="bg-white rounded-apple-lg p-5 shadow-sm">
                             <div class="text-sm text-text-tertiary">Total Denda</div>
-                            <div class="text-2xl font-display font-semibold text-text-primary mt-1">Rp {{ number_format($totalDenda, 0, ',', '.') }}</div>
+                            <div class="text-2xl font-display font-semibold text-text mt-1">Rp {{ number_format($totalDenda, 0, ',', '.') }}</div>
                         </div>
                     </div>
 
                     <!-- Loan History -->
                     <div class="bg-white rounded-apple-lg p-6">
-                        <h3 class="text-lg font-display font-semibold text-text-primary mb-4">Riwayat Peminjaman</h3>
+                        <h3 class="text-lg font-display font-semibold text-text mb-4">Riwayat Peminjaman</h3>
 
                         <div class="overflow-x-auto">
                             <table class="w-full">
@@ -108,7 +108,7 @@
                                         <tr class="border-b border-surface-lighter hover:bg-surface-light transition-colors">
                                             <td class="py-4 px-4">
                                                 <div>
-                                                    <div class="text-sm font-medium text-text-primary">{{ $loan->book->title }}</div>
+                                                    <div class="text-sm font-medium text-text">{{ $loan->book->title }}</div>
                                                     <div class="text-xs text-text-tertiary">{{ $loan->book->author }}</div>
                                                 </div>
                                             </td>

@@ -46,7 +46,7 @@
                 Sudah punya akun?
             </a>
 
-            <button type="submit" class="apple-btn-primary">
+            <button type="submit" class="apple-btn-pill w-full">
                 Daftar →
             </button>
         </div>

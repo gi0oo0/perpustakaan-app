@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-display font-semibold text-text-primary">Manajemen Pengguna</h1>
+                <h1 class="text-3xl font-display text-text">Manajemen Pengguna</h1>
                 <p class="mt-1 text-text-tertiary">Kelola data pengguna perpustakaan</p>
             </div>
             <a href="{{ route('users.create') }}" class="apple-btn-primary">
@@ -61,13 +61,13 @@
                         <tbody>
                             @forelse($users as $user)
                                 <tr class="border-b border-surface-lighter hover:bg-surface-light transition-colors">
-                                    <td class="py-4 px-4 text-sm text-text-primary">{{ $user->nisn }}</td>
+                                    <td class="py-4 px-4 text-sm text-text">{{ $user->nisn }}</td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 bg-surface-light rounded-full flex items-center justify-center">
                                                 <span class="text-sm font-medium text-text">{{ substr($user->name, 0, 1) }}</span>
                                             </div>
-                                            <span class="text-sm font-medium text-text-primary">{{ $user->name }}</span>
+                                            <span class="text-sm font-medium text-text">{{ $user->name }}</span>
                                         </div>
                                     </td>
                                     <td class="py-4 px-4 text-sm text-text-tertiary">{{ $user->email }}</td>

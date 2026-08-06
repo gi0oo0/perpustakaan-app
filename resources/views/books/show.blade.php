@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-display font-semibold text-2xl text-text leading-tight">
+        <h2 class="font-display text-heading-lg text-text leading-tight">
             Detail Buku
         </h2>
     </x-slot>
@@ -35,7 +35,7 @@
 
                 {{-- Right: Details --}}
                 <div class="lg:col-span-3 p-8">
-                    <h1 class="font-display font-semibold text-3xl lg:text-4xl text-text leading-none tracking-tight">
+                    <h1 class="font-display text-3xl lg:text-4xl text-text leading-none tracking-tight">
                         {{ $book->title }}
                     </h1>
                     <p class="text-lg text-apple-blue font-semibold mt-2">{{ $book->author }}</p>

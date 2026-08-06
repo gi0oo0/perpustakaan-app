@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-display font-semibold text-2xl text-text leading-tight">
+        <h2 class="font-display text-heading-lg text-text leading-tight">
             Kembalikan Buku
         </h2>
     </x-slot>

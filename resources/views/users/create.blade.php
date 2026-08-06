@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-display font-semibold text-text-primary">Tambah Pengguna</h1>
+                <h1 class="text-3xl font-display text-text">Tambah Pengguna</h1>
                 <p class="mt-1 text-text-tertiary">Buat akun pengguna baru</p>
             </div>
             <a href="{{ route('users.index') }}" class="apple-btn-secondary">
@@ -23,7 +23,7 @@
                     <div class="space-y-6">
                         <!-- NISN -->
                         <div>
-                            <label for="nisn" class="block text-sm font-display font-semibold text-text-primary mb-2">NISN</label>
+                            <label for="nisn" class="block text-sm font-display font-semibold text-text mb-2">NISN</label>
                             <input type="text" id="nisn" name="nisn" value="{{ old('nisn') }}" required
                                 class="apple-input w-full @error('nisn') border-danger @enderror"
                                 placeholder="Masukkan NISN">
@@ -34,7 +34,7 @@
 
                         <!-- Name -->
                         <div>
-                            <label for="name" class="block text-sm font-display font-semibold text-text-primary mb-2">Nama Lengkap</label>
+                            <label for="name" class="block text-sm font-display font-semibold text-text mb-2">Nama Lengkap</label>
                             <input type="text" id="name" name="name" value="{{ old('name') }}" required
                                 class="apple-input w-full @error('name') border-danger @enderror"
                                 placeholder="Masukkan nama lengkap">
@@ -45,7 +45,7 @@
 
                         <!-- Email -->
                         <div>
-                            <label for="email" class="block text-sm font-display font-semibold text-text-primary mb-2">Email</label>
+                            <label for="email" class="block text-sm font-display font-semibold text-text mb-2">Email</label>
                             <input type="email" id="email" name="email" value="{{ old('email') }}" required
                                 class="apple-input w-full @error('email') border-danger @enderror"
                                 placeholder="Masukkan email">
@@ -56,7 +56,7 @@
 
                         <!-- Role -->
                         <div>
-                            <label for="role" class="block text-sm font-display font-semibold text-text-primary mb-2">Role</label>
+                            <label for="role" class="block text-sm font-display font-semibold text-text mb-2">Role</label>
                             <select id="role" name="role" required
                                 class="apple-input w-full @error('role') border-danger @enderror">
                                 <option value="">Pilih Role</option>
@@ -71,7 +71,7 @@
 
                         <!-- Password -->
                         <div>
-                            <label for="password" class="block text-sm font-display font-semibold text-text-primary mb-2">Password</label>
+                            <label for="password" class="block text-sm font-display font-semibold text-text mb-2">Password</label>
                             <input type="password" id="password" name="password" required
                                 class="apple-input w-full @error('password') border-danger @enderror"
                                 placeholder="Masukkan password">
@@ -82,7 +82,7 @@
 
                         <!-- Password Confirmation -->
                         <div>
-                            <label for="password_confirmation" class="block text-sm font-display font-semibold text-text-primary mb-2">Konfirmasi Password</label>
+                            <label for="password_confirmation" class="block text-sm font-display font-semibold text-text mb-2">Konfirmasi Password</label>
                             <input type="password" id="password_confirmation" name="password_confirmation" required
                                 class="apple-input w-full"
                                 placeholder="Ulangi password">
