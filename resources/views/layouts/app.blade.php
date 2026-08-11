@@ -94,15 +94,15 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 @if (session('success'))
-                    window.toast('{{ session('success') }}', 'success');
+                    window.toast(@js(session('success')), 'success');
                 @endif
 
                 @if (session('error'))
-                    window.toast('{{ session('error') }}', 'error');
+                    window.toast(@js(session('error')), 'error');
                 @endif
 
                 @if (session('info'))
-                    window.toast('{{ session('info') }}', 'info');
+                    window.toast(@js(session('info')), 'info');
                 @endif
             });
         </script>

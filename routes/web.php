@@ -19,7 +19,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 Route::get('/dashboard/stats', [DashboardController::class, 'stats'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'staff'])
     ->name('dashboard.stats');
 
 Route::middleware('auth')->group(function () {
@@ -38,11 +38,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
         Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
         Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
+        Route::get('/books/{book}/print-label', [BookController::class, 'printLabel'])->name('books.print-label');
+        Route::get('/books-print-label-batch', [BookController::class, 'printLabelBatch'])->name('books.print-label-batch');
     });
 
     Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
-    Route::get('/books/{book}/print-label', [BookController::class, 'printLabel'])->name('books.print-label');
-    Route::get('/books-print-label-batch', [BookController::class, 'printLabelBatch'])->name('books.print-label-batch');
 
     // Loans - all users can view own, borrow
     Route::get('/loans', [LoanController::class, 'index'])->name('loans.index');
