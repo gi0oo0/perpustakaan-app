@@ -21,14 +21,54 @@
     <div class="space-y-6" x-data="reveal">
         <div class="glass p-5">
             <form action="{{ route('users.index') }}" method="GET" class="flex flex-col sm:flex-row gap-3 items-end">
-                <div class="flex-1">
+                <div class="flex-1" x-data="userSearch('{{ request('search') }}')">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Cari</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-3.5 flex items-center text-white/30">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         </span>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama, NISN, atau email..."
-                            class="glass-input pl-10">
+                        <input type="text" name="search" x-model="query" @input="doSearch"
+                               @keydown.escape="reset" autocomplete="off"
+                               value="{{ request('search') }}" placeholder="Cari nama, NISN, atau email..."
+                               class="glass-input pl-10">
+
+                        <div x-show="open" @click.outside="reset()"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 -translate-y-2"
+                             x-transition:enter-end="opacity-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-100"
+                             x-transition:leave-start="opacity-100"
+                             x-transition:leave-end="opacity-0"
+                             class="absolute left-0 right-0 top-full mt-2 glass rounded-glass shadow-glass-lg overflow-hidden z-50"
+                             style="display: none;">
+                            <div class="max-h-72 overflow-y-auto">
+                                <template x-if="loading">
+                                    <div class="px-4 py-3 space-y-2">
+                                        <div class="search-skeleton h-12 rounded-glass-sm"></div>
+                                        <div class="search-skeleton h-12 rounded-glass-sm"></div>
+                                    </div>
+                                </template>
+                                <template x-if="!loading && results.length === 0">
+                                    <div class="px-4 py-6 text-center">
+                                        <p class="font-body text-sm text-white/50">Anggota tidak ditemukan</p>
+                                    </div>
+                                </template>
+                                <template x-for="u in results" :key="u.id">
+                                    <button @click="go(u.url)" class="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.06] transition-colors text-start">
+                                        <span class="w-9 h-9 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-xs text-white flex-shrink-0"
+                                              x-text="u.name ? u.name.charAt(0).toUpperCase() : '?'"></span>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-body text-sm font-medium text-white truncate" x-text="u.name"></p>
+                                            <p class="font-body text-xs text-white/40 truncate" x-text="(u.nisn ? u.nisn + ' · ' : '') + u.email"></p>
+                                        </div>
+                                        <span class="glass-badge flex-shrink-0"
+                                              :class="u.role === 'admin' ? 'glass-badge-red' : (u.role === 'staff' ? 'glass-badge-yellow' : 'glass-badge-blue')">
+                                            <span x-text="u.role === 'user' ? 'Anggota' : u.role"></span>
+                                        </span>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="w-full sm:w-48">

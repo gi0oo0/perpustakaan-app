@@ -34,6 +34,37 @@ class UserController extends Controller
         return view('users.index', compact('users'));
     }
 
+    public function search(Request $request)
+    {
+        $query = User::query();
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($qq) use ($q) {
+                $qq->where('name', 'like', "%{$q}%")
+                   ->orWhere('email', 'like', "%{$q}%")
+                   ->orWhere('nisn', 'like', "%{$q}%");
+            });
+        }
+
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        return response()->json(
+            $query->latest()->take(10)->get()->map(function (User $user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'nisn' => $user->nisn,
+                    'role' => $user->role,
+                    'url' => route('users.show', $user),
+                ];
+            })
+        );
+    }
+
     public function create()
     {
         return view('users.create');
