@@ -182,7 +182,7 @@
                     <h3 class="font-display text-lg font-semibold text-white">Koleksi Buku Terbaru</h3>
                     <a href="{{ route('books.index') }}" class="glass-link text-sm font-medium">Jelajahi semua →</a>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(min(150px,100%),1fr))] gap-4">
                     @foreach ($recentBooks as $book)
                         <a href="{{ route('books.show', $book) }}" class="glass glass-hover p-4 group">
                             <div class="relative mb-3">

@@ -75,11 +75,11 @@
         </div>
 
         {{-- Book Grid --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-5">
             <template x-for="(book, index) in filtered" :key="book.id">
                 <div class="glass glass-hover group overflow-hidden flex flex-col animate-card" :style="'animation-delay: ' + (index % 8 * 50) + 'ms'">
                     {{-- Cover --}}
-                    <div class="relative h-52 overflow-hidden cursor-pointer" @click="previewBook(book)">
+                    <div class="relative aspect-[3/4] overflow-hidden cursor-pointer" @click="previewBook(book)">
                         <template x-if="book.cover_image">
                             <img :src="book.cover_image" :alt="book.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         </template>
@@ -118,7 +118,7 @@
                         </h3>
                         <p class="font-body text-sm text-white/45 mt-1 truncate" x-text="book.author"></p>
 
-                        <div class="mt-auto pt-4 flex gap-2">
+                        <div class="mt-auto pt-4 flex flex-wrap gap-2">
                             <a :href="book.url" class="flex-1 glass-btn-primary text-xs py-2">Detail</a>
                             <template x-if="isAdmin">
                                 <a :href="book.edit_url" class="flex-1 glass-btn-secondary text-xs py-2">Edit</a>
