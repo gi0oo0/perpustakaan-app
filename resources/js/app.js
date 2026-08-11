@@ -116,47 +116,35 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 
-    Alpine.data('userSearch', (initialQuery = '') => ({
-        open: false,
-        query: initialQuery || '',
-        results: [],
-        loading: false,
-        timer: null,
-        doSearch() {
-            clearTimeout(this.timer);
-            const q = this.query.trim();
-            if (q.length < 2) {
-                this.results = [];
-                this.open = false;
-                return;
-            }
-            this.loading = true;
-            this.timer = setTimeout(async () => {
-                try {
-                    const params = new URLSearchParams({ q });
-                    const role = document.querySelector('[name="role"]')?.value || '';
-                    if (role) params.set('role', role);
-                    const res = await fetch(
-                        '/users/search?' + params.toString(),
-                        { headers: { Accept: 'application/json' } }
-                    );
-                    const data = await res.json();
-                    this.results = data;
-                    this.open = true;
-                } catch (e) {
-                    this.results = [];
-                } finally {
-                    this.loading = false;
+    Alpine.data('userTable', (users) => ({
+        users: users || [],
+        query: '',
+        role: '',
+        sort: 'recent',
+        filtered() {
+            const q = this.query.trim().toLowerCase();
+            const out = this.users.filter((u) => {
+                if (
+                    q &&
+                    !(u.name + ' ' + (u.nisn || '') + ' ' + u.email).toLowerCase().includes(q)
+                ) {
+                    return false;
                 }
-            }, 250);
-        },
-        go(url) {
-            window.location.href = url;
-        },
-        reset() {
-            this.query = '';
-            this.results = [];
-            this.open = false;
+                if (this.role && u.role !== this.role) return false;
+                return true;
+            });
+            return [...out].sort((a, b) => {
+                switch (this.sort) {
+                    case 'name':
+                        return a.name.localeCompare(b.name, 'id');
+                    case 'nisn':
+                        return (a.nisn || '').localeCompare(b.nisn || '');
+                    case 'email':
+                        return a.email.localeCompare(b.email, 'id');
+                    default:
+                        return b.id - a.id;
+                }
+            });
         },
     }));
 

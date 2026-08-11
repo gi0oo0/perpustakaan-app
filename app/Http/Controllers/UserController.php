@@ -12,57 +12,24 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = User::query();
+        $users = User::latest()->get();
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('nisn', 'like', "%{$search}%");
-            });
-        }
+        $usersJson = $users->map(function (User $user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'nisn' => $user->nisn,
+                'role' => $user->role,
+                'show_url' => route('users.show', $user),
+                'edit_url' => route('users.edit', $user),
+                'destroy_url' => route('users.destroy', $user),
+            ];
+        })->values();
 
-        if ($request->filled('role')) {
-            $query->where('role', $request->role);
-        }
-
-        $users = $query->latest()->paginate(15)->withQueryString();
-
-        return view('users.index', compact('users'));
-    }
-
-    public function search(Request $request)
-    {
-        $query = User::query();
-
-        if ($request->filled('q')) {
-            $q = $request->q;
-            $query->where(function ($qq) use ($q) {
-                $qq->where('name', 'like', "%{$q}%")
-                   ->orWhere('email', 'like', "%{$q}%")
-                   ->orWhere('nisn', 'like', "%{$q}%");
-            });
-        }
-
-        if ($request->filled('role')) {
-            $query->where('role', $request->role);
-        }
-
-        return response()->json(
-            $query->latest()->take(10)->get()->map(function (User $user) {
-                return [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'nisn' => $user->nisn,
-                    'role' => $user->role,
-                    'url' => route('users.show', $user),
-                ];
-            })
-        );
+        return view('users.index', compact('usersJson'));
     }
 
     public function create()
