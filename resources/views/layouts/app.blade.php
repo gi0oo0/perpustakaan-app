@@ -7,51 +7,102 @@
 
         <title>{{ config('app.name', 'Perpustakaan') }}</title>
 
+        <script>
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.classList.add('light');
+            }
+        </script>
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
-    <body class="antialiased bg-surface-light text-text">
-        <div class="min-h-screen">
+    <body class="antialiased text-white bg-night">
+        <div class="min-h-screen relative overflow-x-clip">
+            {{-- Aurora background --}}
+            <div class="fixed inset-0 -z-10 bg-night overflow-hidden" aria-hidden="true">
+                <div class="absolute -top-40 -left-32 w-[34rem] h-[34rem] rounded-full bg-primary/25 blur-[120px] animate-float"></div>
+                <div class="absolute top-1/4 -right-40 w-[30rem] h-[30rem] rounded-full bg-accent/20 blur-[120px] animate-float-slow"></div>
+                <div class="absolute bottom-[-8rem] left-1/3 w-[32rem] h-[32rem] rounded-full bg-violet/20 blur-[130px] animate-float-fast"></div>
+                <div class="absolute top-[55%] left-[8%] w-72 h-72 rounded-full bg-rose-500/10 blur-[100px] animate-float-slow"></div>
+
+                <div class="aurora-grid absolute inset-0 opacity-[0.035]"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-night/80"></div>
+            </div>
+
             @include('layouts.navigation')
 
-            @if (isset($header))
-                <header class="bg-white border-b border-surface-lighter">
-                    <div class="apple-container py-apple-xl px-apple-lg">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+            <main class="relative lg:pl-[264px]">
+                <div class="px-5 sm:px-8 py-8 max-w-[1440px] mx-auto">
+                    @if (isset($header))
+                        <header class="mb-8 animate-fade-up">
+                            {{ $header }}
+                        </header>
+                    @endif
 
-            <main>
-                {{ $slot }}
+                    <div>
+                        {{ $slot }}
+                    </div>
+                </div>
             </main>
+
+            {{-- Toast host --}}
+            <div class="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-3 w-full max-w-sm px-4 sm:px-0"
+                 x-data="{}"
+                 x-cloak>
+                <template x-for="t in $store.toast.items" :key="t.id">
+                    <div x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                         x-transition:leave-end="opacity-0 translate-y-4 scale-95"
+                         class="glass flex items-center gap-3 pl-4 pr-2 py-3 rounded-glass shadow-glass-lg w-full pointer-events-auto"
+                         :class="{
+                             'border-emerald-400/30': t.type === 'success',
+                             'border-rose-400/30': t.type === 'error',
+                             'border-sky-400/30': t.type === 'info',
+                         }">
+                        <span class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                              :class="{
+                                  'bg-emerald-400/15 text-emerald-300': t.type === 'success',
+                                  'bg-rose-400/15 text-rose-300': t.type === 'error',
+                                  'bg-sky-400/15 text-sky-300': t.type === 'info',
+                              }">
+                            <template x-if="t.type === 'success'">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                            </template>
+                            <template x-if="t.type === 'error'">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </template>
+                            <template x-if="t.type === 'info'">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </template>
+                        </span>
+                        <p class="flex-1 font-body text-sm text-white/90 leading-snug" x-text="t.message"></p>
+                        <button @click="$store.toast.remove(t.id)" class="p-2 text-white/40 hover:text-white transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                    </div>
+                </template>
+            </div>
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
                 @if (session('success'))
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: '{{ session('success') }}',
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false,
-                        confirmButtonColor: '#3B82F6',
-                    });
+                    window.toast('{{ session('success') }}', 'success');
                 @endif
 
                 @if (session('error'))
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal!',
-                        text: '{{ session('error') }}',
-                        confirmButtonColor: '#E5484D',
-                    });
+                    window.toast('{{ session('error') }}', 'error');
+                @endif
+
+                @if (session('info'))
+                    window.toast('{{ session('info') }}', 'info');
                 @endif
             });
         </script>

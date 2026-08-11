@@ -1,130 +1,162 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-display text-heading-lg text-text leading-tight">
-            Pinjam Buku
-        </h2>
+        <div>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Pinjam Buku</h2>
+            <p class="font-body text-sm text-white/45 mt-1">Scan QR atau masukkan ISBN buku yang akan dipinjam</p>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto px-apple-lg">
+    @if ($errors->any())
+        <div class="mb-6 glass rounded-glass-sm border-rose-400/30 px-5 py-4">
+            <p class="font-display text-sm font-semibold text-rose-300 mb-1">Terjadi kesalahan:</p>
+            <ul class="list-disc list-inside space-y-0.5">
+                @foreach ($errors->all() as $error)
+                    <li class="font-body text-sm text-rose-200/80">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-            @if (session('success'))
-                <div class="mb-6 bg-apple-blue text-white px-6 py-4 font-display text-sm rounded-apple-lg">
-                    {{ session('success') }}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" x-data="reveal">
+        {{-- Scan Station --}}
+        <div class="lg:col-span-2 space-y-6">
+            {{-- Borrower Identity --}}
+            <div class="glass p-6 flex items-center gap-4">
+                <span class="w-14 h-14 rounded-glass-sm bg-gradient-soft flex items-center justify-center text-xl font-display font-semibold text-white shadow-glow flex-shrink-0">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </span>
+                <div>
+                    <p class="font-display font-semibold text-lg text-white">{{ Auth::user()->name }}</p>
+                    <p class="font-body text-xs text-white/40">{{ Auth::user()->email }}</p>
+                    @if (Auth::user()->nisn)
+                        <p class="font-mono text-sm text-white/50 mt-0.5">NISN: {{ Auth::user()->nisn }}</p>
+                    @endif
                 </div>
-            @endif
+            </div>
 
-            @if ($errors->any())
-                <div class="mb-6 bg-danger text-white px-6 py-4 font-display text-sm rounded-apple-lg">
-                    Error:
-                    <ul class="list-disc list-inside mt-1 font-normal">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+            <div class="glass p-6">
+                <h3 class="font-display font-semibold text-lg text-white mb-1">Scan QR Code</h3>
+                <p class="font-body text-sm text-white/40 mb-5">Aktifkan kamera lalu arahkan ke QR Code buku untuk meminjam.</p>
+
+                {{-- Scan Area --}}
+                <div id="scan-area" class="glass-inset p-8 text-center relative overflow-hidden scan-pulse rounded-glass">
+                    <div id="reader" class="w-full hidden" style="height: 70vh;"></div>
+                    <div id="scan-placeholder">
+                        <div class="text-5xl mb-4">📷</div>
+                        <p class="font-display font-semibold text-white text-lg">Menunggu Scanner...</p>
+                        <p class="font-body text-sm text-white/40 mt-1">Klik tombol di bawah untuk mulai</p>
+                    </div>
                 </div>
-            @endif
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {{-- Action Buttons --}}
+                <div class="mt-6 flex gap-3">
+                    <button type="button" id="btn-start-camera" class="glass-btn-primary flex-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        Siap Scan
+                    </button>
+                    <button type="button" id="btn-stop-camera" class="glass-btn-danger hidden flex-1">Matikan Kamera</button>
+                </div>
 
-                {{-- Scan Station --}}
-                <div class="lg:col-span-2">
-                    {{-- Borrower Identity --}}
-                    <div class="bg-white rounded-apple-lg p-6 mb-6 border border-apple-blue/20">
-                        <h3 class="font-display font-semibold text-sm text-text mb-3">Identitas Peminjam</h3>
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 bg-apple-blue rounded-full flex items-center justify-center text-2xl font-display font-semibold text-white flex-shrink-0">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                            </div>
+                {{-- Scan Result --}}
+                <div id="scan-result" class="mt-4 hidden">
+                    <div class="glass rounded-glass-sm border-emerald-400/30 px-4 py-3 font-body text-sm text-emerald-300">
+                        ISBN terdeteksi: <span id="scan-result-text" class="font-mono"></span>
+                    </div>
+                </div>
+
+                {{-- Manual Input + Options --}}
+                <div class="mt-6 pt-6 border-t border-white/10">
+                    <h4 class="font-display text-sm text-white mb-3">Atau Input Manual</h4>
+                    <form id="borrow-form" method="POST" action="{{ route('loans.borrow.store') }}">
+                        @csrf
+                        <div class="flex gap-2">
+                            <input type="text" id="isbn" name="isbn"
+                                   class="glass-input flex-1 font-mono"
+                                   placeholder="Masukkan ISBN..."
+                                   autocomplete="off">
+                            <button type="submit" class="glass-btn-primary whitespace-nowrap">Pinjam</button>
+                        </div>
+
+                        {{-- Opsi Peminjaman --}}
+                        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5"
+                             x-data="loanOptions({{ old('duration_days', 7) }}, {{ old('denda_per_day', 500) }})">
                             <div>
-                                <p class="font-display font-semibold text-lg text-text">{{ Auth::user()->name }}</p>
-                                @if (Auth::user()->nisn)
-                                    <p class="font-mono text-sm text-text-tertiary">NISN: {{ Auth::user()->nisn }}</p>
+                                <label class="block font-body text-xs font-medium text-white/60 mb-2">Durasi Peminjaman</label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <template x-for="opt in durations" :key="opt">
+                                        <button type="button" @click="duration = opt"
+                                                class="rounded-glass-sm px-3 py-2.5 text-sm font-medium border transition-all duration-150"
+                                                :class="duration === opt
+                                                    ? 'border-primary/60 bg-primary/20 text-white shadow-glow font-semibold'
+                                                    : 'border-white/10 bg-white/[0.04] text-white/50 hover:bg-white/[0.08] hover:text-white'">
+                                            <span x-text="opt"></span> Hari
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-body text-xs font-medium text-white/60 mb-2">Denda Keterlambatan <span class="text-white/35">/hari</span></label>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <template x-for="rate in rates" :key="rate">
+                                        <button type="button" @click="denda = rate"
+                                                class="rounded-glass-sm px-3 py-2.5 text-sm font-medium border transition-all duration-150"
+                                                :class="denda === rate
+                                                    ? 'border-rose-400/60 bg-rose-500/15 text-white shadow-glow font-semibold'
+                                                    : 'border-white/10 bg-white/[0.04] text-white/50 hover:bg-white/[0.08] hover:text-white'">
+                                            <span x-text="'Rp ' + rate.toLocaleString('id-ID')"></span>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div class="sm:col-span-2 glass-inset rounded-glass-sm px-4 py-3 flex items-center gap-3">
+                                <span class="text-xl">ℹ️</span>
+                                <p class="font-body text-xs text-white/55 leading-relaxed">
+                                    Peminjaman <span class="text-white font-medium" x-text="duration"></span> hari —
+                                    harus dikembalikan sebelum <span class="text-white font-medium" x-text="new Date(Date.now() + duration * 864e5).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })"></span>.
+                                    Denda <span class="text-rose-300 font-medium" x-text="'Rp ' + denda.toLocaleString('id-ID')"></span>/hari bila telat.
+                                </p>
+                            </div>
+
+                            <input type="hidden" name="duration_days" :value="duration">
+                            <input type="hidden" name="denda_per_day" :value="denda">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {{-- Available Books --}}
+        <div>
+            <div class="glass p-6 h-full">
+                <h3 class="font-display font-semibold text-lg text-white mb-1">Buku Tersedia</h3>
+                <p class="font-body text-sm text-white/40 mb-4">Pilih buku untuk diisi otomatis</p>
+                @if ($books->isEmpty())
+                    <div class="text-center py-10">
+                        <div class="text-4xl mb-3">📭</div>
+                        <p class="font-body text-sm text-white/40">Tidak ada buku tersedia</p>
+                    </div>
+                @else
+                    <div class="space-y-2 max-h-[640px] overflow-y-auto pr-1">
+                        @foreach ($books as $book)
+                            <div class="glass-inset rounded-glass-sm p-3 flex items-center gap-3 hover:bg-white/[0.07] transition-all duration-150 cursor-pointer book-card">
+                                @if ($book->cover_image)
+                                    <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
+                                @else
+                                    <div class="h-12 w-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-lg flex-shrink-0">📖</div>
                                 @endif
-                                <p class="text-xs text-text-tertiary">{{ Auth::user()->email }}</p>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-display font-medium text-sm text-white truncate">{{ $book->title }}</p>
+                                    <p class="font-body text-xs text-white/40">{{ $book->author }} · Stok: {{ $book->stock }}</p>
+                                </div>
+                                <button type="button" data-isbn="{{ $book->isbn }}" class="glass-btn-secondary text-xs py-1.5 px-3 flex-shrink-0 book-select-btn">Pilih</button>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-
-                    <div class="bg-white rounded-apple-lg p-6">
-                        <h3 class="font-display font-semibold text-lg text-text mb-2">Scan QR Code</h3>
-                        <p class="text-sm text-text-tertiary mb-6">Aktifkan kamera lalu arahkan ke QR Code buku untuk meminjam.</p>
-
-                        {{-- Scan Area --}}
-                        <div id="scan-area" class="bg-surface-light border border-surface-lighter p-8 text-center relative overflow-hidden scan-pulse rounded-apple-lg">
-                            <div id="reader" class="w-full hidden" style="height: 70vh;"></div>
-                            <div id="scan-placeholder">
-                                <div class="text-5xl mb-4">📷</div>
-                                <p class="font-display font-semibold text-text text-lg">Menunggu Scanner...</p>
-                                <p class="text-sm text-text-tertiary mt-1">Klik tombol di bawah untuk mulai</p>
-                            </div>
-                        </div>
-
-                        {{-- Action Buttons --}}
-                        <div class="mt-6 flex gap-3">
-                            <button type="button" id="btn-start-camera" class="apple-btn-primary flex-1 flex items-center justify-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                                Siap Scan
-                            </button>
-                            <button type="button" id="btn-stop-camera" class="apple-btn-danger hidden flex-1">
-                                Matikan Kamera
-                            </button>
-                        </div>
-
-                        {{-- Scan Result --}}
-                        <div id="scan-result" class="mt-4 hidden">
-                            <div class="bg-apple-blue text-white px-4 py-3 font-display text-sm rounded-apple-lg">
-                                Tergagal! ISBN: <span id="scan-result-text" class="font-mono"></span>
-                            </div>
-                        </div>
-
-                        {{-- Manual Input --}}
-                        <div class="mt-6 border-t border-surface-lighter pt-6">
-                            <h4 class="font-display text-sm text-text mb-3">Atau Input Manual</h4>
-                            <form id="borrow-form" method="POST" action="{{ route('loans.borrow.store') }}" class="flex gap-2">
-                                @csrf
-                                <input type="text" id="isbn" name="isbn"
-                                       class="apple-input flex-1"
-                                       placeholder="Masukkan ISBN..."
-                                       autocomplete="off">
-                                <button type="submit" class="apple-btn-primary whitespace-nowrap">Pinjam</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Available Books --}}
-                <div class="lg:col-span-1">
-                    <div class="bg-white rounded-apple-lg p-6 h-full">
-                        <h3 class="font-display font-semibold text-lg text-text mb-4">Buku Tersedia</h3>
-                        @if ($books->isEmpty())
-                            <div class="text-center py-8">
-                                <div class="text-4xl mb-3">📭</div>
-                                <p class="text-sm text-text-tertiary">Tidak ada buku tersedia</p>
-                            </div>
-                        @else
-                            <div class="space-y-2 max-h-[600px] overflow-y-auto pr-1">
-                                @foreach ($books as $book)
-                                    <div class="bg-surface-light rounded-apple-md p-3 flex items-center gap-3 hover:bg-surface-lighter transition-colors duration-100 cursor-pointer book-card">
-                                        @if ($book->cover_image)
-                                            <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-12 w-9 object-cover rounded-apple-sm flex-shrink-0">
-                                        @else
-                                            <div class="h-12 w-9 bg-surface-lighter rounded-apple-sm flex items-center justify-center text-lg flex-shrink-0">📖</div>
-                                        @endif
-                                        <div class="flex-1 min-w-0">
-                                            <p class="font-display font-semibold text-sm text-text truncate">{{ $book->title }}</p>
-                                            <p class="text-xs text-text-tertiary">{{ $book->author }} · Stok: {{ $book->stock }}</p>
-                                        </div>
-                                        <button type="button" data-isbn="{{ $book->isbn }}" class="apple-btn-secondary text-xs py-1 px-2 flex-shrink-0 book-select-btn">Pilih</button>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                </div>
-
+                @endif
             </div>
         </div>
     </div>
@@ -163,8 +195,8 @@
                         scanResult.classList.remove('hidden');
                         scanResultText.textContent = decodedText;
                         scanArea.classList.remove('scan-pulse');
-                        scanArea.classList.remove('bg-surface-light');
-                        scanArea.classList.add('bg-apple-blue');
+                        scanArea.classList.remove('glass-inset');
+                        scanArea.classList.add('border-emerald-400/40');
                         html5QrCode.stop().then(function () {
                             readerDiv.classList.add('hidden');
                             scanPlaceholder.classList.remove('hidden');
@@ -182,8 +214,8 @@
                 readerDiv.style.height = '70vh';
                 scanPlaceholder.classList.add('hidden');
                 scanArea.classList.add('scan-pulse');
-                scanArea.classList.remove('bg-apple-blue');
-                scanArea.classList.add('bg-surface-light');
+                scanArea.classList.add('glass-inset');
+                scanArea.classList.remove('border-emerald-400/40');
                 btnStart.classList.add('hidden');
                 btnStop.classList.remove('hidden');
                 scanResult.classList.add('hidden');
@@ -197,7 +229,10 @@
                         icon: 'error',
                         title: 'Kamera Gagal',
                         html: 'Tidak bisa mengakses kamera.<br><br><small>Pastikan:<br>1. Browser diizinkan akses kamera<br>2. Kamera tidak dipakai aplikasi lain<br>3. Gunakan HTTPS</small>',
-                        confirmButtonColor: '#E5484D'
+                        confirmButtonColor: '#fb5e63',
+                        background: '#0b1220',
+                        color: '#ffffff',
+                        customClass: { popup: 'rounded-2xl border border-white/10' }
                     });
                     readerDiv.classList.add('hidden');
                     scanPlaceholder.classList.remove('hidden');
@@ -220,6 +255,7 @@
             document.querySelectorAll('.book-select-btn').forEach(function (btn) {
                 btn.addEventListener('click', function () {
                     isbnInput.value = btn.dataset.isbn;
+                    window.toast('ISBN diisi: ' + btn.dataset.isbn, 'info');
                 });
             });
         });

@@ -53,7 +53,68 @@ class LoanController extends Controller
             $query->where('loan_date', '<=', $request->date_to);
         }
 
-        $loans = $query->latest()->paginate(15)->withQueryString();
+        $loans = $query->latest()->get();
+
+        $isStaff = $request->user()->isStaff();
+        $isAdmin = $request->user()->isAdmin();
+
+        $loansData = $loans->map(function (Loan $loan) use ($isStaff) {
+            $statusKey = $loan->isReturned()
+                ? ($loan->denda > 0 ? 'returned_late' : 'returned_ontime')
+                : ($loan->isOverdue() ? 'overdue' : 'active');
+
+            $statusLabel = $loan->isReturned()
+                ? ($loan->denda > 0 ? 'Telat' : 'Tepat')
+                : ($loan->isOverdue() ? 'Terlambat' : 'Dipinjam');
+
+            $statusDetail = $loan->isReturned()
+                ? ''
+                : ($loan->getDaysLate() > 0 ? $loan->getDaysLate() . 'h' : '');
+
+            $statusBadge = match ($statusKey) {
+                'returned_ontime' => 'green',
+                'returned_late', 'overdue' => 'red',
+                default => 'yellow',
+            };
+
+            $dendaText = '-';
+            $dendaSub = '';
+            $dendaAction = null;
+            if ($loan->denda > 0) {
+                $dendaText = 'Rp' . number_format($loan->denda, 0, ',', '.');
+                $dendaSub = $loan->status_denda === 'lunas' ? 'Lunas' : 'Belum bayar';
+                if ($loan->status_denda === 'belum_bayar' && $isStaff) {
+                    $dendaAction = route('loans.pay-denda', $loan);
+                }
+            } elseif (!$loan->isReturned() && $loan->isOverdue()) {
+                $dendaText = 'Rp' . number_format($loan->getPotentialDenda(), 0, ',', '.');
+                $dendaSub = 'Rp' . number_format($loan->getDendaPerDay(), 0, ',', '.') . '/hari';
+            }
+
+            return [
+                'id' => $loan->id,
+                'book_title' => $loan->book->title ?? '-',
+                'isbn' => $loan->book->isbn ?? '-',
+                'cover_image' => $loan->book->cover_image ? asset($loan->book->cover_image) : null,
+                'borrower_name' => $loan->user->name ?? '-',
+                'borrower_nisn' => $loan->user->nisn ?? '-',
+                'user_url' => $isStaff && $loan->user ? route('users.show', $loan->user) : null,
+                'loan_date' => $loan->loan_date->format('d/m/Y'),
+                'loan_date_iso' => $loan->loan_date->format('Y-m-d'),
+                'duration_days' => $loan->duration_days,
+                'due_date' => $loan->due_date->format('d/m/Y'),
+                'returned_at' => $loan->returned_at ? $loan->returned_at->format('d/m/Y') : '-',
+                'status_key' => $statusKey,
+                'status_label' => $statusLabel,
+                'status_detail' => $statusDetail,
+                'status_badge' => $statusBadge,
+                'denda_text' => $dendaText,
+                'denda_sub' => $dendaSub,
+                'denda_action' => $dendaAction,
+                'processor_name' => $loan->processor->name ?? '-',
+                'processed_at' => $loan->returned_at ? $loan->returned_at->format('d/m H:i') : '',
+            ];
+        })->values();
 
         $statsQuery = Loan::query();
         if (!$request->user()->isStaff()) {
@@ -65,7 +126,7 @@ class LoanController extends Controller
             ->count();
         $activeCount = (clone $statsQuery)->whereNull('returned_at')->count();
 
-        return view('loans.index', compact('loans', 'totalThisMonth', 'activeCount'));
+        return view('loans.index', compact('loans', 'loansData', 'totalThisMonth', 'activeCount', 'isStaff', 'isAdmin'));
     }
 
     public function createBorrow()
@@ -78,7 +139,13 @@ class LoanController extends Controller
     {
         $request->validate([
             'isbn' => 'required|string',
+            'duration_days' => 'required|integer|between:1,90',
+            'denda_per_day' => 'required|integer|between:0,100000',
         ]);
+
+        $durationDays = (int) $request->duration_days;
+        $dendaPerDay = (int) $request->denda_per_day;
+        $dueDate = Carbon::today()->addDays($durationDays);
 
         $book = Book::where('isbn', $request->isbn)->first();
 
@@ -96,7 +163,7 @@ class LoanController extends Controller
             ])->withInput();
         }
 
-        return DB::transaction(function () use ($request, $book) {
+        return DB::transaction(function () use ($request, $book, $dueDate, $durationDays, $dendaPerDay) {
             $user = User::whereKey($request->user()->id)->lockForUpdate()->first();
             $book = Book::where('isbn', $book->isbn)->lockForUpdate()->first();
 
@@ -137,13 +204,15 @@ class LoanController extends Controller
                 'user_id' => $request->user()->id,
                 'book_id' => $book->id,
                 'loan_date' => Carbon::today(),
-                'due_date' => Carbon::today()->addDays(7),
+                'due_date' => $dueDate,
+                'duration_days' => $durationDays,
+                'denda_per_day' => $dendaPerDay,
             ]);
 
             $book->decrement('stock');
 
             return redirect()->route('loans.index')
-                             ->with('success', 'Buku "' . $book->title . '" berhasil dipinjam. Harus dikembalikan pada ' . Carbon::today()->addDays(7)->format('d/m/Y') . '.');
+                             ->with('success', 'Buku "' . $book->title . '" berhasil dipinjam selama ' . $durationDays . ' hari. Harus dikembalikan pada ' . $dueDate->format('d/m/Y') . '. Denda keterlambatan Rp' . number_format($dendaPerDay, 0, ',', '.') . '/hari.');
         });
     }
 
@@ -182,6 +251,7 @@ class LoanController extends Controller
             'due_date' => $loan->due_date->format('d/m/Y'),
             'days_late' => $loan->getDaysLate(),
             'potential_denda' => $loan->getPotentialDenda(),
+            'denda_per_day' => $loan->getDendaPerDay(),
             'is_overdue' => $loan->isOverdue(),
         ]);
     }
@@ -217,7 +287,7 @@ class LoanController extends Controller
         }
 
         $daysLate = $loan->getDaysLate();
-        $denda = Loan::calculateDenda($daysLate);
+        $denda = Loan::calculateDenda($daysLate, $loan->getDendaPerDay());
 
         $loan->update([
             'returned_at' => Carbon::today(),

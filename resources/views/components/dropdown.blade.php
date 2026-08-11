@@ -1,4 +1,4 @@
-@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white'])
+@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1'])
 
 @php
 switch ($align) {
@@ -18,6 +18,9 @@ switch ($width) {
     case '48':
         $width = 'w-48';
         break;
+    case '56':
+        $width = 'w-56';
+        break;
 }
 @endphp
 
@@ -33,10 +36,10 @@ switch ($width) {
             x-transition:leave="transition ease-in duration-75"
             x-transition:leave-start="opacity-100 scale-100"
             x-transition:leave-end="opacity-0 scale-95"
-            class="absolute z-50 mt-2 {{ $width }} rounded-apple shadow-apple-raised {{ $alignmentClasses }}"
+            class="absolute z-50 mt-2 {{ $width }} rounded-glass {{ $alignmentClasses }}"
             style="display: none;"
             @click="open = false">
-        <div class="rounded-apple {{ $contentClasses }}">
+        <div class="rounded-glass overflow-hidden {{ $contentClasses }} bg-night/80 border border-white/10 backdrop-blur-2xl shadow-glass-lg">
             {{ $content }}
         </div>
     </div>

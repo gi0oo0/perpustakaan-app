@@ -7,24 +7,48 @@
 
         <title>{{ config('app.name', 'Perpustakaan') }}</title>
 
+        <script>
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.classList.add('light');
+            }
+        </script>
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
-    <body class="antialiased bg-surface-light text-text">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-            <div class="mb-apple-xl text-center">
-                <div class="w-16 h-16 bg-surface-light mx-auto flex items-center justify-center text-3xl mb-4 rounded-full">📚</div>
-                <h1 class="font-display text-4xl text-text tracking-tight">
-                    Perpustakaan
-                </h1>
-                <p class="font-body text-body-sm text-text-tertiary mt-2">Sistem Manajemen Peminjaman Buku</p>
+    <body class="antialiased text-white bg-night min-h-screen">
+        <div class="relative min-h-screen overflow-x-clip">
+            {{-- Aurora background --}}
+            <div class="fixed inset-0 -z-10 bg-night overflow-hidden" aria-hidden="true">
+                <div class="absolute -top-44 -left-32 w-[38rem] h-[38rem] rounded-full bg-primary/30 blur-[130px] animate-float"></div>
+                <div class="absolute top-1/3 -right-44 w-[34rem] h-[34rem] rounded-full bg-accent/20 blur-[130px] animate-float-slow"></div>
+                <div class="absolute bottom-[-10rem] left-1/4 w-[30rem] h-[30rem] rounded-full bg-violet/25 blur-[140px] animate-float-fast"></div>
+
+                <div class="aurora-grid absolute inset-0 opacity-[0.035]"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-night/85"></div>
             </div>
 
-            <div class="w-full sm:max-w-md px-apple-lg py-apple-xl bg-white rounded-apple-lg border border-text/10 shadow-apple">
-                {{ $slot }}
+            <div class="min-h-screen flex flex-col items-center justify-center px-4 py-10">
+                {{-- Brand --}}
+                <div class="mb-8 text-center animate-fade-up">
+                    <div class="w-16 h-16 mx-auto flex items-center justify-center text-3xl rounded-2xl bg-gradient-soft shadow-glow mb-4">
+                        📚
+                    </div>
+                    <h1 class="font-display text-3xl font-bold tracking-tight text-gradient">
+                        Perpustakaan
+                    </h1>
+                    <p class="font-body text-sm text-white/45 mt-2">Sistem Manajemen Peminjaman Buku</p>
+                </div>
+
+                <div class="w-full sm:max-w-md glass px-8 py-8 animate-fade-up" style="animation-delay: 100ms;">
+                    {{ $slot }}
+                </div>
+
+                <p class="mt-8 font-body text-xs text-white/30">© {{ date('Y') }} Sistem Manajemen Perpustakaan</p>
             </div>
         </div>
     </body>

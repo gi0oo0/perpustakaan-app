@@ -33,10 +33,61 @@ class BookController extends Controller
             }
         }
 
-        $books = $query->latest()->paginate(12)->withQueryString();
+        $books = $query->latest()->get();
         $kategoriList = Book::getKategoriList();
 
-        return view('books.index', compact('books', 'kategoriList'));
+        $booksJson = $books->map(function (Book $b) {
+            return [
+                'id' => $b->id,
+                'title' => $b->title,
+                'author' => $b->author,
+                'isbn' => $b->isbn,
+                'publisher' => $b->publisher,
+                'publication_year' => $b->publication_year,
+                'kategori' => $b->kategori,
+                'stock' => $b->stock,
+                'available' => $b->stock > 0,
+                'description' => $b->description,
+                'cover_image' => $b->cover_image ? asset($b->cover_image) : null,
+                'url' => route('books.show', $b),
+                'edit_url' => route('books.edit', $b),
+                'borrow_url' => route('loans.borrow.create'),
+            ];
+        })->values();
+
+        return view('books.index', compact('books', 'kategoriList', 'booksJson'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = Book::query();
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($qq) use ($q) {
+                $qq->where('title', 'like', "%{$q}%")
+                   ->orWhere('author', 'like', "%{$q}%")
+                   ->orWhere('isbn', 'like', "%{$q}%")
+                   ->orWhere('kategori', 'like', "%{$q}%");
+            });
+        }
+
+        return response()->json(
+            $query->latest()->take(20)->get()->map(function (Book $b) {
+                return [
+                    'id' => $b->id,
+                    'title' => $b->title,
+                    'author' => $b->author,
+                    'isbn' => $b->isbn,
+                    'kategori' => $b->kategori,
+                    'stock' => $b->stock,
+                    'available' => $b->stock > 0,
+                    'cover_image' => $b->cover_image ? asset($b->cover_image) : null,
+                    'url' => route('books.show', $b),
+                    'borrow_url' => route('loans.borrow.create'),
+                ];
+            })
+        );
     }
 
     public function create()

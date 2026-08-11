@@ -19,6 +19,8 @@ class Loan extends Model
         'book_id',
         'loan_date',
         'due_date',
+        'duration_days',
+        'denda_per_day',
         'returned_at',
         'denda',
         'status_denda',
@@ -29,6 +31,8 @@ class Loan extends Model
         'loan_date' => 'date',
         'due_date' => 'date',
         'returned_at' => 'date',
+        'duration_days' => 'integer',
+        'denda_per_day' => 'integer',
     ];
 
     public function user()
@@ -64,14 +68,20 @@ class Loan extends Model
         return max(0, Carbon::today()->diffInDays($this->due_date, false) * -1);
     }
 
-    public static function calculateDenda(int $daysLate): int
+    public function getDendaPerDay(): int
     {
-        return min($daysLate * self::TARIF_DENDA_PER_HARI, self::MAX_DENDA);
+        return $this->denda_per_day ?: self::TARIF_DENDA_PER_HARI;
+    }
+
+    public static function calculateDenda(int $daysLate, ?int $rate = null): int
+    {
+        $rate = $rate ?: self::TARIF_DENDA_PER_HARI;
+        return min($daysLate * $rate, self::MAX_DENDA);
     }
 
     public function getPotentialDenda(): int
     {
-        return self::calculateDenda($this->getDaysLate());
+        return self::calculateDenda($this->getDaysLate(), $this->getDendaPerDay());
     }
 
     public function getStatusLabelAttribute(): string
