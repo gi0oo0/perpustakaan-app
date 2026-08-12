@@ -36,7 +36,7 @@
                         @if($user->profile_image)
                             <img src="{{ $user->profile_image_url }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
                         @else
-                            <span class="text-3xl font-display font-bold text-white">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                            <span class="text-2xl sm:text-3xl font-display font-bold text-white">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
                         @endif
                     </div>
                     <h2 class="font-display text-xl font-semibold text-white">{{ $user->name }}</h2>

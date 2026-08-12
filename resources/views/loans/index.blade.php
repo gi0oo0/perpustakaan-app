@@ -31,12 +31,12 @@
                 <div class="flex items-center gap-6">
                     <div>
                         <p class="font-body text-xs text-white/40">Total bulan ini</p>
-                        <p class="font-display text-2xl font-bold text-white"><span x-data="countUp" data-count="{{ $totalThisMonth }}" x-text="displayed"></span></p>
+                        <p class="font-display text-xl sm:text-2xl font-bold text-white"><span x-data="countUp" data-count="{{ $totalThisMonth }}" x-text="displayed"></span></p>
                     </div>
                     <div class="w-px h-10 bg-white/10"></div>
                     <div>
                         <p class="font-body text-xs text-white/40">Masih dipinjam</p>
-                        <p class="font-display text-2xl font-bold text-sky-300"><span x-data="countUp" data-count="{{ $activeCount }}" x-text="displayed"></span></p>
+                        <p class="font-display text-xl sm:text-2xl font-bold text-sky-300"><span x-data="countUp" data-count="{{ $activeCount }}" x-text="displayed"></span></p>
                     </div>
                 </div>
                 <span class="glass-badge-gray hidden sm:inline-flex">Riwayat lengkap transaksi</span>

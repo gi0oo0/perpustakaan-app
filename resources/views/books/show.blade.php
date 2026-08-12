@@ -42,7 +42,7 @@
                     @endif
                 </div>
 
-                <h1 class="font-display text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
+                <h1 class="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
                     {{ $book->title }}
                 </h1>
                 <p class="font-body text-lg text-violet-300 font-medium mt-2">{{ $book->author }}</p>
