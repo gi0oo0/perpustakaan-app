@@ -7,7 +7,7 @@
                 </h2>
                 <p class="font-body text-sm text-white/45 mt-1">Jelajahi dan kelola koleksi perpustakaan</p>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
                 @if (Auth::user()->isAdmin())
                     <a href="{{ route('books.import') }}" class="glass-btn-secondary">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
@@ -181,7 +181,7 @@
                     </div>
 
                     <div class="min-w-0">
-                        <h3 class="font-display text-2xl font-bold text-white leading-snug" x-text="$store.bookPreview.data.title"></h3>
+                        <h3 class="font-display text-xl sm:text-2xl font-bold text-white leading-snug" x-text="$store.bookPreview.data.title"></h3>
                         <p class="font-body text-violet-300 font-medium mt-1" x-text="$store.bookPreview.data.author"></p>
 
                         <div class="grid grid-cols-2 gap-4 mt-6">

@@ -77,7 +77,7 @@
                         <div id="denda-warning" class="mt-4 hidden">
                             <div class="rounded-glass-sm border border-rose-400/30 bg-rose-500/10 px-4 py-3">
                                 <p class="font-display text-sm font-semibold text-rose-300">TERLAMBAT! <span id="days-late-text">-</span></p>
-                                <p class="font-display text-xl font-bold text-rose-300 mt-1">Denda: Rp <span id="denda-amount">0</span></p>
+                                <p class="font-display text-lg sm:text-xl font-bold text-rose-300 mt-1">Denda: Rp <span id="denda-amount">0</span></p>
                                 <p class="font-body text-xs text-white/40 mt-1" id="denda-rate-text">Tarif: Rp500/hari</p>
                             </div>
                         </div>

@@ -15,7 +15,7 @@
     <div class="glass overflow-hidden" x-data="reveal">
         <div class="grid grid-cols-1 lg:grid-cols-5">
             {{-- Cover --}}
-            <div class="lg:col-span-2 p-8 lg:border-r border-white/[0.07] flex items-center justify-center bg-white/[0.02]">
+            <div class="lg:col-span-2 p-5 sm:p-8 lg:border-r border-white/[0.07] flex items-center justify-center bg-white/[0.02]">
                 @if ($book->cover_url)
                     <div class="relative group">
                         <div class="absolute inset-0 bg-primary/20 blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
@@ -30,7 +30,7 @@
             </div>
 
             {{-- Details --}}
-            <div class="lg:col-span-3 p-8">
+            <div class="lg:col-span-3 p-5 sm:p-8">
                 <div class="flex items-center gap-2 mb-3">
                     @if ($book->kategori)
                         <span class="glass-badge-violet">{{ $book->kategori }}</span>

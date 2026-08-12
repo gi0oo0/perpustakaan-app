@@ -119,7 +119,7 @@
                         <template x-for="loan in filtered" :key="loan.id">
                             <tr>
                                 <td>
-                                    <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
                                         <template x-if="loan.cover_image">
                                             <img :src="loan.cover_image" alt="" class="h-10 w-8 object-cover rounded-md border border-white/10">
                                         </template>

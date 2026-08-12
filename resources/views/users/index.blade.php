@@ -77,7 +77,7 @@
                             <tr>
                                 <td class="font-mono text-xs text-white/60" x-text="u.nisn || '-'"></td>
                                 <td>
-                                    <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
                                         <template x-if="u.profile_image">
                                             <img :src="u.profile_image" :alt="u.name" class="w-9 h-9 rounded-full object-cover border border-white/10 flex-shrink-0">
                                         </template>
