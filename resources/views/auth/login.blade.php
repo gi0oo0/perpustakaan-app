@@ -1,9 +1,9 @@
 <x-guest-layout>
-    <div class="mb-8 text-center">
-        <div class="w-16 h-16 mx-auto rounded-2xl shadow-glow mb-4 overflow-hidden">
+    <div class="mb-6 sm:mb-8 text-center">
+        <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto rounded-2xl shadow-glow mb-3 sm:mb-4 overflow-hidden">
             <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-full h-full object-cover">
         </div>
-        <h2 class="font-display text-2xl font-bold tracking-tight text-white">Selamat Datang</h2>
+        <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-white">Selamat Datang</h2>
         <p class="font-body text-sm text-white/45 mt-1.5">Masuk ke akun perpustakaan Anda</p>
     </div>
 

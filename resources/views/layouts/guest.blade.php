@@ -36,16 +36,16 @@
             <div class="min-h-screen flex flex-col items-center justify-center px-4 py-10">
                 {{-- Brand --}}
                 <div class="mb-8 text-center animate-fade-up">
-                    <div class="w-20 h-20 mx-auto rounded-2xl shadow-glow mb-4 overflow-hidden">
+                    <div class="w-14 h-14 sm:w-20 sm:h-20 mx-auto rounded-2xl shadow-glow mb-3 sm:mb-4 overflow-hidden">
                         <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-full h-full object-cover">
                     </div>
-                    <h1 class="font-display text-3xl font-bold tracking-tight text-gradient">
+                    <h1 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">
                         Perpustakaan
                     </h1>
                     <p class="font-body text-sm text-white/45 mt-2">Sistem Manajemen Peminjaman Buku</p>
                 </div>
 
-                <div class="w-full sm:max-w-md glass px-8 py-8 animate-fade-up" style="animation-delay: 100ms;">
+                <div class="w-full sm:max-w-md glass px-5 py-6 sm:px-8 sm:py-8 animate-fade-up" style="animation-delay: 100ms;">
                     {{ $slot }}
                 </div>
 
