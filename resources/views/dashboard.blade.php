@@ -38,7 +38,7 @@
                                 <p class="font-body text-xs font-medium uppercase tracking-wider text-white/40">{{ $stat['label'] }}</p>
                                 <p x-data="countUp"
                                    data-count="{{ $stat['value'] }}"
-                                   class="font-display text-3xl font-bold mt-2 tabular-nums"
+                                   class="font-display text-2xl sm:text-3xl font-bold mt-2 tabular-nums"
                                    x-text="displayed.toLocaleString('id-ID')"></p>
                             </div>
                             <span class="w-11 h-11 rounded-glass-sm flex items-center justify-center text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
@@ -167,7 +167,7 @@
                                 <p class="font-body text-xs font-medium uppercase tracking-wider text-white/40">{{ $stat['label'] }}</p>
                                 <p x-data="countUp"
                                    data-count="{{ $stat['value'] }}"
-                                   class="font-display text-3xl font-bold mt-2 tabular-nums"
+                                   class="font-display text-2xl sm:text-3xl font-bold mt-2 tabular-nums"
                                    x-text="'{{ $stat['money'] ? 'Rp ' : '' }}' + displayed.toLocaleString('id-ID')"></p>
                             </div>
                             <span class="w-11 h-11 rounded-glass-sm flex items-center justify-center text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
