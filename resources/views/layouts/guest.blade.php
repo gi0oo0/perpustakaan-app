@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Perpustakaan') }}</title>
+        <title>{{ config('app.name', 'Perpustakaan Sekolah') }}</title>
+        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
         <script>
             if (localStorage.getItem('theme') === 'light') {
@@ -35,8 +36,8 @@
             <div class="min-h-screen flex flex-col items-center justify-center px-4 py-10">
                 {{-- Brand --}}
                 <div class="mb-8 text-center animate-fade-up">
-                    <div class="w-16 h-16 mx-auto flex items-center justify-center text-3xl rounded-2xl bg-gradient-soft shadow-glow mb-4">
-                        📚
+                    <div class="w-20 h-20 mx-auto rounded-2xl shadow-glow mb-4 overflow-hidden">
+                        <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-full h-full object-cover">
                     </div>
                     <h1 class="font-display text-3xl font-bold tracking-tight text-gradient">
                         Perpustakaan

@@ -6,6 +6,15 @@
                 <p class="font-body text-sm text-white/45 mt-1">Informasi lengkap pengguna</p>
             </div>
             <div class="flex items-center gap-3">
+                @if($user->isMember())
+                    <form method="POST" action="{{ route('users.reset-password', $user) }}" onsubmit="return confirmReset(event, this)">
+                        @csrf
+                        <button type="submit" class="glass-btn-danger" title="Set password sama dengan NISN">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
+                            Reset Password
+                        </button>
+                    </form>
+                @endif
                 <a href="{{ route('users.edit', $user) }}" class="glass-btn-secondary">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     Edit
@@ -23,8 +32,12 @@
         <div>
             <div class="glass p-6">
                 <div class="flex flex-col items-center text-center">
-                    <div class="w-20 h-20 rounded-2xl bg-gradient-soft flex items-center justify-center mb-4 shadow-glow">
-                        <span class="text-3xl font-display font-bold text-white">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                    <div class="w-20 h-20 rounded-full bg-gradient-soft flex items-center justify-center mb-4 shadow-glow overflow-hidden">
+                        @if($user->profile_image)
+                            <img src="{{ $user->profile_image_url }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                        @else
+                            <span class="text-3xl font-display font-bold text-white">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                        @endif
                     </div>
                     <h2 class="font-display text-xl font-semibold text-white">{{ $user->name }}</h2>
                     <p class="font-body text-sm text-white/45 mt-1">{{ $user->email }}</p>

@@ -38,6 +38,7 @@ class Book extends Model
             'Komik' => 'Komik',
             'Novel' => 'Novel',
             'Biografi' => 'Biografi',
+            'Pengembangan Diri' => 'Pengembangan Diri',
             'Lainnya' => 'Lainnya',
         ];
     }

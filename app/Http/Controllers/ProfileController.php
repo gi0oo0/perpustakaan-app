@@ -26,15 +26,51 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $validated = $request->validated();
+
+        if ($user->isMember()) {
+            unset($validated['nisn']);
         }
 
-        $request->user()->save();
+        $user->fill($validated);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        if ($request->boolean('remove_profile_image') && $user->profile_image) {
+            $this->deleteProfileImage($user->profile_image);
+            $user->profile_image = null;
+        }
+
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $destinationPath = 'images/profiles/';
+            $filename = 'profile_' . $user->id . '_' . date('YmdHis') . '.' . $image->guessExtension();
+
+            $this->deleteProfileImage($user->profile_image);
+
+            $image->move(public_path($destinationPath), $filename);
+            $user->profile_image = $destinationPath . $filename;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    private function deleteProfileImage(?string $image): void
+    {
+        if (!$image || !str_starts_with($image, 'images/profiles/')) {
+            return;
+        }
+
+        $path = public_path($image);
+        if (file_exists($path)) {
+            @unlink($path);
+        }
     }
 
     /**

@@ -22,9 +22,13 @@
         <div class="lg:col-span-2 space-y-6">
             {{-- Borrower Identity --}}
             <div class="glass p-6 flex items-center gap-4">
-                <span class="w-14 h-14 rounded-glass-sm bg-gradient-soft flex items-center justify-center text-xl font-display font-semibold text-white shadow-glow flex-shrink-0">
-                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                </span>
+                @if (Auth::user()->profile_image)
+                    <img src="{{ Auth::user()->profile_image_url }}" alt="{{ Auth::user()->name }}" class="w-14 h-14 rounded-glass-sm object-cover flex-shrink-0">
+                @else
+                    <span class="w-14 h-14 rounded-glass-sm bg-gradient-soft flex items-center justify-center text-xl font-display font-semibold text-white shadow-glow flex-shrink-0">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </span>
+                @endif
                 <div>
                     <p class="font-display font-semibold text-lg text-white">{{ Auth::user()->name }}</p>
                     <p class="font-body text-xs text-white/40">{{ Auth::user()->email }}</p>

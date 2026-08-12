@@ -17,6 +17,7 @@ class User extends Authenticatable
         'password',
         'role',
         'nisn',
+        'profile_image',
     ];
 
     protected $hidden = [
@@ -37,6 +38,16 @@ class User extends Authenticatable
     public function isStaff(): bool
     {
         return in_array($this->role, ['admin', 'staff']);
+    }
+
+    public function isMember(): bool
+    {
+        return $this->role === 'user';
+    }
+
+    public function getProfileImageUrlAttribute(): ?string
+    {
+        return $this->profile_image ? asset($this->profile_image) : null;
     }
 
     public function loans()

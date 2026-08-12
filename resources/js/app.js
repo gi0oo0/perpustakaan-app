@@ -311,4 +311,29 @@ window.confirmDelete = (event, form) => {
     return false;
 };
 
+window.confirmReset = (event, form) => {
+    event.preventDefault();
+    Swal.fire({
+        title: 'Reset password?',
+        text: 'Password akun ini akan diatur ulang sama dengan NISN anggota.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, reset',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#fb7185',
+        cancelButtonColor: '#334155',
+        background: '#0b1220',
+        color: '#ffffff',
+        reverseButtons: true,
+        customClass: {
+            popup: 'rounded-2xl border border-white/10',
+        },
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+    return false;
+};
+
 Alpine.start();

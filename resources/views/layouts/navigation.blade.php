@@ -31,7 +31,7 @@
             </button>
 
             <div class="lg:hidden flex items-center gap-2 flex-1">
-                <span class="text-xl">📚</span>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-7 h-7 rounded-lg object-cover">
                 <span class="font-display font-bold tracking-tight">Perpustakaan</span>
             </div>
 
@@ -116,9 +116,13 @@
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
                     <button class="flex items-center gap-2.5 p-1.5 pr-2 pl-1.5 rounded-glass-full hover:bg-white/[0.06] transition-all duration-200 group">
-                        <span class="w-8 h-8 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white shadow-glow">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                        </span>
+                        @if (Auth::user()->profile_image)
+                            <img src="{{ Auth::user()->profile_image_url }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover shadow-glow">
+                        @else
+                            <span class="w-8 h-8 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white shadow-glow">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </span>
+                        @endif
                         <span class="hidden sm:flex items-center gap-1.5">
                             <span class="font-body text-sm text-white/85 group-hover:text-white transition-colors">{{ Auth::user()->name }}</span>
                             <svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/70 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
@@ -199,7 +203,7 @@
     {{-- ===== Sidebar (desktop) ===== --}}
     <aside class="hidden lg:flex fixed inset-y-0 left-0 w-[264px] z-40 flex-col border-r border-white/[0.07] bg-night/55 backdrop-blur-2xl">
         <div class="flex items-center gap-3 px-6 h-16 border-b border-white/[0.07]">
-            <div class="w-10 h-10 rounded-glass-sm bg-gradient-soft flex items-center justify-center text-lg shadow-glow">📚</div>
+            <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-10 h-10 rounded-lg object-cover shadow-glow">
             <div>
                 <div class="font-display font-bold tracking-tight leading-none">Perpustakaan</div>
                 <div class="text-[11px] text-white/40 mt-1 font-medium">Sistem Manajemen</div>
@@ -277,7 +281,7 @@
            class="fixed inset-y-0 left-0 w-[280px] z-50 flex flex-col bg-night border-r border-white/10 shadow-glass-lg lg:hidden">
         <div class="flex items-center justify-between px-6 h-16 border-b border-white/[0.07]">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-glass-sm bg-gradient-soft flex items-center justify-center text-lg shadow-glow">📚</div>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-10 h-10 rounded-lg object-cover shadow-glow">
                 <span class="font-display font-bold tracking-tight">Perpustakaan</span>
             </div>
             <button @click="sidebarOpen = false" class="p-2 rounded-glass-sm text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors" aria-label="Tutup menu">
@@ -323,7 +327,11 @@
 
         <div class="px-4 py-4 border-t border-white/[0.07]">
             <div class="flex items-center gap-3 mb-3 px-1">
-                <span class="w-9 h-9 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                @if (Auth::user()->profile_image)
+                    <img src="{{ Auth::user()->profile_image_url }}" alt="{{ Auth::user()->name }}" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
+                @else
+                    <span class="w-9 h-9 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white flex-shrink-0">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                @endif
                 <div class="min-w-0">
                     <p class="font-body text-sm font-semibold text-white truncate">{{ Auth::user()->name }}</p>
                     <p class="font-body text-xs text-white/45 truncate">{{ Auth::user()->email }}</p>

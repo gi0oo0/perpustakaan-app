@@ -78,8 +78,13 @@
                                 <td class="font-mono text-xs text-white/60" x-text="u.nisn || '-'"></td>
                                 <td>
                                     <div class="flex items-center gap-3">
-                                        <span class="w-9 h-9 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white flex-shrink-0"
-                                              x-text="u.name ? u.name.charAt(0).toUpperCase() : '?'"></span>
+                                        <template x-if="u.profile_image">
+                                            <img :src="u.profile_image" :alt="u.name" class="w-9 h-9 rounded-full object-cover border border-white/10 flex-shrink-0">
+                                        </template>
+                                        <template x-if="!u.profile_image">
+                                            <span class="w-9 h-9 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white flex-shrink-0"
+                                                  x-text="u.name ? u.name.charAt(0).toUpperCase() : '?'"></span>
+                                        </template>
                                         <span class="font-medium text-white" x-text="u.name"></span>
                                     </div>
                                 </td>

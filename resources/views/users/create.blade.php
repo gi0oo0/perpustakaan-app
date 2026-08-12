@@ -14,10 +14,28 @@
 
     <div class="max-w-2xl mx-auto" x-data="reveal">
         <div class="glass p-6 sm:p-8">
-            <form action="{{ route('users.store') }}" method="POST">
+            <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="space-y-5">
+                    <div x-data="filePicker">
+                        <label class="block font-body text-xs font-medium text-white/70 mb-3">Foto Profil</label>
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gradient-soft flex items-center justify-center border border-white/10 shadow-glow">
+                                <svg class="w-7 h-7 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                            </div>
+                            <div class="flex-1">
+                                <label for="profile_image" class="glass-btn-secondary cursor-pointer inline-flex">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    Pilih Foto
+                                </label>
+                                <input id="profile_image" name="profile_image" type="file" accept="image/jpeg,image/png,image/gif" class="hidden" @change="onPick">
+                                <p class="font-body text-xs text-white/40 mt-2" x-text="fileName || 'JPG, PNG, atau GIF. Maks 2MB.'"></p>
+                                @error('profile_image') <p class="mt-1 font-body text-xs text-rose-300">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <div>
                         <label for="nisn" class="block font-body text-xs font-medium text-white/70 mb-2">NISN</label>
                         <input type="text" id="nisn" name="nisn" value="{{ old('nisn') }}" required

@@ -84,7 +84,7 @@
                             <tr>
                                 <td class="font-mono text-white">password</td>
                                 <td><span class="glass-badge-yellow">Opsional</span></td>
-                                <td class="text-white/55">Min. 8 karakter huruf + angka. Kosongkan = dibuat otomatis</td>
+                                <td class="text-white/55">Min. 8 karakter huruf + angka. Kosongkan = password default <code class="font-mono text-white/80">password</code></td>
                             </tr>
                         </tbody>
                     </table>

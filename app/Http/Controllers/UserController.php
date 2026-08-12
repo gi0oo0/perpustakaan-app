@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
@@ -23,6 +22,7 @@ class UserController extends Controller
                 'email' => $user->email,
                 'nisn' => $user->nisn,
                 'role' => $user->role,
+                'profile_image' => $user->profile_image_url,
                 'show_url' => route('users.show', $user),
                 'edit_url' => route('users.edit', $user),
                 'destroy_url' => route('users.destroy', $user),
@@ -45,15 +45,20 @@ class UserController extends Controller
             'nisn' => 'nullable|string|unique:users,nisn|max:255',
             'password' => ['required', 'confirmed', Password::defaults()],
             'role' => 'required|in:admin,staff,user',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'nisn' => $request->nisn,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
+
+        if ($request->hasFile('profile_image')) {
+            $user->update(['profile_image' => $this->storeProfileImage($request->file('profile_image'), $user)]);
+        }
 
         return redirect()->route('users.index')
                          ->with('success', 'Akun "' . $request->name . '" berhasil dibuat.');
@@ -82,6 +87,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'nisn' => 'nullable|string|unique:users,nisn,' . $user->id . '|max:255',
             'role' => 'required|in:admin,staff,user',
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data = [
@@ -98,6 +104,16 @@ class UserController extends Controller
 
         $user->update($data);
 
+        if ($request->boolean('remove_profile_image') && $user->profile_image) {
+            $this->deleteProfileImage($user->profile_image);
+            $user->profile_image = null;
+            $user->save();
+        }
+
+        if ($request->hasFile('profile_image')) {
+            $user->update(['profile_image' => $this->storeProfileImage($request->file('profile_image'), $user)]);
+        }
+
         return redirect()->route('users.index')
                          ->with('success', 'Akun "' . $user->name . '" berhasil diperbarui.');
     }
@@ -113,15 +129,59 @@ class UserController extends Controller
             return back()->with('error', 'Tidak dapat menghapus "' . $user->name . '" karena masih memiliki ' . $activeLoans . ' peminjaman aktif.');
         }
 
+        $this->deleteProfileImage($user->profile_image);
+
         $user->delete();
 
         return redirect()->route('users.index')
                          ->with('success', 'Akun "' . $user->name . '" berhasil dihapus.');
     }
 
+    public function resetPassword(User $user)
+    {
+        if (!$user->isMember()) {
+            return back()->with('error', 'Reset password hanya dapat dilakukan untuk akun anggota.');
+        }
+
+        if (!$user->nisn) {
+            return back()->with('error', 'Anggota ini tidak memiliki NISN. Reset password manual melalui menu Edit.');
+        }
+
+        $user->update(['password' => Hash::make($user->nisn)]);
+
+        return back()->with('success', 'Password "' . $user->name . '" berhasil direset. Password baru = NISN (' . $user->nisn . ').');
+    }
+
     public function showImport()
     {
         return view('users.import');
+    }
+
+    private function storeProfileImage(UploadedFile $image, User $user): string
+    {
+        $directory = public_path('images/profiles');
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $this->deleteProfileImage($user->profile_image);
+
+        $filename = 'profile_' . $user->id . '_' . date('YmdHis') . '.' . $image->guessExtension();
+        $image->move($directory, $filename);
+
+        return 'images/profiles/' . $filename;
+    }
+
+    private function deleteProfileImage(?string $image): void
+    {
+        if (!$image || !str_starts_with($image, 'images/profiles/')) {
+            return;
+        }
+
+        $path = public_path($image);
+        if (file_exists($path)) {
+            @unlink($path);
+        }
     }
 
     public function import(Request $request)
@@ -194,7 +254,7 @@ class UserController extends Controller
                 continue;
             }
 
-            $finalPassword = $password !== '' ? $password : Str::random(10);
+            $finalPassword = $password !== '' ? $password : 'password';
 
             User::create([
                 'name' => $name,

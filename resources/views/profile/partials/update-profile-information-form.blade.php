@@ -15,9 +15,41 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-5">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-5">
         @csrf
         @method('patch')
+
+        <div x-data="filePicker">
+            <label class="block font-body text-xs font-medium text-white/70 mb-3">Foto Profil</label>
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gradient-soft flex items-center justify-center border border-white/10 shadow-glow">
+                    @if($user->profile_image)
+                        <img src="{{ $user->profile_image_url }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+                    @else
+                        <span class="font-display font-semibold text-xl text-white">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                    @endif
+                </div>
+                <div class="flex-1">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <label for="profile_image" class="glass-btn-secondary cursor-pointer inline-flex">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            Pilih Foto
+                        </label>
+                        @if($user->profile_image)
+                            <input type="checkbox" id="remove_profile_image" name="remove_profile_image" value="1" class="hidden peer">
+                            <label for="remove_profile_image" class="glass-btn-danger cursor-pointer inline-flex peer-checked:ring-2 peer-checked:ring-rose-300/70">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                Hapus Foto
+                            </label>
+                            <p class="font-body text-xs text-rose-300 hidden peer-checked:inline">Foto akan dihapus saat disimpan.</p>
+                        @endif
+                    </div>
+                    <input id="profile_image" name="profile_image" type="file" accept="image/jpeg,image/png,image/gif" class="hidden" @change="onPick">
+                    <p class="font-body text-xs text-white/40 mt-2" x-text="fileName || 'JPG, PNG, atau GIF. Maks 2MB.'"></p>
+                    @error('profile_image') <p class="font-body text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+        </div>
 
         <div>
             <label for="name" class="block font-body text-xs font-medium text-white/70 mb-2">Nama</label>
@@ -25,11 +57,19 @@
             @error('name') <p class="font-body text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div>
-            <label for="nisn" class="block font-body text-xs font-medium text-white/70 mb-2">NISN</label>
-            <input id="nisn" name="nisn" type="text" class="glass-input font-mono" :value="old('nisn', $user->nisn)" autocomplete="nisn" placeholder="0081234567">
-            @error('nisn') <p class="font-body text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
-        </div>
+        @if($user->isMember())
+            <div>
+                <label class="block font-body text-xs font-medium text-white/70 mb-2">NISN</label>
+                <p class="glass-input w-full font-mono text-white/80">{{ $user->nisn ?: '—' }}</p>
+                <p class="mt-1 font-body text-xs text-white/40">NISN tidak dapat diubah melalui profil.</p>
+            </div>
+        @else
+            <div>
+                <label for="nisn" class="block font-body text-xs font-medium text-white/70 mb-2">NISN</label>
+                <input id="nisn" name="nisn" type="text" class="glass-input font-mono" :value="old('nisn', $user->nisn)" autocomplete="nisn" placeholder="0081234567">
+                @error('nisn') <p class="font-body text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
+            </div>
+        @endif
 
         <div>
             <label for="email" class="block font-body text-xs font-medium text-white/70 mb-2">Email</label>

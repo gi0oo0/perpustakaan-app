@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Perpustakaan</title>
+        <title>Perpustakaan Sekolah</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
         <style>
@@ -61,7 +61,9 @@
     <body class="bg-surface min-h-screen antialiased">
         <div class="min-h-screen flex items-center justify-center px-6">
             <div class="text-center max-w-lg mx-auto">
-                <div class="w-16 h-16 bg-white rounded-full shadow-sm mx-auto flex items-center justify-center text-3xl mb-6">📚</div>
+                <div class="w-16 h-16 rounded-full shadow-sm mx-auto mb-6 overflow-hidden">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" style="width:100%;height:100%;object-fit:cover;" />
+                </div>
 
                 <h1 class="font-display text-heading-xl text-text">Perpustakaan</h1>
                 <p class="font-body text-lg text-text-secondary mt-4">Sistem manajemen perpustakaan yang modern dan sederhana.</p>
