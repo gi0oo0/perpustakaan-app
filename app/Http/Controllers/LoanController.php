@@ -95,7 +95,7 @@ class LoanController extends Controller
                 'id' => $loan->id,
                 'book_title' => $loan->book->title ?? '-',
                 'isbn' => $loan->book->isbn ?? '-',
-                'cover_image' => $loan->book->cover_image ? asset($loan->book->cover_image) : null,
+                'cover_image' => $loan->book->cover_url,
                 'borrower_name' => $loan->user->name ?? '-',
                 'borrower_nisn' => $loan->user->nisn ?? '-',
                 'user_url' => $isStaff && $loan->user ? route('users.show', $loan->user) : null,

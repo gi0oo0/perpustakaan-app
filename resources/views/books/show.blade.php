@@ -16,10 +16,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-5">
             {{-- Cover --}}
             <div class="lg:col-span-2 p-8 lg:border-r border-white/[0.07] flex items-center justify-center bg-white/[0.02]">
-                @if ($book->cover_image)
+                @if ($book->cover_url)
                     <div class="relative group">
                         <div class="absolute inset-0 bg-primary/20 blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
-                        <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}"
+                        <img src="{{ $book->cover_url }}" alt="{{ $book->title }}"
                              class="relative w-full max-w-xs rounded-glass-lg shadow-glass-lg group-hover:scale-[1.02] transition-transform duration-500">
                     </div>
                 @else

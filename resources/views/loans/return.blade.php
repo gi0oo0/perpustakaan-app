@@ -141,8 +141,8 @@
                         @foreach ($activeLoans as $loan)
                             <div class="glass-inset rounded-glass-sm p-3 transition-colors duration-150 {{ $loan->isOverdue() ? 'border-rose-400/25 bg-rose-500/[0.06]' : '' }}">
                                 <div class="flex items-center gap-3">
-                                    @if ($loan->book->cover_image)
-                                        <img src="{{ asset($loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
+                                    @if ($loan->book->cover_url)
+                                        <img src="{{ $loan->book->cover_url }}" alt="{{ $loan->book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
                                     @else
                                         <div class="h-12 w-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-lg flex-shrink-0">📖</div>
                                     @endif

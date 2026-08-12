@@ -147,8 +147,8 @@
                     <div class="space-y-2 max-h-[640px] overflow-y-auto pr-1">
                         @foreach ($books as $book)
                             <div class="glass-inset rounded-glass-sm p-3 flex items-center gap-3 hover:bg-white/[0.07] transition-all duration-150 cursor-pointer book-card">
-                                @if ($book->cover_image)
-                                    <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
+                                @if ($book->cover_url)
+                                    <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
                                 @else
                                     <div class="h-12 w-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-lg flex-shrink-0">📖</div>
                                 @endif

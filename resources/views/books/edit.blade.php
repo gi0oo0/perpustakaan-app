@@ -74,9 +74,9 @@
 
                     <div class="md:col-span-2">
                         <label for="cover_image" class="block font-body text-xs font-medium text-white/70 mb-2">Sampul Buku</label>
-                        @if ($book->cover_image)
+                        @if ($book->cover_url)
                             <div class="mb-3">
-                                <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="h-44 w-32 object-cover rounded-glass-sm border border-white/10 shadow-glass-lg">
+                                <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="h-44 w-32 object-cover rounded-glass-sm border border-white/10 shadow-glass-lg">
                             </div>
                         @endif
                         <div x-data="filePicker" class="relative">

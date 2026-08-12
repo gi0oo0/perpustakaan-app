@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Support\CoverGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
@@ -49,7 +50,7 @@ class BookController extends Controller
                 'stock' => $b->stock,
                 'available' => $b->stock > 0,
                 'description' => $b->description,
-                'cover_image' => $b->cover_image ? asset($b->cover_image) : null,
+                'cover_image' => $b->cover_url,
                 'url' => route('books.show', $b),
                 'edit_url' => route('books.edit', $b),
                 'borrow_url' => route('loans.borrow.create'),
@@ -83,7 +84,7 @@ class BookController extends Controller
                     'kategori' => $b->kategori,
                     'stock' => $b->stock,
                     'available' => $b->stock > 0,
-                    'cover_image' => $b->cover_image ? asset($b->cover_image) : null,
+                    'cover_image' => $b->cover_url,
                     'url' => route('books.show', $b),
                     'borrow_url' => route('loans.borrow.create'),
                 ];
@@ -129,7 +130,12 @@ class BookController extends Controller
             $input['cover_image'] = $destinationPath . $profileImage;
         }
 
-        Book::create($input);
+        $book = Book::create($input);
+
+        if (!$book->cover_image) {
+            $book->cover_image = CoverGenerator::ensure($book);
+            $book->saveQuietly();
+        }
 
         return redirect()->route('books.index')
                          ->with('success', 'Buku berhasil ditambahkan.');
@@ -181,6 +187,11 @@ class BookController extends Controller
         }
 
         $book->update($input);
+
+        if (!$book->cover_image) {
+            $book->cover_image = CoverGenerator::ensure($book);
+            $book->saveQuietly();
+        }
 
         return redirect()->route('books.index')
                          ->with('success', 'Buku berhasil diperbarui.');
@@ -317,7 +328,7 @@ class BookController extends Controller
                 continue;
             }
 
-            Book::create([
+            $book = Book::create([
                 'isbn' => $isbn,
                 'title' => $title,
                 'author' => $author,
@@ -328,6 +339,11 @@ class BookController extends Controller
                 'description' => $description !== '' ? $description : null,
                 'cover_image' => $coverPath,
             ]);
+
+            if (!$book->cover_image) {
+                $book->cover_image = CoverGenerator::ensure($book);
+                $book->saveQuietly();
+            }
 
             $imported[] = [
                 'isbn' => $isbn,

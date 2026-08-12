@@ -42,4 +42,13 @@ class Book extends Model
             'Lainnya' => 'Lainnya',
         ];
     }
+
+    public function getCoverUrlAttribute(): ?string
+    {
+        if (empty($this->title)) {
+            return null;
+        }
+
+        return asset(\App\Support\CoverGenerator::ensure($this));
+    }
 }

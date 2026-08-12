@@ -129,8 +129,8 @@
                     <div class="space-y-3">
                         @forelse ($recentActivity as $loan)
                             <div class="flex items-center gap-3">
-                                @if ($loan->book->cover_image ?? null)
-                                    <img src="{{ asset($loan->book->cover_image) }}" alt="" class="h-10 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
+                                @if ($loan->book->cover_url)
+                                    <img src="{{ $loan->book->cover_url }}" alt="" class="h-10 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
                                 @else
                                     <div class="h-10 w-8 rounded-md bg-white/[0.06] border border-white/10 flex items-center justify-center text-sm flex-shrink-0">📖</div>
                                 @endif
@@ -186,8 +186,8 @@
                     @foreach ($recentBooks as $book)
                         <a href="{{ route('books.show', $book) }}" class="glass glass-hover p-4 group">
                             <div class="relative mb-3">
-                                @if ($book->cover_image)
-                                    <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="w-full aspect-[3/4] object-cover rounded-lg border border-white/10">
+                                @if ($book->cover_url)
+                                    <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full aspect-[3/4] object-cover rounded-lg border border-white/10">
                                 @else
                                     <div class="w-full aspect-[3/4] rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-3xl">📖</div>
                                 @endif
@@ -220,8 +220,8 @@
                                 $daysLeft = \Carbon\Carbon::today()->diffInDays($loan->due_date, false);
                             @endphp
                             <div class="glass-inset rounded-glass p-3 flex items-center gap-3">
-                                @if ($loan->book->cover_image)
-                                    <img src="{{ asset($loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
+                                @if ($loan->book->cover_url)
+                                    <img src="{{ $loan->book->cover_url }}" alt="{{ $loan->book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
                                 @else
                                     <div class="h-12 w-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-lg flex-shrink-0">📖</div>
                                 @endif
@@ -260,8 +260,8 @@
                             @endphp
                             <div class="glass glass-hover p-5 {{ $loan->isOverdue() ? 'border-rose-400/25' : '' }}">
                                 <div class="flex items-start gap-4">
-                                    @if ($loan->book->cover_image)
-                                        <img src="{{ asset($loan->book->cover_image) }}" alt="{{ $loan->book->title }}" class="h-16 w-12 object-cover rounded-lg flex-shrink-0 border border-white/10">
+                                    @if ($loan->book->cover_url)
+                                        <img src="{{ $loan->book->cover_url }}" alt="{{ $loan->book->title }}" class="h-16 w-12 object-cover rounded-lg flex-shrink-0 border border-white/10">
                                     @else
                                         <div class="h-16 w-12 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-xl flex-shrink-0">📖</div>
                                     @endif
@@ -295,8 +295,8 @@
                     <div class="space-y-3">
                         @foreach ($recentHistory as $loan)
                             <div class="flex items-center gap-3">
-                                @if ($loan->book->cover_image)
-                                    <img src="{{ asset($loan->book->cover_image) }}" alt="" class="h-10 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
+                                @if ($loan->book->cover_url)
+                                    <img src="{{ $loan->book->cover_url }}" alt="" class="h-10 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
                                 @else
                                     <div class="h-10 w-8 rounded-md bg-white/[0.06] border border-white/10 flex items-center justify-center text-sm flex-shrink-0">📖</div>
                                 @endif
