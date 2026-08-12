@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Milon\Barcode\Facades\DNS2DFacade as DNS2D;
 
 class BookController extends Controller
@@ -213,6 +214,261 @@ class BookController extends Controller
             $book->barcode_img = DNS2D::getBarcodePNG($book->isbn, 'QRCODE', 4, 4);
         }
         return view('books.print-label-batch', compact('books'));
+    }
+
+    public function showImport()
+    {
+        return view('books.import');
+    }
+
+    public function downloadTemplate()
+    {
+        $filename = 'template_import_buku.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['isbn', 'judul', 'penulis', 'penerbit', 'tahun_terbit', 'stok', 'kategori', 'cover_image']);
+            fputcsv($file, ['9786020631231', 'Laskar Pelangi', 'Andrea Hirata', 'Bentang Pustaka', 2005, 3, 'Fiksi', 'https://example.com/cover/laskar-pelangi.jpg']);
+            fputcsv($file, ['9789799731234', 'Atomic Habits', 'James Clear', 'Gramedia', 2018, 2, 'Pengembangan Diri', '']);
+            fclose($file);
+        };
+
+        return response()->streamDownload($callback, $filename, $headers);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt|max:2048',
+        ]);
+
+        $rows = $this->parseCsv($request->file('csv_file'));
+
+        if (empty($rows) || !isset($rows[0]['isbn'], $rows[0]['title'], $rows[0]['author'])) {
+            return back()->with('error', 'Kolom wajib "isbn", "judul", dan "penulis" tidak ditemukan di dalam file CSV.');
+        }
+
+        $kategoriList = Book::getKategoriList();
+        $kategoriValid = array_keys($kategoriList);
+
+        $existingIsbns = Book::whereIn('isbn', array_column($rows, 'isbn'))
+            ->pluck('isbn')
+            ->flip();
+
+        $imported = [];
+        $failed = [];
+        $fileIsbns = [];
+
+        foreach ($rows as $row) {
+            $isbn = trim((string) ($row['isbn'] ?? ''));
+            $title = trim((string) ($row['title'] ?? ''));
+            $author = trim((string) ($row['author'] ?? ''));
+            $publisher = trim((string) ($row['publisher'] ?? ''));
+            $publicationYear = trim((string) ($row['publication_year'] ?? ''));
+            $stock = trim((string) ($row['stock'] ?? ''));
+            $kategori = trim((string) ($row['kategori'] ?? ''));
+            $description = trim((string) ($row['description'] ?? ''));
+            $coverUrl = trim((string) ($row['cover_image'] ?? ''));
+
+            $errors = [];
+
+            if ($isbn === '') {
+                $errors[] = 'ISBN kosong';
+            }
+            if ($title === '') {
+                $errors[] = 'Judul kosong';
+            }
+            if ($author === '') {
+                $errors[] = 'Penulis kosong';
+            }
+            if ($isbn !== '' && ($existingIsbns->has($isbn) || isset($fileIsbns[$isbn]))) {
+                $errors[] = 'ISBN sudah terdaftar';
+            }
+            if ($publicationYear !== '' && !preg_match('/^\d{4}$/', $publicationYear)) {
+                $errors[] = 'Tahun terbit harus 4 digit angka';
+            }
+            if ($stock !== '') {
+                if (!preg_match('/^\d+$/', $stock)) {
+                    $errors[] = 'Stok harus angka bulat';
+                } elseif ((int) $stock < 0) {
+                    $errors[] = 'Stok tidak boleh negatif';
+                }
+            }
+            if ($kategori !== '' && !in_array($kategori, $kategoriValid, true)) {
+                $errors[] = 'Kategori tidak dikenali (gunakan: ' . implode(', ', $kategoriValid) . ')';
+            }
+
+            $coverPath = null;
+            if ($coverUrl !== '' && empty($errors)) {
+                $coverPath = $this->downloadCover($coverUrl);
+                if ($coverPath === null) {
+                    $errors[] = 'Gagal mengunduh cover. Pastikan URL gambar valid (http/https) dan berformat gambar.';
+                }
+            }
+
+            $fileIsbns[$isbn] = true;
+
+            if (!empty($errors)) {
+                $failed[] = ['isbn' => $isbn, 'title' => $title, 'errors' => $errors];
+                continue;
+            }
+
+            Book::create([
+                'isbn' => $isbn,
+                'title' => $title,
+                'author' => $author,
+                'publisher' => $publisher !== '' ? $publisher : null,
+                'publication_year' => $publicationYear !== '' ? (int) $publicationYear : null,
+                'stock' => $stock !== '' ? (int) $stock : 0,
+                'kategori' => $kategori !== '' ? $kategori : null,
+                'description' => $description !== '' ? $description : null,
+                'cover_image' => $coverPath,
+            ]);
+
+            $imported[] = [
+                'isbn' => $isbn,
+                'title' => $title,
+                'author' => $author,
+                'publisher' => $publisher,
+                'publication_year' => $publicationYear,
+                'stock' => $stock,
+                'kategori' => $kategori,
+                'cover_image' => $coverPath ? asset($coverPath) : null,
+            ];
+        }
+
+        return view('books.import', compact('imported', 'failed'));
+    }
+
+    private function parseCsv($file): array
+    {
+        $content = file_get_contents($file->getRealPath());
+
+        if (substr($content, 0, 3) === "\xEF\xBB\xBF") {
+            $content = substr($content, 3);
+        }
+
+        if (!mb_check_encoding($content, 'UTF-8')) {
+            $content = mb_convert_encoding($content, 'UTF-8', 'Windows-1252');
+        }
+
+        $firstLine = strtok($content, "\r\n");
+        $comma = substr_count($firstLine, ',');
+        $semicolon = substr_count($firstLine, ';');
+        $tab = substr_count($firstLine, "\t");
+        $delimiter = ',';
+        if ($semicolon > $comma && $semicolon >= $tab) {
+            $delimiter = ';';
+        } elseif ($tab > $comma && $tab > $semicolon) {
+            $delimiter = "\t";
+        }
+
+        $temp = tmpfile();
+        fwrite($temp, $content);
+        fseek($temp, 0);
+
+        $rows = [];
+        $header = null;
+        while (($line = fgetcsv($temp, 0, $delimiter)) !== false) {
+            if ($header === null) {
+                $header = array_map(fn ($col) => strtolower(trim((string) $col)), $line);
+                continue;
+            }
+            if (count(array_filter($line, fn ($col) => trim((string) $col) !== '')) === 0) {
+                continue;
+            }
+            $rows[] = $line;
+        }
+        fclose($temp);
+
+        $map = [
+            'isbn' => 'isbn',
+            'judul' => 'title',
+            'judul buku' => 'title',
+            'title' => 'title',
+            'nama buku' => 'title',
+            'penulis' => 'author',
+            'pengarang' => 'author',
+            'author' => 'author',
+            'penerbit' => 'publisher',
+            'publisher' => 'publisher',
+            'tahun' => 'publication_year',
+            'tahun terbit' => 'publication_year',
+            'tahun_terbit' => 'publication_year',
+            'publication_year' => 'publication_year',
+            'stok' => 'stock',
+            'stock' => 'stock',
+            'jumlah' => 'stock',
+            'kategori' => 'kategori',
+            'category' => 'kategori',
+            'cover' => 'cover_image',
+            'cover_image' => 'cover_image',
+            'gambar sampul' => 'cover_image',
+            'deskripsi' => 'description',
+            'description' => 'description',
+        ];
+
+        $result = [];
+        foreach ($rows as $line) {
+            $row = [];
+            foreach ($header as $i => $col) {
+                if (isset($map[$col])) {
+                    $row[$map[$col]] = trim((string) ($line[$i] ?? ''));
+                }
+            }
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    private function downloadCover(string $url): ?string
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if (!in_array(strtolower((string) $scheme), ['http', 'https'], true)) {
+            return null;
+        }
+
+        try {
+            $response = Http::timeout(15)->get($url);
+        } catch (\Throwable $e) {
+            return null;
+        }
+
+        if (!$response->successful()) {
+            return null;
+        }
+
+        $mime = strtolower(explode(';', $response->header('Content-Type', ''))[0]);
+        $extensions = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/gif' => 'gif',
+            'image/webp' => 'webp',
+        ];
+
+        if (!isset($extensions[$mime])) {
+            return null;
+        }
+
+        $body = $response->body();
+        if ($body === '' || strlen($body) > 2097152) {
+            return null;
+        }
+
+        $directory = public_path('images/covers');
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        $filename = 'cover_' . date('YmdHis') . '_' . substr(md5($url . microtime()), 0, 8) . '.' . $extensions[$mime];
+        file_put_contents($directory . DIRECTORY_SEPARATOR . $filename, $body);
+
+        return 'images/covers/' . $filename;
     }
 
     private function deleteCover(?string $coverImage): void

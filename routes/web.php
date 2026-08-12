@@ -33,6 +33,9 @@ Route::middleware('auth')->group(function () {
 
     // Book management - admin only (registered before /books/{book} so 'create' isn't captured as a book id)
     Route::middleware('admin')->group(function () {
+        Route::get('/books/import', [BookController::class, 'showImport'])->name('books.import');
+        Route::post('/books/import', [BookController::class, 'import'])->name('books.import.store');
+        Route::get('/books/import/template', [BookController::class, 'downloadTemplate'])->name('books.import.template');
         Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
         Route::post('/books', [BookController::class, 'store'])->name('books.store');
         Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
