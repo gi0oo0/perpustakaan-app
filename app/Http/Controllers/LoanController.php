@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Loan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class LoanController extends Controller
 {
@@ -15,7 +15,7 @@ class LoanController extends Controller
     {
         $query = Loan::with('book', 'user', 'processor');
 
-        if (!$request->user()->isStaff()) {
+        if (! $request->user()->isStaff()) {
             $query->where('user_id', $request->user()->id);
         }
 
@@ -24,10 +24,10 @@ class LoanController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->whereHas('book', function ($q2) use ($search) {
                     $q2->where('title', 'like', "%{$search}%")
-                       ->orWhere('isbn', 'like', "%{$search}%");
+                        ->orWhere('isbn', 'like', "%{$search}%");
                 })->orWhereHas('user', function ($q2) use ($search) {
                     $q2->where('name', 'like', "%{$search}%")
-                       ->orWhere('nisn', 'like', "%{$search}%");
+                        ->orWhere('nisn', 'like', "%{$search}%");
                 });
             });
         }
@@ -69,7 +69,7 @@ class LoanController extends Controller
 
             $statusDetail = $loan->isReturned()
                 ? ''
-                : ($loan->getDaysLate() > 0 ? $loan->getDaysLate() . 'h' : '');
+                : ($loan->getDaysLate() > 0 ? $loan->getDaysLate().'h' : '');
 
             $statusBadge = match ($statusKey) {
                 'returned_ontime' => 'green',
@@ -81,14 +81,14 @@ class LoanController extends Controller
             $dendaSub = '';
             $dendaAction = null;
             if ($loan->denda > 0) {
-                $dendaText = 'Rp' . number_format($loan->denda, 0, ',', '.');
+                $dendaText = 'Rp'.number_format($loan->denda, 0, ',', '.');
                 $dendaSub = $loan->status_denda === 'lunas' ? 'Lunas' : 'Belum bayar';
                 if ($loan->status_denda === 'belum_bayar' && $isStaff) {
                     $dendaAction = route('loans.pay-denda', $loan);
                 }
-            } elseif (!$loan->isReturned() && $loan->isOverdue()) {
-                $dendaText = 'Rp' . number_format($loan->getPotentialDenda(), 0, ',', '.');
-                $dendaSub = 'Rp' . number_format($loan->getDendaPerDay(), 0, ',', '.') . '/hari';
+            } elseif (! $loan->isReturned() && $loan->isOverdue()) {
+                $dendaText = 'Rp'.number_format($loan->getPotentialDenda(), 0, ',', '.');
+                $dendaSub = 'Rp'.number_format($loan->getDendaPerDay(), 0, ',', '.').'/hari';
             }
 
             return [
@@ -117,7 +117,7 @@ class LoanController extends Controller
         })->values();
 
         $statsQuery = Loan::query();
-        if (!$request->user()->isStaff()) {
+        if (! $request->user()->isStaff()) {
             $statsQuery->where('user_id', $request->user()->id);
         }
 
@@ -132,6 +132,7 @@ class LoanController extends Controller
     public function createBorrow()
     {
         $books = Book::where('stock', '>', 0)->latest()->get();
+
         return view('loans.borrow', compact('books'));
     }
 
@@ -140,16 +141,24 @@ class LoanController extends Controller
         $request->validate([
             'isbn' => 'required|string',
             'duration_days' => 'required|integer|between:1,90',
-            'denda_per_day' => 'required|integer|between:0,100000',
+            'denda_per_day' => 'required|integer|between:1,100000',
         ]);
 
         $durationDays = (int) $request->duration_days;
         $dendaPerDay = (int) $request->denda_per_day;
+        $maxDuration = Loan::maxDurationForDenda($dendaPerDay);
+
+        if ($durationDays > $maxDuration) {
+            return back()->withErrors([
+                'duration_days' => 'Durasi maksimal untuk denda Rp'.number_format($dendaPerDay, 0, ',', '.').'/hari adalah '.$maxDuration.' hari. Pilih durasi lebih pendek atau naikkan denda (durasi naik proporsional: Rp'.number_format(Loan::TARIF_DENDA_PER_HARI, 0, ',', '.').'/hari = '.Loan::BASE_DURATION_DAYS.' hari).',
+            ])->withInput();
+        }
+
         $dueDate = Carbon::today()->addDays($durationDays);
 
         $book = Book::where('isbn', $request->isbn)->first();
 
-        if (!$book) {
+        if (! $book) {
             return back()->withErrors(['isbn' => 'Buku dengan ISBN tersebut tidak ditemukan.'])->withInput();
         }
 
@@ -159,7 +168,7 @@ class LoanController extends Controller
 
         if ($activeLoanCount >= Loan::MAX_ACTIVE_LOANS) {
             return back()->withErrors([
-                'isbn' => 'Anda sudah mencapai batas maksimal ' . Loan::MAX_ACTIVE_LOANS . ' buku yang dipinjam. Kembalikan dulu buku yang sudah dipinjam.'
+                'isbn' => 'Anda sudah mencapai batas maksimal '.Loan::MAX_ACTIVE_LOANS.' buku yang dipinjam. Kembalikan dulu buku yang sudah dipinjam.',
             ])->withInput();
         }
 
@@ -168,7 +177,7 @@ class LoanController extends Controller
             $book = Book::where('isbn', $book->isbn)->lockForUpdate()->first();
 
             if ($book->stock <= 0) {
-                return back()->withErrors(['isbn' => 'Stok buku "' . $book->title . '" sudah habis.'])->withInput();
+                return back()->withErrors(['isbn' => 'Stok buku "'.$book->title.'" sudah habis.'])->withInput();
             }
 
             $activeLoanCount = Loan::where('user_id', $user->id)
@@ -177,7 +186,7 @@ class LoanController extends Controller
 
             if ($activeLoanCount >= Loan::MAX_ACTIVE_LOANS) {
                 return back()->withErrors([
-                    'isbn' => 'Anda sudah mencapai batas maksimal ' . Loan::MAX_ACTIVE_LOANS . ' buku yang dipinjam. Kembalikan dulu buku yang sudah dipinjam.'
+                    'isbn' => 'Anda sudah mencapai batas maksimal '.Loan::MAX_ACTIVE_LOANS.' buku yang dipinjam. Kembalikan dulu buku yang sudah dipinjam.',
                 ])->withInput();
             }
 
@@ -187,7 +196,7 @@ class LoanController extends Controller
 
             if ($existingActiveLoan) {
                 return back()->withErrors([
-                    'isbn' => 'Buku "' . $book->title . '" sedang dipinjam oleh ' . $existingActiveLoan->user->name . '. Harus dikembalikan pada ' . $existingActiveLoan->due_date->format('d/m/Y') . '.'
+                    'isbn' => 'Buku "'.$book->title.'" sedang dipinjam oleh '.$existingActiveLoan->user->name.'. Harus dikembalikan pada '.$existingActiveLoan->due_date->format('d/m/Y').'.',
                 ])->withInput();
             }
 
@@ -197,7 +206,7 @@ class LoanController extends Controller
                 ->first();
 
             if ($myExistingLoan) {
-                return back()->withErrors(['isbn' => 'Anda sudah meminjam buku "' . $book->title . '" dan belum dikembalikan.'])->withInput();
+                return back()->withErrors(['isbn' => 'Anda sudah meminjam buku "'.$book->title.'" dan belum dikembalikan.'])->withInput();
             }
 
             Loan::create([
@@ -212,7 +221,7 @@ class LoanController extends Controller
             $book->decrement('stock');
 
             return redirect()->route('loans.index')
-                             ->with('success', 'Buku "' . $book->title . '" berhasil dipinjam selama ' . $durationDays . ' hari. Harus dikembalikan pada ' . $dueDate->format('d/m/Y') . '. Denda keterlambatan Rp' . number_format($dendaPerDay, 0, ',', '.') . '/hari.');
+                ->with('success', 'Buku "'.$book->title.'" berhasil dipinjam selama '.$durationDays.' hari. Harus dikembalikan pada '.$dueDate->format('d/m/Y').'. Denda keterlambatan Rp'.number_format($dendaPerDay, 0, ',', '.').'/hari.');
         });
     }
 
@@ -230,7 +239,7 @@ class LoanController extends Controller
         $request->validate(['isbn' => 'required|string']);
 
         $book = Book::where('isbn', $request->isbn)->first();
-        if (!$book) {
+        if (! $book) {
             return response()->json(['error' => 'Buku dengan ISBN tersebut tidak ditemukan.'], 404);
         }
 
@@ -238,7 +247,7 @@ class LoanController extends Controller
             ->whereNull('returned_at')
             ->first();
 
-        if (!$loan) {
+        if (! $loan) {
             return response()->json(['error' => 'Tidak ada peminjaman aktif untuk buku ini.'], 404);
         }
 
@@ -270,7 +279,7 @@ class LoanController extends Controller
 
         if ($request->filled('isbn')) {
             $book = Book::where('isbn', $request->isbn)->first();
-            if (!$book) {
+            if (! $book) {
                 return back()->withErrors(['isbn' => 'Buku dengan ISBN tersebut tidak ditemukan.'])->withInput();
             }
             $loan = Loan::where('book_id', $book->id)
@@ -282,7 +291,7 @@ class LoanController extends Controller
                 ->first();
         }
 
-        if (!$loan) {
+        if (! $loan) {
             return back()->withErrors(['isbn' => 'Pinjaman tidak ditemukan atau buku sudah dikembalikan.'])->withInput();
         }
 
@@ -298,23 +307,24 @@ class LoanController extends Controller
 
         $loan->book->increment('stock');
 
-        $msg = 'Buku "' . $loan->book->title . '" berhasil dikembalikan oleh ' . $request->user()->name . '.';
+        $msg = 'Buku "'.$loan->book->title.'" berhasil dikembalikan oleh '.$request->user()->name.'.';
         if ($denda > 0) {
-            $msg .= ' Denda: Rp' . number_format($denda, 0, ',', '.');
+            $msg .= ' Denda: Rp'.number_format($denda, 0, ',', '.');
         }
 
         return redirect()->route('loans.index')
-                         ->with('success', $msg);
+            ->with('success', $msg);
     }
 
     public function payDenda(Loan $loan)
     {
         if ($loan->status_denda !== 'belum_bayar') {
-            return back()->with('error', 'Denda untuk "' . $loan->book->title . '" tidak berstatus belum bayar.');
+            return back()->with('error', 'Denda untuk "'.$loan->book->title.'" tidak berstatus belum bayar.');
         }
 
         $loan->update(['status_denda' => 'lunas']);
-        return back()->with('success', 'Denda untuk "' . $loan->book->title . '" ditandai sebagai lunas.');
+
+        return back()->with('success', 'Denda untuk "'.$loan->book->title.'" ditandai sebagai lunas.');
     }
 
     public function export(Request $request)
@@ -344,7 +354,7 @@ class LoanController extends Controller
 
         $loans = $query->latest()->get();
 
-        $filename = 'riwayat_peminjaman_' . Carbon::now()->format('Y-m-d_His') . '.csv';
+        $filename = 'riwayat_peminjaman_'.Carbon::now()->format('Y-m-d_His').'.csv';
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",
@@ -354,8 +364,9 @@ class LoanController extends Controller
             $sanitize = function ($value): string {
                 $value = (string) $value;
                 if ($value !== '' && str_contains('=+-@', $value[0])) {
-                    return "'" . $value;
+                    return "'".$value;
                 }
+
                 return $value;
             };
 

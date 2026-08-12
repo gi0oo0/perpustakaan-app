@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Loan extends Model
 {
     use HasFactory;
 
     const TARIF_DENDA_PER_HARI = 500;
+
     const MAX_DENDA = 5000;
+
     const MAX_ACTIVE_LOANS = 3;
+
+    const BASE_DURATION_DAYS = 7;
+
+    const MAX_LOAN_DURATION_DAYS = 90;
 
     protected $fillable = [
         'user_id',
@@ -57,7 +63,7 @@ class Loan extends Model
 
     public function isOverdue(): bool
     {
-        return !$this->isReturned() && $this->due_date->isPast();
+        return ! $this->isReturned() && $this->due_date->isPast();
     }
 
     public function getDaysLate(): int
@@ -65,6 +71,7 @@ class Loan extends Model
         if ($this->isReturned()) {
             return max(0, $this->returned_at->diffInDays($this->due_date, false) * -1);
         }
+
         return max(0, Carbon::today()->diffInDays($this->due_date, false) * -1);
     }
 
@@ -76,7 +83,21 @@ class Loan extends Model
     public static function calculateDenda(int $daysLate, ?int $rate = null): int
     {
         $rate = $rate ?: self::TARIF_DENDA_PER_HARI;
+
         return min($daysLate * $rate, self::MAX_DENDA);
+    }
+
+    public static function maxDurationForDenda(int $dendaPerDay): int
+    {
+        return min(
+            (int) floor(($dendaPerDay * self::BASE_DURATION_DAYS) / self::TARIF_DENDA_PER_HARI),
+            self::MAX_LOAN_DURATION_DAYS
+        );
+    }
+
+    public static function minDendaForDuration(int $durationDays): int
+    {
+        return (int) ceil(($durationDays * self::TARIF_DENDA_PER_HARI) / self::BASE_DURATION_DAYS);
     }
 
     public function getPotentialDenda(): int
@@ -90,21 +111,29 @@ class Loan extends Model
             if ($this->denda > 0) {
                 return 'Dikembalikan (Telat)';
             }
+
             return 'Dikembalikan';
         }
         if ($this->isOverdue()) {
             return 'Terlambat';
         }
+
         return 'Dipinjam';
     }
 
     public function getStatusColorAttribute(): string
     {
         if ($this->isReturned()) {
-            if ($this->denda > 0) return 'coral';
+            if ($this->denda > 0) {
+                return 'coral';
+            }
+
             return 'primary';
         }
-        if ($this->isOverdue()) return 'coral';
+        if ($this->isOverdue()) {
+            return 'coral';
+        }
+
         return 'lemon';
     }
 }

@@ -52,10 +52,43 @@ document.addEventListener('alpine:init', () => {
     }));
 
     Alpine.data('loanOptions', (duration = 7, denda = 500) => ({
-        durations: [7, 14, 30],
-        rates: [250, 500, 1000],
+        baseDuration: 7,
+        baseRate: 500,
+        maxDurationDays: 90,
+        rates: [500, 1000, 2000, 3000, 5000, 10000],
         duration,
         denda,
+        init() {
+            if (this.duration > this.maxDuration()) {
+                this.duration = this.maxDuration();
+            }
+        },
+        maxDuration() {
+            return Math.min(
+                Math.floor((this.denda * this.baseDuration) / this.baseRate),
+                this.maxDurationDays
+            );
+        },
+        durationOptions() {
+            const max = this.maxDuration();
+            const out = [];
+            for (let d = this.baseDuration; d <= max; d += this.baseDuration) {
+                out.push(d);
+            }
+            if (out.length === 0 || out[out.length - 1] !== max) {
+                out.push(max);
+            }
+            return out;
+        },
+        setRate(rate) {
+            this.denda = rate;
+            if (this.duration > this.maxDuration()) {
+                this.duration = this.maxDuration();
+            }
+        },
+        setDuration(dur) {
+            this.duration = dur;
+        },
     }));
 
     Alpine.data('themeToggle', () => ({

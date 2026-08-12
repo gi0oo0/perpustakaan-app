@@ -87,10 +87,10 @@
                         <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5"
                              x-data="loanOptions({{ old('duration_days', 7) }}, {{ old('denda_per_day', 500) }})">
                             <div>
-                                <label class="block font-body text-xs font-medium text-white/60 mb-2">Durasi Peminjaman</label>
+                                <label class="block font-body text-xs font-medium text-white/60 mb-2">Durasi Peminjaman <span class="text-white/35">(maks <span x-text="maxDuration()"></span> hari)</span></label>
                                 <div class="grid grid-cols-3 gap-2">
-                                    <template x-for="opt in durations" :key="opt">
-                                        <button type="button" @click="duration = opt"
+                                    <template x-for="opt in durationOptions()" :key="opt">
+                                        <button type="button" @click="setDuration(opt)"
                                                 class="rounded-glass-sm px-3 py-2.5 text-sm font-medium border transition-all duration-150"
                                                 :class="duration === opt
                                                     ? 'border-primary/60 bg-primary/20 text-white shadow-glow font-semibold'
@@ -105,7 +105,7 @@
                                 <label class="block font-body text-xs font-medium text-white/60 mb-2">Denda Keterlambatan <span class="text-white/35">/hari</span></label>
                                 <div class="grid grid-cols-3 gap-2">
                                     <template x-for="rate in rates" :key="rate">
-                                        <button type="button" @click="denda = rate"
+                                        <button type="button" @click="setRate(rate)"
                                                 class="rounded-glass-sm px-3 py-2.5 text-sm font-medium border transition-all duration-150"
                                                 :class="denda === rate
                                                     ? 'border-rose-400/60 bg-rose-500/15 text-white shadow-glow font-semibold'
@@ -122,6 +122,7 @@
                                     Peminjaman <span class="text-white font-medium" x-text="duration"></span> hari —
                                     harus dikembalikan sebelum <span class="text-white font-medium" x-text="new Date(Date.now() + duration * 864e5).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })"></span>.
                                     Denda <span class="text-rose-300 font-medium" x-text="'Rp ' + denda.toLocaleString('id-ID')"></span>/hari bila telat.
+                                    <span class="mt-1 block text-white/40">Durasi maksimal naik proporsional dengan denda: <span x-text="'Rp ' + baseRate.toLocaleString('id-ID')"></span>/hari = <span x-text="baseDuration"></span> hari, <span x-text="'Rp ' + (baseRate * 2).toLocaleString('id-ID')"></span>/hari = <span x-text="baseDuration * 2"></span> hari, dst.</span>
                                 </p>
                             </div>
 
