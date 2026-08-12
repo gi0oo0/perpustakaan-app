@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Pinjam Buku</h2>
+            <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">Pinjam Buku</h2>
             <p class="font-body text-sm text-white/45 mt-1">Scan QR atau masukkan ISBN buku yang akan dipinjam</p>
         </div>
     </x-slot>
@@ -103,7 +103,7 @@
 
                             <div>
                                 <label class="block font-body text-xs font-medium text-white/60 mb-2">Denda Keterlambatan <span class="text-white/35">/hari</span></label>
-                                <div class="grid grid-cols-3 gap-2">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                     <template x-for="rate in rates" :key="rate">
                                         <button type="button" @click="setRate(rate)"
                                                 class="rounded-glass-sm px-3 py-2.5 text-sm font-medium border transition-all duration-150"

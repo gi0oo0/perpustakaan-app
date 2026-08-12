@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div>
-                <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Detail Pengguna</h2>
+                <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">Detail Pengguna</h2>
                 <p class="font-body text-sm text-white/45 mt-1">Informasi lengkap pengguna</p>
             </div>
             <div class="flex items-center gap-3">
@@ -79,19 +79,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div class="glass p-5">
                     <p class="font-body text-xs text-white/40">Total Pinjam</p>
-                    <p class="font-display text-2xl font-bold text-white mt-1"><span x-data="countUp" data-count="{{ $totalLoans }}" x-text="displayed"></span></p>
+                    <p class="font-display text-lg sm:text-2xl font-bold text-white mt-1"><span x-data="countUp" data-count="{{ $totalLoans }}" x-text="displayed"></span></p>
                 </div>
                 <div class="glass p-5">
                     <p class="font-body text-xs text-white/40">Dipinjam</p>
-                    <p class="font-display text-2xl font-bold text-sky-300 mt-1"><span x-data="countUp" data-count="{{ $activeLoans }}" x-text="displayed"></span></p>
+                    <p class="font-display text-lg sm:text-2xl font-bold text-sky-300 mt-1"><span x-data="countUp" data-count="{{ $activeLoans }}" x-text="displayed"></span></p>
                 </div>
                 <div class="glass p-5">
                     <p class="font-body text-xs text-white/40">Terlambat</p>
-                    <p class="font-display text-2xl font-bold text-rose-300 mt-1"><span x-data="countUp" data-count="{{ $overdueLoans }}" x-text="displayed"></span></p>
+                    <p class="font-display text-lg sm:text-2xl font-bold text-rose-300 mt-1"><span x-data="countUp" data-count="{{ $overdueLoans }}" x-text="displayed"></span></p>
                 </div>
                 <div class="glass p-5">
                     <p class="font-body text-xs text-white/40">Total Denda</p>
-                    <p class="font-display text-2xl font-bold text-white mt-1">Rp {{ number_format($totalDenda, 0, ',', '.') }}</p>
+                    <p class="font-display text-lg sm:text-2xl font-bold text-white mt-1">Rp {{ number_format($totalDenda, 0, ',', '.') }}</p>
                 </div>
             </div>
 

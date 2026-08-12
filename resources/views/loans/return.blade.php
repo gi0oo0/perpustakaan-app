@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Kembalikan Buku</h2>
+            <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">Kembalikan Buku</h2>
             <p class="font-body text-sm text-white/45 mt-1">Scan QR untuk memproses pengembalian</p>
         </div>
     </x-slot>

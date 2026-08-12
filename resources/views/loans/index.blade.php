@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div>
-                <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Riwayat Peminjaman</h2>
+                <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">Riwayat Peminjaman</h2>
                 <p class="font-body text-sm text-white/45 mt-1">Pantau seluruh aktivitas peminjaman</p>
             </div>
             <div class="flex items-center gap-3">

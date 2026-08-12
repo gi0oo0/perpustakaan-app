@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div>
-                <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Tambah Buku</h2>
+                <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">Tambah Buku</h2>
                 <p class="font-body text-sm text-white/45 mt-1">Masukkan data buku baru ke koleksi</p>
             </div>
             <a href="{{ route('books.index') }}" class="glass-btn-secondary text-xs">

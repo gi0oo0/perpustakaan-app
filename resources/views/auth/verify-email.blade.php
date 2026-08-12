@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-6 text-center">
         <div class="w-14 h-14 mx-auto flex items-center justify-center text-2xl rounded-2xl bg-emerald-400/15 border border-emerald-400/25 text-emerald-300 mb-4">✉️</div>
-        <h2 class="font-display text-2xl font-bold tracking-tight text-white">Verifikasi Email</h2>
+        <h2 class="font-display text-xl font-bold tracking-tight text-white">Verifikasi Email</h2>
         <p class="font-body text-sm text-white/45 mt-2 leading-relaxed">
             {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
         </p>

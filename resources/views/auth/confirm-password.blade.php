@@ -1,6 +1,6 @@
 <x-guest-layout>
     <div class="mb-6 text-center">
-        <h2 class="font-display text-2xl font-bold tracking-tight text-white">Konfirmasi Password</h2>
+        <h2 class="font-display text-xl font-bold tracking-tight text-white">Konfirmasi Password</h2>
         <p class="font-body text-sm text-white/45 mt-2 leading-relaxed">
             {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
         </p>

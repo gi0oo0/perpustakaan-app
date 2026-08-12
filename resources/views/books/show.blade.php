@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div>
-                <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Detail Buku</h2>
+                <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">Detail Buku</h2>
                 <p class="font-body text-sm text-white/45 mt-1">Informasi lengkap koleksi</p>
             </div>
             <a href="{{ route('books.index') }}" class="glass-btn-secondary text-xs">
@@ -42,10 +42,10 @@
                     @endif
                 </div>
 
-                <h1 class="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
+                <h1 class="font-display text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white leading-tight">
                     {{ $book->title }}
                 </h1>
-                <p class="font-body text-lg text-violet-300 font-medium mt-2">{{ $book->author }}</p>
+                <p class="font-body text-base sm:text-lg text-violet-300 font-medium mt-2">{{ $book->author }}</p>
 
                 {{-- Metadata Grid --}}
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8">

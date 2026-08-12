@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div>
-                <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">Import Buku via CSV</h2>
+                <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">Import Buku via CSV</h2>
                 <p class="font-body text-sm text-white/45 mt-1">Tambah banyak buku sekaligus dari file CSV</p>
             </div>
             <a href="{{ route('books.index') }}" class="glass-btn-secondary">
@@ -161,11 +161,11 @@
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div class="glass-inset rounded-glass-sm border-emerald-400/20 p-4">
-                        <p class="font-display text-2xl font-bold text-emerald-300">{{ count($imported ?? []) }}</p>
+                        <p class="font-display text-lg sm:text-2xl font-bold text-emerald-300">{{ count($imported ?? []) }}</p>
                         <p class="font-body text-xs text-white/40 mt-1">Berhasil diimport</p>
                     </div>
                     <div class="glass-inset rounded-glass-sm border-rose-400/20 p-4">
-                        <p class="font-display text-2xl font-bold text-rose-300">{{ count($failed ?? []) }}</p>
+                        <p class="font-display text-lg sm:text-2xl font-bold text-rose-300">{{ count($failed ?? []) }}</p>
                         <p class="font-body text-xs text-white/40 mt-1">Gagal</p>
                     </div>
                 </div>
