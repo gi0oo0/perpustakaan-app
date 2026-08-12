@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <div>
-                <h2 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-gradient">
+                <h2 class="font-display text-xl sm:text-2xl font-bold tracking-tight text-gradient">
                     Dashboard
                 </h2>
                 <p class="font-body text-sm text-white/45 mt-1">
@@ -25,23 +25,23 @@
         @if (Auth::user()->isStaff())
             {{-- ============ STAFF / ADMIN ============ --}}
             {{-- Summary Cards --}}
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
                 @foreach ([
                     ['label' => 'Total Buku', 'value' => $totalBooks, 'icon' => '📚', 'tint' => 'text-violet-300 bg-violet-400/10 border-violet-400/20', 'glow' => 'shadow-glow'],
                     ['label' => 'Dipinjam', 'value' => $activeLoans, 'icon' => '📦', 'tint' => 'text-sky-300 bg-sky-400/10 border-sky-400/20', 'glow' => 'shadow-glow-cyan'],
                     ['label' => 'Terlambat', 'value' => $overdueLoans, 'icon' => '⏰', 'tint' => 'text-rose-300 bg-rose-400/10 border-rose-400/20', 'glow' => 'shadow-glow-rose'],
                     ['label' => 'Dikembalikan', 'value' => $returnedLoans, 'icon' => '✅', 'tint' => 'text-emerald-300 bg-emerald-400/10 border-emerald-400/20', 'glow' => ''],
                 ] as $stat)
-                    <div class="glass glass-hover p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
+                    <div class="glass glass-hover p-4 sm:p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
                         <div class="flex items-start justify-between">
                             <div>
                                 <p class="font-body text-xs font-medium uppercase tracking-wider text-white/40">{{ $stat['label'] }}</p>
                                 <p x-data="countUp"
                                    data-count="{{ $stat['value'] }}"
-                                   class="font-display text-2xl sm:text-3xl font-bold mt-2 tabular-nums"
+                                   class="font-display text-lg sm:text-2xl font-bold mt-2 tabular-nums"
                                    x-text="displayed.toLocaleString('id-ID')"></p>
                             </div>
-                            <span class="w-11 h-11 rounded-glass-sm flex items-center justify-center text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
+                            <span class="w-10 h-10 sm:w-11 sm:h-11 rounded-glass-sm flex items-center justify-center text-lg sm:text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
                         </div>
                         <div class="mt-3 h-1 rounded-full bg-white/[0.06] overflow-hidden">
                             <div class="h-full rounded-full bg-gradient-accent opacity-80" style="width: {{ min(100, max(8, ($stat['value'] / max(1, $totalBooks)) * 100)) }}%"></div>
@@ -52,20 +52,20 @@
 
             {{-- Quick Actions --}}
             <div>
-                <h3 class="font-display text-lg font-semibold text-white mb-4">Akses Cepat</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                    <a href="{{ route('books.index') }}" class="glass glass-hover p-6 group">
-                        <div class="w-12 h-12 rounded-glass-sm bg-violet-400/10 border border-violet-400/20 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📖</div>
+                <h3 class="font-display text-base sm:text-lg font-semibold text-white mb-4">Akses Cepat</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
+                    <a href="{{ route('books.index') }}" class="glass glass-hover p-5 sm:p-6 group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-glass-sm bg-violet-400/10 border border-violet-400/20 flex items-center justify-center text-lg sm:text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📖</div>
                         <div class="font-display font-semibold text-white text-sm">Katalog Buku</div>
                         <p class="font-body text-xs text-white/40 mt-1">Lihat & kelola koleksi buku</p>
                     </a>
-                    <a href="{{ route('loans.borrow.create') }}" class="glass glass-hover p-6 group">
-                        <div class="w-12 h-12 rounded-glass-sm bg-sky-400/10 border border-sky-400/20 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📦</div>
+                    <a href="{{ route('loans.borrow.create') }}" class="glass glass-hover p-5 sm:p-6 group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-glass-sm bg-sky-400/10 border border-sky-400/20 flex items-center justify-center text-lg sm:text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📦</div>
                         <div class="font-display font-semibold text-white text-sm">Pinjam Buku</div>
                         <p class="font-body text-xs text-white/40 mt-1">Scan & pinjam buku baru</p>
                     </a>
-                    <a href="{{ route('loans.return.create') }}" class="glass glass-hover p-6 group">
-                        <div class="w-12 h-12 rounded-glass-sm bg-rose-400/10 border border-rose-400/20 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform duration-300">🔄</div>
+                    <a href="{{ route('loans.return.create') }}" class="glass glass-hover p-5 sm:p-6 group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-glass-sm bg-rose-400/10 border border-rose-400/20 flex items-center justify-center text-lg sm:text-xl mb-3 group-hover:scale-110 transition-transform duration-300">🔄</div>
                         <div class="font-display font-semibold text-white text-sm">Kembalikan Buku</div>
                         <p class="font-body text-xs text-white/40 mt-1">Scan & proses pengembalian</p>
                     </a>
@@ -75,12 +75,12 @@
             {{-- Charts Row 1 --}}
             <div>
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-display text-lg font-semibold text-white">Statistik</h3>
+                    <h3 class="font-display text-base sm:text-lg font-semibold text-white">Statistik</h3>
                     <span class="glass-badge-gray hidden sm:inline-flex">6 bulan terakhir</span>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
-                    <div class="glass p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-5">
+                    <div class="glass p-4 sm:p-6">
                         <h4 class="font-display font-semibold text-sm text-white mb-1">📖 Buku Terpopuler</h4>
                         <p class="font-body text-xs text-white/40 mb-4">Paling sering dipinjam</p>
                         <div class="relative" style="height: 240px;">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
 
-                    <div class="glass p-6">
+                    <div class="glass p-4 sm:p-6">
                         <h4 class="font-display font-semibold text-sm text-white mb-1">📈 Peminjaman / Bulan</h4>
                         <p class="font-body text-xs text-white/40 mb-4">Tren aktivitas perpustakaan</p>
                         <div class="relative" style="height: 240px;">
@@ -96,7 +96,7 @@
                         </div>
                     </div>
 
-                    <div class="glass p-6">
+                    <div class="glass p-4 sm:p-6">
                         <h4 class="font-display font-semibold text-sm text-white mb-1">📊 Status Buku</h4>
                         <p class="font-body text-xs text-white/40 mb-4">Ketersediaan koleksi</p>
                         <div class="relative" style="height: 240px;">
@@ -107,8 +107,8 @@
             </div>
 
             {{-- Charts Row 2 --}}
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
-                <div class="glass p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-5">
+                <div class="glass p-4 sm:p-6">
                     <h4 class="font-display font-semibold text-sm text-white mb-1">🏷️ Peminjaman per Kategori</h4>
                     <p class="font-body text-xs text-white/40 mb-4">Distribusi koleksi yang dipinjam</p>
                     <div class="relative" style="height: 240px;">
@@ -116,7 +116,7 @@
                     </div>
                 </div>
 
-                <div class="glass p-6">
+                <div class="glass p-4 sm:p-6">
                     <h4 class="font-display font-semibold text-sm text-white mb-1">⚡ Aktivitas 7 Hari</h4>
                     <p class="font-body text-xs text-white/40 mb-4">Peminjaman harian terakhir</p>
                     <div class="relative" style="height: 240px;">
@@ -124,7 +124,7 @@
                     </div>
                 </div>
 
-                <div class="glass p-6">
+                <div class="glass p-4 sm:p-6">
                     <h4 class="font-display font-semibold text-sm text-white mb-4">🕐 Aktivitas Terakhir</h4>
                     <div class="space-y-3">
                         @forelse ($recentActivity as $loan)
@@ -159,18 +159,18 @@
                     ['label' => 'Dipinjam Bulan Ini', 'value' => $totalThisMonth, 'icon' => '📚', 'money' => false, 'tint' => 'text-violet-300 bg-violet-400/10 border-violet-400/20', 'glow' => 'shadow-glow'],
                 ];
             @endphp
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
                 @foreach ($memberStats as $stat)
-                    <div class="glass glass-hover p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
+                    <div class="glass glass-hover p-4 sm:p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
                         <div class="flex items-start justify-between">
                             <div>
                                 <p class="font-body text-xs font-medium uppercase tracking-wider text-white/40">{{ $stat['label'] }}</p>
                                 <p x-data="countUp"
                                    data-count="{{ $stat['value'] }}"
-                                   class="font-display text-2xl sm:text-3xl font-bold mt-2 tabular-nums"
+                                   class="font-display text-lg sm:text-2xl font-bold mt-2 tabular-nums"
                                    x-text="'{{ $stat['money'] ? 'Rp ' : '' }}' + displayed.toLocaleString('id-ID')"></p>
                             </div>
-                            <span class="w-11 h-11 rounded-glass-sm flex items-center justify-center text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
+                            <span class="w-10 h-10 sm:w-11 sm:h-11 rounded-glass-sm flex items-center justify-center text-lg sm:text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
                         </div>
                     </div>
                 @endforeach
@@ -179,7 +179,7 @@
             {{-- Recent Books --}}
             <div>
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-display text-lg font-semibold text-white">Koleksi Buku Terbaru</h3>
+                    <h3 class="font-display text-base sm:text-lg font-semibold text-white">Koleksi Buku Terbaru</h3>
                     <a href="{{ route('books.index') }}" class="glass-link text-sm font-medium">Jelajahi semua →</a>
                 </div>
                 <div class="grid grid-cols-[repeat(auto-fit,minmax(min(150px,100%),1fr))] gap-4">
@@ -209,10 +209,10 @@
 
             {{-- Due Soon --}}
             @if ($dueSoon->isNotEmpty())
-                <div class="glass p-5 border-amber-400/20">
+                <div class="glass p-4 sm:p-5 border-amber-400/20">
                     <div class="flex items-center gap-2 mb-4">
                         <span class="text-lg">⏳</span>
-                        <h3 class="font-display text-lg font-semibold text-white">Jatuh Tempo dalam 7 Hari</h3>
+                        <h3 class="font-display text-base sm:text-lg font-semibold text-white">Jatuh Tempo dalam 7 Hari</h3>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
                         @foreach ($dueSoon as $loan)
@@ -241,7 +241,7 @@
             {{-- Active Loans --}}
             <div>
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-display text-lg font-semibold text-white">Pinjaman Aktif Saya</h3>
+                    <h3 class="font-display text-base sm:text-lg font-semibold text-white">Pinjaman Aktif Saya</h3>
                     <a href="{{ route('loans.index') }}" class="glass-link text-sm font-medium">Lihat riwayat →</a>
                 </div>
 
@@ -287,9 +287,9 @@
 
             {{-- Recent History --}}
             @if ($recentHistory->isNotEmpty())
-                <div class="glass p-6">
+                <div class="glass p-4 sm:p-6">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-display text-lg font-semibold text-white">Riwayat Terakhir</h3>
+                        <h3 class="font-display text-base sm:text-lg font-semibold text-white">Riwayat Terakhir</h3>
                         <a href="{{ route('loans.index') }}" class="glass-link text-sm font-medium">Semua →</a>
                     </div>
                     <div class="space-y-3">
@@ -315,19 +315,19 @@
 
             {{-- Member Quick Actions --}}
             <div>
-                <h3 class="font-display text-lg font-semibold text-white mb-4">Akses Cepat</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
-                    <a href="{{ route('books.index') }}" class="glass glass-hover p-6 group">
-                        <div class="w-12 h-12 rounded-glass-sm bg-violet-400/10 border border-violet-400/20 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📖</div>
+                <h3 class="font-display text-base sm:text-lg font-semibold text-white mb-4">Akses Cepat</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
+                    <a href="{{ route('books.index') }}" class="glass glass-hover p-5 sm:p-6 group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-glass-sm bg-violet-400/10 border border-violet-400/20 flex items-center justify-center text-lg sm:text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📖</div>
                         <div class="font-display font-semibold text-white text-sm">Katalog Buku</div>
                         <p class="font-body text-xs text-white/40 mt-1">Jelajahi koleksi perpustakaan</p>
                     </a>
-                    <a href="{{ route('loans.borrow.create') }}" class="glass glass-hover p-6 group">
-                        <div class="w-12 h-12 rounded-glass-sm bg-sky-400/10 border border-sky-400/20 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📦</div>
+                    <a href="{{ route('loans.borrow.create') }}" class="glass glass-hover p-5 sm:p-6 group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-glass-sm bg-sky-400/10 border border-sky-400/20 flex items-center justify-center text-lg sm:text-xl mb-3 group-hover:scale-110 transition-transform duration-300">📦</div>
                         <div class="font-display font-semibold text-white text-sm">Pinjam Buku</div>
                         <p class="font-body text-xs text-white/40 mt-1">Scan & pinjam buku baru</p>
                     </a>
-                    <a href="{{ route('loans.index') }}" class="glass glass-hover p-6 group">
+                    <a href="{{ route('loans.index') }}" class="glass glass-hover p-5 sm:p-6 group">
                         <div class="w-12 h-12 rounded-glass-sm bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform duration-300">🔄</div>
                         <div class="font-display font-semibold text-white text-sm">Riwayat Peminjaman</div>
                         <p class="font-body text-xs text-white/40 mt-1">Pantau status & denda pinjaman</p>
