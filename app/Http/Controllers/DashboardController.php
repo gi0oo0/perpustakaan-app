@@ -97,12 +97,11 @@ class DashboardController extends Controller
             ->pluck('total', 'month');
 
         // 3. Status buku
-        $totalBooks = Book::sum('stock');
         $currentlyLoaned = Loan::whereNull('returned_at')->count();
         $overdue = Loan::whereNull('returned_at')
             ->where('due_date', '<', Carbon::today())
             ->count();
-        $available = max(0, $totalBooks - $currentlyLoaned);
+        $available = Book::where('stock', '>', 0)->count();
 
         // 4. Peminjaman per kategori
         $kategoriLoans = Loan::join('books', 'loans.book_id', '=', 'books.id')
