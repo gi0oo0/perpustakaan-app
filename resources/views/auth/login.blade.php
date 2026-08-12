@@ -43,11 +43,6 @@
                 <span class="ms-2 font-body text-sm text-white/55">Ingat saya</span>
             </label>
 
-            @if (Route::has('password.request'))
-                <a class="font-body text-sm text-sky-300 hover:text-sky-200 transition-colors" href="{{ route('password.request') }}">
-                    Lupa password?
-                </a>
-            @endif
         </div>
 
         <div class="pt-2">
@@ -57,6 +52,15 @@
             </button>
         </div>
     </form>
+
+    <div class="mt-6 rounded-xl bg-white/[0.04] border border-white/10 p-3.5 text-center">
+        <p class="font-body text-xs font-medium text-white/60">Lupa password? Hubungi Customer Service</p>
+        <p class="font-body text-sm text-white/85 mt-1">
+            <a href="mailto:cs@perpustakaan.test" class="text-sky-300 hover:text-sky-200 transition-colors">cs@perpustakaan.test</a>
+            <span class="text-white/30 mx-1.5">/</span>
+            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="text-sky-300 hover:text-sky-200 transition-colors">+62 812-3456-7890</a>
+        </p>
+    </div>
 
     @if (Route::has('register'))
         <p class="mt-6 text-center font-body text-sm text-white/40">
