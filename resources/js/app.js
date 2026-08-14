@@ -340,6 +340,9 @@ document.addEventListener('alpine:init', () => {
         value: value || '',
         placeholder,
         open: false,
+        mode: 'calendar',
+        yearInput: new Date().getFullYear(),
+        monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
         weekdays: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
         viewDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
         init() {
@@ -387,6 +390,29 @@ document.addEventListener('alpine:init', () => {
         nextMonth() {
             this.viewDate = new Date(this.year, this.month + 1, 1);
         },
+        toggleMode() {
+            this.mode = this.mode === 'calendar' ? 'monthYear' : 'calendar';
+            if (this.mode === 'monthYear') this.yearInput = this.year;
+        },
+        prevYear() {
+            this.viewDate = new Date(this.year - 1, this.month, 1);
+            this.yearInput = this.year;
+        },
+        nextYear() {
+            this.viewDate = new Date(this.year + 1, this.month, 1);
+            this.yearInput = this.year;
+        },
+        applyYear() {
+            const y = parseInt(this.yearInput, 10);
+            if (y >= 1900 && y <= 2100) {
+                this.viewDate = new Date(y, this.month, 1);
+            }
+            this.yearInput = this.year;
+        },
+        goMonth(m) {
+            this.viewDate = new Date(this.year, m, 1);
+            this.mode = 'calendar';
+        },
         isToday(d) {
             const t = new Date();
             return this.year === t.getFullYear() && this.month === t.getMonth() && d === t.getDate();
@@ -409,6 +435,7 @@ document.addEventListener('alpine:init', () => {
         setToday() {
             const t = new Date();
             this.viewDate = new Date(t.getFullYear(), t.getMonth(), 1);
+            this.mode = 'calendar';
             this.selectDate(t.getDate());
         },
         clear() {
