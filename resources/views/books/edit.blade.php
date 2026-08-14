@@ -57,12 +57,8 @@
 
                     <div>
                         <label for="kategori" class="block font-body text-xs font-medium text-white/70 mb-2">Kategori</label>
-                        <select id="kategori" name="kategori" class="glass-select w-full">
-                            <option value="">Pilih Kategori</option>
-                            @foreach ($kategoriList as $key => $label)
-                                <option value="{{ $key }}" {{ old('kategori', $book->kategori) === $key ? 'selected' : '' }}>{{ $label }}</option>
-                            @endforeach
-                        </select>
+                        <x-select-box :options="collect($kategoriList)->map(fn ($label, $key) => ['value' => $key, 'label' => $label])->values()->all()"
+                                      :value="old('kategori', $book->kategori)" placeholder="Pilih Kategori" name="kategori" />
                         @error('kategori') <p class="font-body text-xs text-rose-300 mt-1">{{ $message }}</p> @enderror
                     </div>
 

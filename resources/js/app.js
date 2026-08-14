@@ -315,6 +315,26 @@ document.addEventListener('alpine:init', () => {
             this.fileName = file ? file.name : '';
         },
     }));
+
+    Alpine.data('selectBox', (options, value = '', placeholder = 'Pilih...', name = null) => ({
+        options: options || [],
+        value: value || '',
+        placeholder,
+        name: name || '',
+        open: false,
+        get selectedLabel() {
+            const hit = this.options.find((o) => String(o.value) === String(this.value));
+            return hit ? hit.label : this.placeholder;
+        },
+        toggle() {
+            this.open = !this.open;
+        },
+        select(opt) {
+            this.value = opt.value;
+            this.open = false;
+            this.$dispatch('selectbox:change', opt.value);
+        },
+    }));
 });
 
 window.toast = (message, type = 'success') => Alpine.store('toast').show(message, type);

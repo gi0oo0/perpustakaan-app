@@ -59,12 +59,11 @@
 
                     <div>
                         <label for="role" class="block font-body text-xs font-medium text-white/70 mb-2">Role</label>
-                        <select id="role" name="role" required class="glass-select w-full">
-                            <option value="">Pilih Role</option>
-                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Staff</option>
-                            <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Anggota</option>
-                        </select>
+                        <x-select-box :options="[
+                            ['value' => 'admin', 'label' => 'Admin'],
+                            ['value' => 'staff', 'label' => 'Staff'],
+                            ['value' => 'user', 'label' => 'Anggota'],
+                        ]" :value="old('role')" placeholder="Pilih Role" name="role" />
                         @error('role') <p class="mt-1 font-body text-xs text-rose-300">{{ $message }}</p> @enderror
                     </div>
 

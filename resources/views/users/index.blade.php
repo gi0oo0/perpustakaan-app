@@ -34,22 +34,22 @@
 
                 <div>
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Role</label>
-                    <select x-model="role" class="glass-select w-full">
-                        <option value="">Semua Role</option>
-                        <option value="admin">Admin</option>
-                        <option value="staff">Staff</option>
-                        <option value="user">Anggota</option>
-                    </select>
+                    <x-select-box :options="[
+                        ['value' => '', 'label' => 'Semua Role'],
+                        ['value' => 'admin', 'label' => 'Admin'],
+                        ['value' => 'staff', 'label' => 'Staff'],
+                        ['value' => 'user', 'label' => 'Anggota'],
+                    ]" placeholder="Pilih Role" @selectbox:change="role = $event.detail" />
                 </div>
 
                 <div>
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Urutkan</label>
-                    <select x-model="sort" class="glass-select w-full">
-                        <option value="recent">Terbaru</option>
-                        <option value="name">Nama A-Z</option>
-                        <option value="nisn">NISN</option>
-                        <option value="email">Email A-Z</option>
-                    </select>
+                    <x-select-box :options="[
+                        ['value' => 'recent', 'label' => 'Terbaru'],
+                        ['value' => 'name', 'label' => 'Nama A-Z'],
+                        ['value' => 'nisn', 'label' => 'NISN'],
+                        ['value' => 'email', 'label' => 'Email A-Z'],
+                    ]" placeholder="Urutkan" @selectbox:change="sort = $event.detail" />
                 </div>
             </div>
             <div class="mt-3">

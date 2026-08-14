@@ -28,6 +28,12 @@
 
     <div class="space-y-6" x-data="bookCatalog(@js($booksJson), {{ Auth::user()->isAdmin() ? 'true' : 'false' }})">
         {{-- Live Filters --}}
+        @php
+            $kategoriOptions = array_merge(
+                [['value' => '', 'label' => 'Semua Kategori']],
+                collect($kategoriList)->map(fn ($label, $key) => ['value' => $key, 'label' => $label])->values()->all()
+            );
+        @endphp
         <div class="glass p-5">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
                 <div class="lg:col-span-1">
@@ -42,32 +48,28 @@
 
                 <div>
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Kategori</label>
-                    <select x-model="kategori" class="glass-select w-full">
-                        <option value="">Semua Kategori</option>
-                        @foreach ($kategoriList as $key => $label)
-                            <option value="{{ $key }}">{{ $label }}</option>
-                        @endforeach
-                    </select>
+                    <x-select-box :options="$kategoriOptions" placeholder="Pilih Kategori"
+                                  @selectbox:change="kategori = $event.detail" />
                 </div>
 
                 <div>
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Status</label>
-                    <select x-model="status" class="glass-select w-full">
-                        <option value="">Semua Status</option>
-                        <option value="available">Tersedia</option>
-                        <option value="borrowed">Habis</option>
-                    </select>
+                    <x-select-box :options="[
+                        ['value' => '', 'label' => 'Semua Status'],
+                        ['value' => 'available', 'label' => 'Tersedia'],
+                        ['value' => 'borrowed', 'label' => 'Habis'],
+                    ]" placeholder="Pilih Status" @selectbox:change="status = $event.detail" />
                 </div>
 
                 <div>
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Urutkan</label>
-                    <select x-model="sort" class="glass-select w-full">
-                        <option value="recent">Terbaru</option>
-                        <option value="title">Judul A-Z</option>
-                        <option value="author">Penulis A-Z</option>
-                        <option value="year">Tahun Terbit</option>
-                        <option value="stock">Stok</option>
-                    </select>
+                    <x-select-box :options="[
+                        ['value' => 'recent', 'label' => 'Terbaru'],
+                        ['value' => 'title', 'label' => 'Judul A-Z'],
+                        ['value' => 'author', 'label' => 'Penulis A-Z'],
+                        ['value' => 'year', 'label' => 'Tahun Terbit'],
+                        ['value' => 'stock', 'label' => 'Stok'],
+                    ]" placeholder="Urutkan" @selectbox:change="sort = $event.detail" />
                 </div>
             </div>
             <div class="mt-3 flex items-center justify-between">

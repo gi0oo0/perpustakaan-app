@@ -58,14 +58,14 @@
 
                 <div>
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Status</label>
-                    <select x-model="status" class="glass-select w-full">
-                        <option value="">Semua Status</option>
-                        <option value="active">Dipinjam</option>
-                        <option value="overdue">Terlambat</option>
-                        <option value="returned_ontime">Dikembalikan (Tepat)</option>
-                        <option value="returned_late">Dikembalikan (Telat)</option>
-                        <option value="returned">Semua Dikembalikan</option>
-                    </select>
+                    <x-select-box :options="[
+                        ['value' => '', 'label' => 'Semua Status'],
+                        ['value' => 'active', 'label' => 'Dipinjam'],
+                        ['value' => 'overdue', 'label' => 'Terlambat'],
+                        ['value' => 'returned_ontime', 'label' => 'Dikembalikan (Tepat)'],
+                        ['value' => 'returned_late', 'label' => 'Dikembalikan (Telat)'],
+                        ['value' => 'returned', 'label' => 'Semua Dikembalikan'],
+                    ]" placeholder="Pilih Status" @selectbox:change="status = $event.detail" />
                 </div>
 
                 <div>
@@ -80,13 +80,13 @@
 
                 <div>
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Urutkan</label>
-                    <select x-model="sort" class="glass-select w-full">
-                        <option value="recent">Terbaru</option>
-                        <option value="title">Judul A-Z</option>
-                        <option value="borrower">Peminjam A-Z</option>
-                        <option value="due">Jatuh Tempo</option>
-                        <option value="status">Status</option>
-                    </select>
+                    <x-select-box :options="[
+                        ['value' => 'recent', 'label' => 'Terbaru'],
+                        ['value' => 'title', 'label' => 'Judul A-Z'],
+                        ['value' => 'borrower', 'label' => 'Peminjam A-Z'],
+                        ['value' => 'due', 'label' => 'Jatuh Tempo'],
+                        ['value' => 'status', 'label' => 'Status'],
+                    ]" placeholder="Urutkan" @selectbox:change="sort = $event.detail" />
                 </div>
             </div>
             <div class="mt-3">
