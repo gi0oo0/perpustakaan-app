@@ -121,15 +121,7 @@
                                     <td class="text-white/60">{{ $loan->loan_date->format('d M Y') }}</td>
                                     <td class="text-white/60">{{ $loan->returned_at ? $loan->returned_at->format('d M Y') : '-' }}</td>
                                     <td>
-                                        @if($loan->status == 'borrowed')
-                                            <span class="glass-badge-blue">Dipinjam</span>
-                                        @elseif($loan->status == 'returned')
-                                            <span class="glass-badge-green">Dikembalikan</span>
-                                        @elseif($loan->status == 'late')
-                                            <span class="glass-badge-red">Terlambat</span>
-                                        @else
-                                            <span class="glass-badge-yellow">{{ ucfirst($loan->status) }}</span>
-                                        @endif
+                                        <span class="glass-badge {{ $loan->status_color === 'coral' ? 'glass-badge-red' : ($loan->status_color === 'primary' ? 'glass-badge-green' : 'glass-badge-yellow') }}">{{ $loan->status_label }}</span>
                                     </td>
                                 </tr>
                             @empty

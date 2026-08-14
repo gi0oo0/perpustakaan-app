@@ -87,14 +87,19 @@ class DashboardController extends Controller
             ->pluck('total', 'title');
 
         // 2. Peminjaman per bulan (6 bulan terakhir)
-        $monthlyLoans = Loan::select(
+        $monthlyRaw = Loan::select(
                 DB::raw("DATE_FORMAT(loan_date, '%Y-%m') as month"),
                 DB::raw('count(*) as total')
             )
             ->where('loan_date', '>=', Carbon::now()->subMonths(5)->startOfMonth())
             ->groupBy('month')
-            ->orderBy('month')
             ->pluck('total', 'month');
+
+        $monthlyLoans = collect();
+        for ($i = 5; $i >= 0; $i--) {
+            $month = Carbon::now()->subMonthsNoOverflow($i)->format('Y-m');
+            $monthlyLoans[$month] = (int) $monthlyRaw->get($month, 0);
+        }
 
         // 3. Status buku
         $currentlyLoaned = Loan::whereNull('returned_at')->count();
@@ -114,12 +119,20 @@ class DashboardController extends Controller
             });
 
         // 5. Aktivitas 7 hari terakhir
-        $weeklyActivity = collect(range(6, 0))->map(function ($i) {
+        $weeklyRaw = Loan::select(
+                DB::raw("DATE_FORMAT(loan_date, '%Y-%m-%d') as day"),
+                DB::raw('count(*) as total')
+            )
+            ->where('loan_date', '>=', Carbon::today()->subDays(6))
+            ->groupBy('day')
+            ->pluck('total', 'day');
+
+        $weeklyActivity = collect(range(6, 0))->map(function ($i) use ($weeklyRaw) {
             $day = Carbon::today()->subDays($i);
             return [
                 'label' => $day->translatedFormat('D'),
                 'date' => $day->format('Y-m-d'),
-                'total' => Loan::whereDate('loan_date', $day)->count(),
+                'total' => (int) $weeklyRaw->get($day->format('Y-m-d'), 0),
             ];
         });
 

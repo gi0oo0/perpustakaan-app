@@ -125,7 +125,7 @@ class BookController extends Controller
 
         if ($image = $request->file('cover_image')) {
             $destinationPath = 'images/covers/';
-            $profileImage = date('YmdHis') . "." . $image->guessExtension();
+            $profileImage = date('YmdHis') . '_' . \Illuminate\Support\Str::random(8) . '.' . $image->guessExtension();
             $image->move(public_path($destinationPath), $profileImage);
             $input['cover_image'] = $destinationPath . $profileImage;
         }
@@ -181,7 +181,7 @@ class BookController extends Controller
         if ($image = $request->file('cover_image')) {
             $this->deleteCover($book->cover_image);
             $destinationPath = 'images/covers/';
-            $profileImage = date('YmdHis') . "." . $image->guessExtension();
+            $profileImage = date('YmdHis') . '_' . \Illuminate\Support\Str::random(8) . '.' . $image->guessExtension();
             $image->move(public_path($destinationPath), $profileImage);
             $input['cover_image'] = $destinationPath . $profileImage;
         }
@@ -199,9 +199,9 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        $activeLoans = $book->loans()->whereNull('returned_at')->count();
-        if ($activeLoans > 0) {
-            return back()->with('error', 'Tidak dapat menghapus "' . $book->title . '" karena masih memiliki ' . $activeLoans . ' peminjaman aktif.');
+        $loanCount = $book->loans()->count();
+        if ($loanCount > 0) {
+            return back()->with('error', 'Tidak dapat menghapus "' . $book->title . '" karena memiliki ' . $loanCount . ' riwayat peminjaman.');
         }
 
         $this->deleteCover($book->cover_image);
@@ -266,7 +266,10 @@ class BookController extends Controller
         $kategoriList = Book::getKategoriList();
         $kategoriValid = array_keys($kategoriList);
 
-        $existingIsbns = Book::whereIn('isbn', array_column($rows, 'isbn'))
+        $existingIsbns = Book::whereIn('isbn', array_map(
+            fn ($row) => trim((string) ($row['isbn'] ?? '')),
+            $rows
+        ))
             ->pluck('isbn')
             ->flip();
 
@@ -445,7 +448,18 @@ class BookController extends Controller
     private function downloadCover(string $url): ?string
     {
         $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+        $port = parse_url($url, PHP_URL_PORT);
+
         if (!in_array(strtolower((string) $scheme), ['http', 'https'], true)) {
+            return null;
+        }
+        if (! $host || ($port !== null && !in_array((int) $port, [80, 443], true))) {
+            return null;
+        }
+
+        $ip = gethostbyname($host);
+        if ($ip === $host || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
             return null;
         }
 

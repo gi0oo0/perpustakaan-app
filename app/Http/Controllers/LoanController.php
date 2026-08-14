@@ -53,7 +53,7 @@ class LoanController extends Controller
             $query->where('loan_date', '<=', $request->date_to);
         }
 
-        $loans = $query->latest()->get();
+        $loans = $query->orderBy('loan_date', 'desc')->orderBy('id', 'desc')->get();
 
         $isStaff = $request->user()->isStaff();
         $isAdmin = $request->user()->isAdmin();
@@ -277,43 +277,47 @@ class LoanController extends Controller
             return back()->withErrors(['confirm_received' => 'Anda harus mengonfirmasi bahwa buku telah diterima secara fisik.'])->withInput();
         }
 
-        if ($request->filled('isbn')) {
-            $book = Book::where('isbn', $request->isbn)->first();
-            if (! $book) {
-                return back()->withErrors(['isbn' => 'Buku dengan ISBN tersebut tidak ditemukan.'])->withInput();
+        return DB::transaction(function () use ($request) {
+            if ($request->filled('isbn')) {
+                $book = Book::where('isbn', $request->isbn)->first();
+                if (! $book) {
+                    return back()->withErrors(['isbn' => 'Buku dengan ISBN tersebut tidak ditemukan.'])->withInput();
+                }
+                $loan = Loan::where('book_id', $book->id)
+                    ->whereNull('returned_at')
+                    ->lockForUpdate()
+                    ->first();
+            } else {
+                $loan = Loan::where('id', $request->loan_id)
+                    ->whereNull('returned_at')
+                    ->lockForUpdate()
+                    ->first();
             }
-            $loan = Loan::where('book_id', $book->id)
-                ->whereNull('returned_at')
-                ->first();
-        } else {
-            $loan = Loan::where('id', $request->loan_id)
-                ->whereNull('returned_at')
-                ->first();
-        }
 
-        if (! $loan) {
-            return back()->withErrors(['isbn' => 'Pinjaman tidak ditemukan atau buku sudah dikembalikan.'])->withInput();
-        }
+            if (! $loan) {
+                return back()->withErrors(['isbn' => 'Pinjaman tidak ditemukan atau buku sudah dikembalikan.'])->withInput();
+            }
 
-        $daysLate = $loan->getDaysLate();
-        $denda = Loan::calculateDenda($daysLate, $loan->getDendaPerDay());
+            $daysLate = $loan->getDaysLate();
+            $denda = Loan::calculateDenda($daysLate, $loan->getDendaPerDay());
 
-        $loan->update([
-            'returned_at' => Carbon::today(),
-            'denda' => $denda,
-            'status_denda' => $denda > 0 ? 'belum_bayar' : 'lunas',
-            'processed_by' => $request->user()->id,
-        ]);
+            $loan->update([
+                'returned_at' => Carbon::today(),
+                'denda' => $denda,
+                'status_denda' => $denda > 0 ? 'belum_bayar' : 'lunas',
+                'processed_by' => $request->user()->id,
+            ]);
 
-        $loan->book->increment('stock');
+            $loan->book->increment('stock');
 
-        $msg = 'Buku "'.$loan->book->title.'" berhasil dikembalikan oleh '.$request->user()->name.'.';
-        if ($denda > 0) {
-            $msg .= ' Denda: Rp'.number_format($denda, 0, ',', '.');
-        }
+            $msg = 'Buku "'.$loan->book->title.'" berhasil dikembalikan oleh '.$request->user()->name.'.';
+            if ($denda > 0) {
+                $msg .= ' Denda: Rp'.number_format($denda, 0, ',', '.');
+            }
 
-        return redirect()->route('loans.index')
-            ->with('success', $msg);
+            return redirect()->route('loans.index')
+                ->with('success', $msg);
+        });
     }
 
     public function payDenda(Loan $loan)
@@ -352,7 +356,7 @@ class LoanController extends Controller
             $query->where('loan_date', '<=', $request->date_to);
         }
 
-        $loans = $query->latest()->get();
+        $loans = $query->orderBy('loan_date', 'desc')->orderBy('id', 'desc')->get();
 
         $filename = 'riwayat_peminjaman_'.Carbon::now()->format('Y-m-d_His').'.csv';
         $headers = [

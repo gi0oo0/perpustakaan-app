@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
@@ -90,6 +91,15 @@ class UserController extends Controller
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        if ($user->isAdmin() && $request->role !== 'admin') {
+            if ($user->id === $request->user()->id) {
+                return back()->with('error', 'Anda tidak dapat mengubah role admin milik Anda sendiri.');
+            }
+            if (User::where('role', 'admin')->count() <= 1) {
+                return back()->with('error', 'Tidak dapat mengubah role admin terakhir.');
+            }
+        }
+
         $data = [
             'name' => $request->name,
             'email' => $request->email,
@@ -124,9 +134,9 @@ class UserController extends Controller
             return back()->with('error', 'Tidak dapat menghapus akun admin terakhir.');
         }
 
-        $activeLoans = $user->loans()->whereNull('returned_at')->count();
-        if ($activeLoans > 0) {
-            return back()->with('error', 'Tidak dapat menghapus "' . $user->name . '" karena masih memiliki ' . $activeLoans . ' peminjaman aktif.');
+        $loanCount = $user->loans()->count();
+        if ($loanCount > 0) {
+            return back()->with('error', 'Tidak dapat menghapus "' . $user->name . '" karena memiliki ' . $loanCount . ' riwayat peminjaman.');
         }
 
         $this->deleteProfileImage($user->profile_image);
@@ -254,7 +264,7 @@ class UserController extends Controller
                 continue;
             }
 
-            $finalPassword = $password !== '' ? $password : 'password';
+            $finalPassword = $password !== '' ? $password : ($nisn !== '' ? $nisn : Str::random(10));
 
             User::create([
                 'name' => $name,
