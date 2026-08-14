@@ -9,23 +9,23 @@
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
         <script>
-            if (localStorage.getItem('theme') === 'light') {
-                document.documentElement.classList.add('light');
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
             }
         </script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body class="antialiased text-white bg-night">
         <div class="min-h-screen relative overflow-x-clip">
-            {{-- Subtle background: faint single glow, no grid --}}
+            {{-- Subtle background: faint teal glow, no grid --}}
             <div class="fixed inset-0 -z-10 bg-night overflow-hidden" aria-hidden="true">
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_-10%,rgba(109,92,255,0.07),transparent_60%)]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_-10%,rgba(15,118,110,0.05),transparent_60%)]"></div>
             </div>
 
             @include('layouts.navigation')

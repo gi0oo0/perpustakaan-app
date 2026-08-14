@@ -8,28 +8,33 @@
         <title>{{ config('app.name', 'Perpustakaan Sekolah') }}</title>
         <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
+        <script>
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+            }
+        </script>
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
-    <body class="antialiased bg-[#080B12] text-[#F4F7FB] min-h-screen font-body">
+    <body class="antialiased bg-night text-white min-h-screen font-body">
         <div class="relative min-h-screen overflow-x-clip flex flex-col items-center justify-center px-4 py-10">
-            {{-- Ambient background --}}
-            <div class="fixed inset-0 -z-10 bg-[#080B12] overflow-hidden" aria-hidden="true">
-                <div class="absolute -top-44 -left-32 w-[36rem] h-[36rem] rounded-full bg-[#7C5CFF]/[0.13] blur-[130px]"></div>
-                <div class="absolute -bottom-52 -right-36 w-[38rem] h-[38rem] rounded-full bg-[#22D3EE]/[0.07] blur-[140px]"></div>
-                <div class="auth-grid absolute inset-0"></div>
+            {{-- Subtle background --}}
+            <div class="fixed inset-0 -z-10 bg-night overflow-hidden" aria-hidden="true">
+                <div class="absolute -top-44 -left-32 w-[36rem] h-[36rem] rounded-full bg-primary/[0.05] blur-[130px]"></div>
+                <div class="absolute -bottom-52 -right-36 w-[38rem] h-[38rem] rounded-full bg-primary/[0.04] blur-[140px]"></div>
             </div>
 
             <div class="w-full max-w-[440px] animate-fade-up">
-                <div class="w-full rounded-[18px] bg-[#111722] border border-white/[0.08] p-6 sm:p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_18px_50px_-24px_rgba(0,0,0,0.75)]">
+                <div class="glass w-full rounded-2xl p-6 sm:p-8 shadow-glass-lg">
                     {{ $slot }}
                 </div>
 
-                <p class="mt-8 text-center font-body text-xs text-[#5F6B7A]">© 2026 Sistem Manajemen Perpustakaan</p>
+                <p class="mt-8 text-center font-body text-xs text-white/40">© 2026 Sistem Manajemen Perpustakaan</p>
             </div>
         </div>
     </body>

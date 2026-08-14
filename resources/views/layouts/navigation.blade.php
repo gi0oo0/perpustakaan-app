@@ -50,7 +50,7 @@
                         <input data-global-search-input x-ref="input" type="text" x-model="query" @input="doSearch"
                                @keydown.escape="reset" autocomplete="off"
                                placeholder="Cari buku..."
-                               class="w-full h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] pl-9 pr-9 font-body text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all duration-200">
+                               class="topbar-search w-full h-9 rounded-[8px] pl-9 pr-9 font-body text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-200">
                         <kbd class="absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-medium text-white/25 border border-white/10 rounded px-1.5 pointer-events-none">/</kbd>
                     </div>
 
@@ -103,9 +103,9 @@
             <div class="flex-1 lg:hidden"></div>
 
             @if (Auth::user()->isAdmin())
-                <span class="glass-badge-violet hidden sm:inline-flex">Admin</span>
+                <span class="badge-admin hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">Admin</span>
             @elseif (Auth::user()->role === 'staff')
-                <span class="glass-badge-yellow hidden sm:inline-flex">Staff</span>
+                <span class="badge-staff hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">Staff</span>
             @endif
 
             {{-- User dropdown --}}
@@ -134,9 +134,9 @@
                             <div class="font-mono text-xs text-white/40 mt-1">NISN: {{ Auth::user()->nisn }}</div>
                         @endif
                         @if (Auth::user()->isAdmin())
-                            <span class="glass-badge-violet mt-2">Admin</span>
+                            <span class="badge-admin inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2">Admin</span>
                         @elseif (Auth::user()->role === 'staff')
-                            <span class="glass-badge-yellow mt-2">Staff</span>
+                            <span class="badge-staff inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2">Staff</span>
                         @else
                             <span class="glass-badge-gray mt-2">Anggota</span>
                         @endif
@@ -205,7 +205,7 @@
                     <input data-global-search-input x-ref="input" type="text" x-model="query" @input="doSearch"
                            @keydown.escape="reset" autocomplete="off"
                            placeholder="Cari buku, penulis, ISBN..."
-                           class="w-full h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] pl-9 pr-9 font-body text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-primary/40 focus:ring-2 focus:ring-primary/10 transition-all duration-200">
+                           class="topbar-search w-full h-9 rounded-[8px] pl-9 pr-9 font-body text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-200">
                     <kbd class="absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-medium text-white/25 border border-white/10 rounded px-1.5 pointer-events-none">/</kbd>
                 </div>
 
@@ -360,9 +360,9 @@
                 ];
             @endphp
             @foreach ($links as $link)
-                <a href="{{ route($link['route']) }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ $link['active'] ? 'text-white bg-white/[0.06] [&>svg]:text-white/85' : 'text-white/55 hover:text-white hover:bg-white/[0.04] [&>svg]:text-white/40 hover:[&>svg]:text-white/75 transition-colors duration-150' }}">
+                <a href="{{ route($link['route']) }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ $link['active'] ? 'nav-active' : 'nav-item transition-colors duration-150' }}">
                     @if ($link['active'])
-                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-primary"></span>
+                        <span class="nav-indicator absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full"></span>
                     @endif
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $link['icon'] !!}</svg>
                     <span class="flex-1">{{ $link['label'] }}</span>
@@ -370,9 +370,9 @@
             @endforeach
 
             @if (Auth::user()->isStaff())
-                <a href="{{ route('loans.return.create') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ request()->routeIs('loans.return.*') ? 'text-white bg-white/[0.06] [&>svg]:text-white/85' : 'text-white/55 hover:text-white hover:bg-white/[0.04] [&>svg]:text-white/40 hover:[&>svg]:text-white/75 transition-colors duration-150' }}">
+                <a href="{{ route('loans.return.create') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ request()->routeIs('loans.return.*') ? 'nav-active' : 'nav-item transition-colors duration-150' }}">
                     @if (request()->routeIs('loans.return.*'))
-                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-primary"></span>
+                        <span class="nav-indicator absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full"></span>
                     @endif
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                     <span class="flex-1">Kembalikan Buku</span>
@@ -381,18 +381,18 @@
 
             @if (Auth::user()->isAdmin())
                 <p class="px-3 pt-4 pb-1.5 text-[11px] font-medium tracking-wider uppercase text-white/30">Administrasi</p>
-                <a href="{{ route('users.index') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ request()->routeIs('users.*') ? 'text-white bg-white/[0.06] [&>svg]:text-white/85' : 'text-white/55 hover:text-white hover:bg-white/[0.04] [&>svg]:text-white/40 hover:[&>svg]:text-white/75 transition-colors duration-150' }}">
+                <a href="{{ route('users.index') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ request()->routeIs('users.*') ? 'nav-active' : 'nav-item transition-colors duration-150' }}">
                     @if (request()->routeIs('users.*'))
-                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-primary"></span>
+                        <span class="nav-indicator absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full"></span>
                     @endif
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     <span class="flex-1">Manajemen Anggota</span>
                 </a>
             @endif
 
-            <a href="{{ route('profile.edit') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ request()->routeIs('profile.*') ? 'text-white bg-white/[0.06] [&>svg]:text-white/85' : 'text-white/55 hover:text-white hover:bg-white/[0.04] [&>svg]:text-white/40 hover:[&>svg]:text-white/75 transition-colors duration-150' }}">
+            <a href="{{ route('profile.edit') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[8px] font-body text-sm {{ request()->routeIs('profile.*') ? 'nav-active' : 'nav-item transition-colors duration-150' }}">
                 @if (request()->routeIs('profile.*'))
-                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full bg-primary"></span>
+                    <span class="nav-indicator absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-4 rounded-r-full"></span>
                 @endif
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 <span class="flex-1">Pengaturan Akun</span>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h2 class="font-display text-xl font-semibold tracking-tight text-white leading-tight">Dashboard</h2>
+            <h2 class="font-display text-2xl font-bold tracking-tight text-white leading-tight">Dashboard</h2>
             <p class="font-body text-sm text-white/45 mt-1">
                 @if (Auth::user()->isStaff())
                     Selamat datang kembali, {{ Auth::user()->name }}.
@@ -23,7 +23,7 @@
 
         $activityBadge = fn ($loan) => $loan->isReturned()
             ? ['Kembali', 'text-emerald-300 bg-emerald-500/10']
-            : ($loan->isOverdue() ? ['Telat', 'text-rose-300 bg-rose-500/10'] : ['Dipinjam', 'text-white/55 bg-white/[0.06]']);
+            : ($loan->isOverdue() ? ['Telat', 'text-rose-300 bg-rose-500/10'] : ['Dipinjam', 'text-sky-300 bg-sky-500/10']);
     @endphp
 
     <div class="space-y-6" x-data="reveal">
@@ -98,7 +98,7 @@
                 <div class="flex items-center justify-between gap-4 px-5 py-4 border-b border-white/[0.06]">
                     <div>
                         <h3 class="font-display text-[15px] font-semibold text-white leading-tight">Statistik</h3>
-                        <p class="font-body text-xs text-white/40 mt-0.5">Aktivitas 6 bulan terakhir</p>
+                        <p class="font-body text-xs text-white/40 mt-0.5">Aktivitas perpustakaan 6 bulan terakhir</p>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-3">
@@ -435,24 +435,29 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                const dark = document.documentElement.classList.contains('dark');
                 const palette = {
-                    primary: '#6d5cff',
-                    emerald: '#34d399',
-                    rose: '#fb7185',
-                    card: '#131a2a',
-                    border: 'rgba(255, 255, 255, 0.07)',
-                    grid: 'rgba(255, 255, 255, 0.05)',
-                    muted: 'rgba(255, 255, 255, 0.45)',
-                    label: 'rgba(255, 255, 255, 0.65)',
+                    primary: '#0F766E',
+                    primaryDark: '#14B8A6',
+                    emerald: '#14B8A6',
+                    blue: '#3B82F6',
+                    rose: '#EF4444',
+                    card: dark ? '#181C21' : '#FFFFFF',
+                    border: dark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)',
+                    grid: dark ? 'rgba(255, 255, 255, 0.06)' : '#E2E8F0',
+                    muted: dark ? 'rgba(255, 255, 255, 0.45)' : '#64748B',
+                    label: dark ? 'rgba(255, 255, 255, 0.7)' : '#334155',
+                    bar: dark ? 'rgba(45, 212, 191, 0.75)' : 'rgba(15, 118, 110, 0.55)',
+                    barHover: dark ? '#2DD4BF' : '#115E59',
                 };
 
                 const tooltip = {
-                    backgroundColor: '#0f1422',
-                    borderColor: 'rgba(255, 255, 255, 0.12)',
+                    backgroundColor: dark ? '#181C21' : '#FFFFFF',
+                    borderColor: dark ? '#2A3038' : '#E2E8F0',
                     borderWidth: 1,
-                    titleColor: '#ffffff',
+                    titleColor: dark ? '#F1F5F9' : '#0F172A',
                     titleFont: { weight: '600' },
-                    bodyColor: 'rgba(255, 255, 255, 0.75)',
+                    bodyColor: dark ? 'rgba(241, 245, 249, 0.8)' : '#475569',
                     bodyFont: { size: 12 },
                     padding: 10,
                     cornerRadius: 8,
@@ -482,14 +487,14 @@
                                     datasets: [{
                                         label: 'Peminjaman',
                                         data: data.monthlyLoans.data,
-                                        borderColor: palette.primary,
-                                        backgroundColor: palette.primary,
+                                        borderColor: dark ? palette.primaryDark : palette.primary,
+                                        backgroundColor: dark ? palette.primaryDark : palette.primary,
                                         borderWidth: 2,
                                         fill: false,
                                         tension: 0.3,
                                         pointRadius: 2.5,
                                         pointBorderWidth: 0,
-                                        pointBackgroundColor: palette.primary,
+                                        pointBackgroundColor: dark ? palette.primaryDark : palette.primary,
                                         pointHoverRadius: 4,
                                         pointHoverBorderWidth: 0,
                                     }],
@@ -517,8 +522,8 @@
                                     datasets: [{
                                         label: 'Peminjaman',
                                         data: data.topBooks.data,
-                                        backgroundColor: 'rgba(109, 92, 255, 0.55)',
-                                        hoverBackgroundColor: 'rgba(109, 92, 255, 0.8)',
+                                        backgroundColor: palette.bar,
+                                        hoverBackgroundColor: palette.barHover,
                                         borderRadius: 4,
                                         borderSkipped: false,
                                         barThickness: 12,
@@ -541,7 +546,7 @@
                         }
 
                         // 3. Status buku — donut compact + legend manual
-                        const statusColors = [palette.emerald, palette.primary, palette.rose];
+                        const statusColors = [palette.emerald, palette.blue, palette.rose];
                         const statusTotal = data.bookStatus.data.reduce((a, b) => a + Number(b), 0);
                         const legend = document.getElementById('statusLegend');
                         legend.innerHTML = '';

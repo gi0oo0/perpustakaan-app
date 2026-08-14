@@ -92,10 +92,10 @@ document.addEventListener('alpine:init', () => {
     }));
 
     Alpine.data('themeToggle', () => ({
-        dark: !document.documentElement.classList.contains('light'),
+        dark: document.documentElement.classList.contains('dark'),
         toggle() {
             this.dark = !this.dark;
-            document.documentElement.classList.toggle('light', !this.dark);
+            document.documentElement.classList.toggle('dark', this.dark);
             localStorage.setItem('theme', this.dark ? 'dark' : 'light');
         },
     }));
@@ -450,6 +450,7 @@ window.toast = (message, type = 'success') => Alpine.store('toast').show(message
 
 window.confirmDelete = (event, form) => {
     event.preventDefault();
+    const dark = document.documentElement.classList.contains('dark');
     Swal.fire({
         title: 'Yakin ingin menghapus?',
         text: 'Data ini akan dihapus permanen dan tidak dapat dikembalikan.',
@@ -457,13 +458,13 @@ window.confirmDelete = (event, form) => {
         showCancelButton: true,
         confirmButtonText: 'Ya, hapus',
         cancelButtonText: 'Batal',
-        confirmButtonColor: '#fb7185',
-        cancelButtonColor: '#334155',
-        background: '#0b1220',
-        color: '#ffffff',
+        confirmButtonColor: '#DC2626',
+        cancelButtonColor: dark ? '#2A3038' : '#E2E8F0',
+        background: dark ? '#181C21' : '#FFFFFF',
+        color: dark ? '#F1F5F9' : '#0F172A',
         reverseButtons: true,
         customClass: {
-            popup: 'rounded-2xl border border-white/10',
+            popup: dark ? 'rounded-xl border border-[#2A3038]' : 'rounded-xl border border-[#E2E8F0]',
         },
     }).then((result) => {
         if (result.isConfirmed) {
@@ -475,6 +476,7 @@ window.confirmDelete = (event, form) => {
 
 window.confirmReset = (event, form) => {
     event.preventDefault();
+    const dark = document.documentElement.classList.contains('dark');
     Swal.fire({
         title: 'Reset password?',
         text: 'Password akun ini akan diatur ulang sama dengan NISN anggota.',
@@ -482,13 +484,13 @@ window.confirmReset = (event, form) => {
         showCancelButton: true,
         confirmButtonText: 'Ya, reset',
         cancelButtonText: 'Batal',
-        confirmButtonColor: '#fb7185',
-        cancelButtonColor: '#334155',
-        background: '#0b1220',
-        color: '#ffffff',
+        confirmButtonColor: '#DC2626',
+        cancelButtonColor: dark ? '#2A3038' : '#E2E8F0',
+        background: dark ? '#181C21' : '#FFFFFF',
+        color: dark ? '#F1F5F9' : '#0F172A',
         reverseButtons: true,
         customClass: {
-            popup: 'rounded-2xl border border-white/10',
+            popup: dark ? 'rounded-xl border border-[#2A3038]' : 'rounded-xl border border-[#E2E8F0]',
         },
     }).then((result) => {
         if (result.isConfirmed) {
