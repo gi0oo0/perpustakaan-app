@@ -335,6 +335,88 @@ document.addEventListener('alpine:init', () => {
             this.$dispatch('selectbox:change', opt.value);
         },
     }));
+
+    Alpine.data('datePicker', (value = '', placeholder = 'Pilih Tanggal') => ({
+        value: value || '',
+        placeholder,
+        open: false,
+        weekdays: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        viewDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        init() {
+            if (this.value) {
+                const s = this.selected;
+                if (s) this.viewDate = new Date(s.getFullYear(), s.getMonth(), 1);
+            }
+        },
+        get selected() {
+            if (!this.value) return null;
+            const [y, m, d] = this.value.split('-').map(Number);
+            if (!y || !m || !d) return null;
+            return new Date(y, m - 1, d);
+        },
+        get label() {
+            if (!this.value) return this.placeholder;
+            const s = this.selected;
+            return s
+                ? s.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                : this.placeholder;
+        },
+        get year() {
+            return this.viewDate.getFullYear();
+        },
+        get month() {
+            return this.viewDate.getMonth();
+        },
+        get monthLabel() {
+            return this.viewDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+        },
+        get days() {
+            const lead = (new Date(this.year, this.month, 1).getDay() + 6) % 7;
+            const total = new Date(this.year, this.month + 1, 0).getDate();
+            const cells = [];
+            for (let i = 0; i < lead; i++) cells.push(null);
+            for (let d = 1; d <= total; d++) cells.push(d);
+            return cells;
+        },
+        toggle() {
+            this.open = !this.open;
+        },
+        prevMonth() {
+            this.viewDate = new Date(this.year, this.month - 1, 1);
+        },
+        nextMonth() {
+            this.viewDate = new Date(this.year, this.month + 1, 1);
+        },
+        isToday(d) {
+            const t = new Date();
+            return this.year === t.getFullYear() && this.month === t.getMonth() && d === t.getDate();
+        },
+        isSelected(d) {
+            const s = this.selected;
+            return !!s && this.year === s.getFullYear() && this.month === s.getMonth() && d === s.getDate();
+        },
+        selectDate(d) {
+            const iso =
+                this.year +
+                '-' +
+                String(this.month + 1).padStart(2, '0') +
+                '-' +
+                String(d).padStart(2, '0');
+            this.value = iso;
+            this.open = false;
+            this.$dispatch('datepicker:change', iso);
+        },
+        setToday() {
+            const t = new Date();
+            this.viewDate = new Date(t.getFullYear(), t.getMonth(), 1);
+            this.selectDate(t.getDate());
+        },
+        clear() {
+            this.value = '';
+            this.open = false;
+            this.$dispatch('datepicker:change', '');
+        },
+    }));
 });
 
 window.toast = (message, type = 'success') => Alpine.store('toast').show(message, type);

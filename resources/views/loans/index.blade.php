@@ -68,14 +68,14 @@
                     ]" placeholder="Pilih Status" />
                 </div>
 
-                <div>
+                <div @datepicker:change="dateFrom = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Dari</label>
-                    <input type="date" x-model="dateFrom" class="glass-input w-full">
+                    <x-date-picker placeholder="Dari tanggal" align="left" />
                 </div>
 
-                <div>
+                <div @datepicker:change="dateTo = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Sampai</label>
-                    <input type="date" x-model="dateTo" class="glass-input w-full">
+                    <x-date-picker placeholder="Sampai tanggal" align="right" />
                 </div>
 
                 <div @selectbox:change="sort = $event.detail">
