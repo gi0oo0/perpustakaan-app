@@ -55,11 +55,11 @@
     }
 
     .bg-gradient-accent {
-        background-color: #0f766e;
+        background-color: #35B8A5;
     }
 
     .bg-gradient-soft {
-        background-color: #0f766e;
+        background-color: #287F73;
     }
 
     .glass {
@@ -227,7 +227,7 @@
         height: 48px;
         margin: -24px 0 0 -24px;
         border-radius: 999px;
-        border: 2px solid rgba(20, 184, 166, 0.5);
+        border: 2px solid rgba(53, 184, 165, 0.4);
         animation: scanPulse 1.8s ease-out infinite;
         pointer-events: none;
     }
@@ -240,8 +240,8 @@
         height: 12px;
         margin: -6px 0 0 -6px;
         border-radius: 999px;
-        background: rgba(15, 118, 110, 0.8);
-        box-shadow: 0 0 26px 8px rgba(15, 118, 110, 0.35);
+        background: rgba(53, 184, 165, 0.7);
+        box-shadow: 0 0 20px 6px rgba(53, 184, 165, 0.25);
         pointer-events: none;
     }
     @keyframes scanPulse {
@@ -325,8 +325,8 @@
         right: 7%;
         top: 12%;
         height: 2px;
-        background: linear-gradient(90deg, transparent, rgba(15, 118, 110, 0.8), transparent);
-        box-shadow: 0 0 14px rgba(15, 118, 110, 0.3);
+        background: linear-gradient(90deg, transparent, rgba(53, 184, 165, 0.8), transparent);
+        box-shadow: 0 0 12px rgba(53, 184, 165, 0.25);
         animation: scanMove 2.6s ease-in-out infinite;
         pointer-events: none;
     }
@@ -583,8 +583,10 @@ body {
 
 /* --- Solid-on-color elements keep white text in light mode --- */
 .glass-btn-primary,
+.glass-btn-primary * {
+    color: #0F2421;
+}
 .glass-btn-danger,
-.glass-btn-primary *,
 .glass-btn-danger * {
     color: #ffffff;
 }
@@ -614,10 +616,10 @@ body {
     color: #64748b;
 }
 .glass-link {
-    color: #0f766e;
+    color: #35B8A5;
 }
 .glass-link:hover {
-    color: #115e59;
+    color: #2FA794;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -634,13 +636,13 @@ body {
    ========================================================================== */
 
 html.dark body {
-    background-color: #0f1115;
-    color: rgba(241, 245, 249, 0.95);
+    background-color: #151719;
+    color: rgba(241, 243, 244, 0.95);
 }
 
 html.dark ::selection {
-    background: rgba(45, 212, 191, 0.22);
-    color: #f1f5f9;
+    background: rgba(53, 184, 165, 0.22);
+    color: #f1f3f4;
 }
 
 html.dark * {
@@ -658,44 +660,44 @@ html.dark input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 html.dark select option {
-    background-color: #181c21;
-    color: #f1f5f9;
+    background-color: #1D2124;
+    color: #f1f3f4;
 }
 
 /* --- Page background --- */
 html.dark .bg-night {
-    background-color: #0f1115;
+    background-color: #151719;
 }
 html.dark .bg-night-deep {
-    background-color: #111418;
+    background-color: #191C1F;
 }
 html.dark .bg-night\/40 {
-    background-color: rgba(15, 17, 21, 0.55);
+    background-color: rgba(21, 23, 25, 0.55);
 }
 html.dark .bg-night\/55 {
-    background-color: rgba(15, 17, 21, 0.62);
+    background-color: rgba(21, 23, 25, 0.62);
 }
 html.dark .bg-night\/60 {
-    background-color: rgba(15, 17, 21, 0.65);
+    background-color: rgba(21, 23, 25, 0.65);
 }
 html.dark .bg-night\/70 {
-    background-color: rgba(15, 17, 21, 0.72);
+    background-color: rgba(25, 28, 31, 0.92);
 }
 html.dark .bg-night\/80 {
-    background-color: rgba(15, 17, 21, 0.85);
+    background-color: rgba(25, 28, 31, 0.95);
 }
 html.dark .bg-night\/90 {
-    background-color: rgba(15, 17, 21, 0.92);
+    background-color: rgba(25, 28, 31, 0.97);
 }
 html.dark .from-night\/90 {
-    --tw-gradient-from: rgb(15 17 21 / 0.9) var(--tw-gradient-from-position);
+    --tw-gradient-from: rgb(25 28 31 / 0.95) var(--tw-gradient-from-position);
     --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 html.dark .to-night\/80 {
-    --tw-gradient-to: rgb(15 17 21 / 0.85) var(--tw-gradient-to-position);
+    --tw-gradient-to: rgb(25 28 31 / 0.9) var(--tw-gradient-to-position);
 }
 html.dark .to-night\/85 {
-    --tw-gradient-to: rgb(15 17 21 / 0.9) var(--tw-gradient-to-position);
+    --tw-gradient-to: rgb(25 28 31 / 0.95) var(--tw-gradient-to-position);
 }
 
 /* --- Teks --- */
@@ -705,102 +707,82 @@ html.dark .text-white {
 html.dark .text-white\/5,
 html.dark .text-white\/10,
 html.dark .text-white\/15,
-html.dark .text-white\/20 {
-    color: rgba(241, 245, 249, 0.14);
-}
-html.dark .text-white\/25 {
-    color: rgba(241, 245, 249, 0.26);
-}
+html.dark .text-white\/20,
+html.dark .text-white\/25,
 html.dark .text-white\/30 {
-    color: rgba(241, 245, 249, 0.32);
+    color: #747C82;
 }
-html.dark .text-white\/35 {
-    color: rgba(241, 245, 249, 0.38);
-}
+html.dark .text-white\/35,
 html.dark .text-white\/40 {
-    color: rgba(241, 245, 249, 0.42);
+    color: #8C959B;
 }
-html.dark .text-white\/45 {
-    color: rgba(241, 245, 249, 0.48);
-}
-html.dark .text-white\/50 {
-    color: rgba(241, 245, 249, 0.55);
-}
+html.dark .text-white\/45,
+html.dark .text-white\/50,
 html.dark .text-white\/55 {
-    color: rgba(241, 245, 249, 0.6);
+    color: #A5ADB3;
 }
 html.dark .text-white\/60 {
-    color: rgba(241, 245, 249, 0.65);
+    color: #B6BDC2;
 }
 html.dark .text-white\/70 {
-    color: rgba(241, 245, 249, 0.72);
+    color: #C8CDD2;
 }
 html.dark .text-white\/80 {
-    color: rgba(241, 245, 249, 0.82);
+    color: #E6E9EB;
 }
-html.dark .text-white\/85 {
-    color: rgba(241, 245, 249, 0.88);
-}
+html.dark .text-white\/85,
 html.dark .text-white\/90 {
-    color: rgba(241, 245, 249, 0.92);
+    color: #f1f3f4;
 }
 
 /* --- Aksen semantic (dark) --- */
 html.dark .text-sky-300 {
-    color: #7dd3fc;
+    color: #5C9FE8;
 }
 html.dark .text-sky-200 {
-    color: #bae6fd;
+    color: #7DB4EC;
 }
 html.dark .text-rose-300 {
-    color: #fda4af;
+    color: #E06B73;
 }
 html.dark .text-rose-200 {
-    color: #fecdd3;
+    color: #E88288;
 }
 html.dark .text-emerald-300 {
-    color: #6ee7b7;
+    color: #4CAF7D;
 }
 html.dark .text-emerald-200 {
-    color: #a7f3d0;
+    color: #5FBF8E;
 }
 html.dark .text-amber-300 {
-    color: #fcd34d;
+    color: #D9A441;
 }
 html.dark .text-violet-300 {
-    color: #cbd5e1;
+    color: #A5ADB3;
 }
 
 /* --- Isian --- */
 html.dark .bg-white\/\[0\.02\] {
-    background-color: rgba(241, 245, 249, 0.03);
+    background-color: rgba(255, 255, 255, 0.03);
 }
 html.dark .bg-white\/\[0\.03\] {
-    background-color: rgba(241, 245, 249, 0.04);
+    background-color: rgba(255, 255, 255, 0.04);
 }
-html.dark .bg-white\/\[0\.04\] {
-    background-color: rgba(241, 245, 249, 0.05);
-}
-html.dark .bg-white\/\[0\.05\] {
-    background-color: rgba(241, 245, 249, 0.06);
-}
+html.dark .bg-white\/\[0\.04\],
+html.dark .bg-white\/\[0\.05\],
 html.dark .bg-white\/\[0\.06\] {
-    background-color: rgba(241, 245, 249, 0.07);
+    background-color: #22272B;
 }
-html.dark .bg-white\/\[0\.07\] {
-    background-color: rgba(241, 245, 249, 0.08);
-}
+html.dark .bg-white\/\[0\.07\],
 html.dark .bg-white\/\[0\.08\] {
-    background-color: rgba(241, 245, 249, 0.09);
+    background-color: #252A2E;
 }
-html.dark .bg-white\/\[0\.09\] {
-    background-color: rgba(241, 245, 249, 0.1);
-}
+html.dark .bg-white\/\[0\.09\],
 html.dark .bg-white\/\[0\.1\] {
-    background-color: rgba(241, 245, 249, 0.11);
+    background-color: #292E33;
 }
 html.dark .bg-white\/\[0\.12\] {
-    background-color: rgba(241, 245, 249, 0.13);
+    background-color: #2D3237;
 }
 
 /* --- Isian semantic (dark) --- */
@@ -808,26 +790,26 @@ html.dark .bg-emerald-400\/10,
 html.dark .bg-emerald-400\/15,
 html.dark .bg-emerald-500\/10,
 html.dark .bg-emerald-400\/\[0\.15\] {
-    background-color: rgba(16, 185, 129, 0.12);
+    background-color: rgba(76, 175, 125, 0.12);
 }
 html.dark .bg-rose-400\/10,
 html.dark .bg-rose-400\/15,
 html.dark .bg-rose-500\/10,
 html.dark .bg-rose-500\/\[0\.06\] {
-    background-color: rgba(251, 113, 133, 0.12);
+    background-color: rgba(224, 107, 115, 0.12);
 }
 html.dark .bg-amber-400\/10,
 html.dark .bg-amber-400\/15,
 html.dark .bg-amber-400\/\[0\.06\] {
-    background-color: rgba(251, 191, 36, 0.12);
+    background-color: rgba(217, 164, 65, 0.12);
 }
 html.dark .bg-sky-400\/10,
 html.dark .bg-sky-400\/15,
 html.dark .bg-sky-500\/10 {
-    background-color: rgba(56, 189, 248, 0.12);
+    background-color: rgba(92, 159, 232, 0.12);
 }
 html.dark .bg-violet-400\/10 {
-    background-color: rgba(148, 163, 184, 0.12);
+    background-color: rgba(255, 255, 255, 0.04);
 }
 
 /* --- Border --- */
@@ -838,173 +820,171 @@ html.dark .border-white\/\[0\.06\],
 html.dark .border-white\/\[0\.07\],
 html.dark .border-white\/\[0\.08\],
 html.dark .border-white\/\[0\.1\] {
-    border-color: rgba(148, 163, 184, 0.16);
+    border-color: #30363B;
 }
 
 html.dark .border-emerald-400\/20,
 html.dark .border-emerald-400\/25,
 html.dark .border-emerald-400\/30,
 html.dark .border-emerald-500\/20 {
-    border-color: rgba(52, 211, 153, 0.3);
+    border-color: rgba(76, 175, 125, 0.3);
 }
 html.dark .border-rose-400\/20,
 html.dark .border-rose-400\/25,
 html.dark .border-rose-400\/30,
 html.dark .border-rose-500\/20 {
-    border-color: rgba(251, 113, 133, 0.3);
+    border-color: rgba(224, 107, 115, 0.3);
 }
 html.dark .border-amber-400\/20,
 html.dark .border-amber-400\/25,
 html.dark .border-amber-500\/25 {
-    border-color: rgba(251, 191, 36, 0.3);
+    border-color: rgba(217, 164, 65, 0.3);
 }
 html.dark .border-sky-400\/20,
 html.dark .border-sky-400\/25,
 html.dark .border-sky-400\/30,
 html.dark .border-sky-500\/25 {
-    border-color: rgba(56, 189, 248, 0.3);
+    border-color: rgba(92, 159, 232, 0.3);
 }
 html.dark .border-violet-400\/20 {
-    border-color: rgba(148, 163, 184, 0.16);
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 /* --- Component overrides (dark) --- */
 html.dark .glass {
-    background-color: #181c21;
-    border-color: #2a3038;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 1px 2px rgba(0, 0, 0, 0.28);
+    background-color: #1D2124;
+    border-color: #30363B;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 html.dark .glass-inset {
-    background-color: rgba(255, 255, 255, 0.04);
-    border-color: #2a3038;
+    background-color: #22272B;
+    border-color: #30363B;
 }
 html.dark .glass-hover:hover {
-    background-color: #1e2329;
-    border-color: #3a4150;
-    box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.5);
+    background-color: #22272B;
+    border-color: #3A4146;
 }
 html.dark .glass-btn:focus-visible {
-    --tw-ring-offset-color: #0f1115;
+    --tw-ring-offset-color: #151719;
 }
 html.dark .glass-btn-secondary {
-    background: #1e2329;
-    border-color: #2a3038;
-    color: #e2e8f0;
+    background: #22272B;
+    border-color: #30363B;
+    color: #A5ADB3;
 }
 html.dark .glass-btn-secondary:hover {
-    background: #252b33;
-    border-color: #3a4150;
-    color: #f1f5f9;
+    background: #262B30;
+    border-color: #3A4146;
+    color: #f1f3f4;
 }
 html.dark .glass-btn-ghost {
-    color: #94a3b8;
+    color: #A5ADB3;
 }
 html.dark .glass-btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.06);
-    color: #f1f5f9;
+    background: rgba(255, 255, 255, 0.05);
+    color: #f1f3f4;
 }
 html.dark .glass-input,
 html.dark .glass-select,
 html.dark textarea.glass-input {
-    background-color: #181c21;
-    border-color: #2a3038;
-    color: #f1f5f9;
+    background-color: #22272B;
+    border-color: #30363B;
+    color: #f1f3f4;
 }
 html.dark .glass-input::placeholder {
-    color: #64748b;
+    color: #747C82;
 }
 html.dark .glass-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23A5ADB3' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
 }
 html.dark .search-input {
-    background-color: #181c21;
-    border-color: #2a3038;
-    color: #f1f5f9;
+    background-color: #22272B;
+    border-color: #30363B;
+    color: #f1f3f4;
 }
 html.dark .search-input::placeholder {
-    color: #64748b;
+    color: #747C82;
 }
 html.dark .glass-badge-green {
-    color: #6ee7b7;
-    background-color: rgba(16, 185, 129, 0.12);
-    border-color: rgba(16, 185, 129, 0.3);
+    color: #4CAF7D;
+    background-color: rgba(76, 175, 125, 0.12);
+    border-color: rgba(76, 175, 125, 0.3);
 }
 html.dark .glass-badge-red {
-    color: #fda4af;
-    background-color: rgba(251, 113, 133, 0.12);
-    border-color: rgba(251, 113, 133, 0.3);
+    color: #E06B73;
+    background-color: rgba(224, 107, 115, 0.12);
+    border-color: rgba(224, 107, 115, 0.3);
 }
 html.dark .glass-badge-yellow {
-    color: #fcd34d;
-    background-color: rgba(251, 191, 36, 0.12);
-    border-color: rgba(251, 191, 36, 0.3);
+    color: #D9A441;
+    background-color: rgba(217, 164, 65, 0.12);
+    border-color: rgba(217, 164, 65, 0.3);
 }
 html.dark .glass-badge-blue {
-    color: #7dd3fc;
-    background-color: rgba(56, 189, 248, 0.12);
-    border-color: rgba(56, 189, 248, 0.3);
+    color: #5C9FE8;
+    background-color: rgba(92, 159, 232, 0.12);
+    border-color: rgba(92, 159, 232, 0.3);
 }
-html.dark .glass-badge-violet {
-    color: #cbd5e1;
-    background-color: rgba(148, 163, 184, 0.12);
-    border-color: rgba(148, 163, 184, 0.24);
-}
+html.dark .glass-badge-violet,
 html.dark .glass-badge-gray {
-    color: #94a3b8;
-    background-color: rgba(148, 163, 184, 0.12);
-    border-color: rgba(148, 163, 184, 0.24);
+    color: #A5ADB3;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.09);
 }
 html.dark .glass-table thead th {
-    color: #94a3b8;
+    color: #8C959B;
 }
 html.dark .glass-table tbody td {
-    color: #cbd5e1;
+    color: #C8CDD2;
 }
 html.dark .glass-table tbody tr {
-    border-color: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.05);
 }
 html.dark .glass-table tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: #22272B;
 }
 html.dark .glass-link {
-    color: #2dd4bf;
+    color: #35B8A5;
 }
 html.dark .glass-link:hover {
-    color: #5eead4;
+    color: #2FA794;
 }
 html.dark .quick-action {
-    background-color: #181c21;
-    border-color: #2a3038;
+    background-color: #1D2124;
+    border-color: #30363B;
 }
 html.dark .quick-action:hover {
-    background-color: #1e2329;
-    border-color: #3a4150;
+    background-color: #22272B;
+    border-color: #3A4146;
 }
 html.dark .summary-card {
-    background-color: #1e2329;
-    border-color: #2a3038;
+    background-color: #1D2124;
+    border-color: #30363B;
 }
 html.dark .panel {
-    background-color: #181c21;
-    border-color: #2a3038;
+    background-color: #1D2124;
+    border-color: #30363B;
 }
 html.dark .text-gradient {
-    color: #f1f5f9;
+    color: #f1f3f4;
 }
 html.dark .bg-gradient-soft,
 html.dark .bg-gradient-accent {
-    background-color: #0d9488;
+    background-color: #35B8A5;
+}
+html.dark .bg-gradient-accent {
+    color: #0F2421;
 }
 html.dark .search-skeleton {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.04) 75%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.09) 50%, rgba(255, 255, 255, 0.04) 75%);
     background-size: 200% 100%;
 }
 html.dark .scanner-viewport {
-    background-color: rgba(15, 17, 21, 0.65);
+    background-color: rgba(21, 23, 25, 0.65);
 }
 html.dark .scan-line {
-    background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.9), transparent);
-    box-shadow: 0 0 14px rgba(45, 212, 191, 0.35);
+    background: linear-gradient(90deg, transparent, rgba(53, 184, 165, 0.85), transparent);
+    box-shadow: 0 0 12px rgba(53, 184, 165, 0.25);
 }
 html.dark .auth-grid {
     background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
@@ -1018,10 +998,12 @@ html.dark .auth-grid {
    NAVIGATION & HEADER HELPERS (theme-aware)
    ========================================================================== */
 
-/* White text stays white on teal/danger surfaces */
+/* Dark text stays readable on teal surfaces */
 .bg-primary .text-white,
 .bg-primary.text-white,
-.glass-btn-primary .text-white,
+.glass-btn-primary .text-white {
+    color: #0F2421;
+}
 .glass-btn-danger .text-white {
     color: #ffffff;
 }
@@ -1054,27 +1036,27 @@ html.dark .auth-grid {
 }
 
 html.dark .nav-item {
-    color: #94a3b8;
+    color: #A5ADB3;
 }
 html.dark .nav-item > svg {
-    color: #64748b;
+    color: #8C959B;
 }
 html.dark .nav-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
+    background-color: #22272B;
+    color: #f1f3f4;
 }
 html.dark .nav-item:hover > svg {
-    color: #cbd5e1;
+    color: #A5ADB3;
 }
 html.dark .nav-active {
-    background-color: rgba(15, 118, 110, 0.16);
-    color: #2dd4bf;
+    background-color: #173B36;
+    color: #35B8A5;
 }
 html.dark .nav-active > svg {
-    color: #2dd4bf;
+    color: #35B8A5;
 }
 html.dark .nav-active .nav-indicator {
-    background-color: #2dd4bf;
+    background-color: #35B8A5;
 }
 
 /* Header role badges */
@@ -1089,14 +1071,14 @@ html.dark .nav-active .nav-indicator {
     color: #d97706;
 }
 html.dark .badge-admin {
-    background-color: rgba(15, 118, 110, 0.15);
-    border-color: rgba(45, 212, 191, 0.3);
-    color: #2dd4bf;
+    background-color: #173B36;
+    border-color: transparent;
+    color: #35B8A5;
 }
 html.dark .badge-staff {
-    background-color: rgba(251, 191, 36, 0.12);
-    border-color: rgba(251, 191, 36, 0.3);
-    color: #fcd34d;
+    background-color: rgba(217, 164, 65, 0.12);
+    border-color: rgba(217, 164, 65, 0.3);
+    color: #D9A441;
 }
 
 /* Header search input */
@@ -1109,12 +1091,12 @@ html.dark .badge-staff {
     color: #94a3b8;
 }
 html.dark .topbar-search {
-    background-color: #181c21;
-    border-color: #2a3038;
-    color: #f1f5f9;
+    background-color: #22272B;
+    border-color: #30363B;
+    color: #f1f3f4;
 }
 html.dark .topbar-search::placeholder {
-    color: #64748b;
+    color: #747C82;
 }
 
 /* Book cover placeholder: keep text white on muted solid colors */
@@ -1135,12 +1117,61 @@ html.dark .topbar-search::placeholder {
     color: #b91c1c;
 }
 html.dark .glass-btn-danger-soft {
-    background-color: rgba(251, 113, 133, 0.12);
-    border-color: rgba(251, 113, 133, 0.3);
-    color: #fda4af;
+    background-color: rgba(224, 107, 115, 0.12);
+    border-color: rgba(224, 107, 115, 0.3);
+    color: #E88288;
 }
 html.dark .glass-btn-danger-soft:hover {
-    background-color: rgba(251, 113, 133, 0.2);
-    color: #fecdd3;
+    background-color: rgba(224, 107, 115, 0.2);
+    color: #F2A2A7;
+}
+
+/* ==========================================================================
+   NEW DESIGN SYSTEM HELPERS (theme-aware)
+   ========================================================================== */
+
+/* Top bar / header surface */
+.topbar-bar {
+    background-color: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+}
+html.dark .topbar-bar {
+    background-color: #191C1F;
+}
+
+/* Subtle rail border (sidebar right, header bottom) */
+.border-rail {
+    border-color: #E2E8F0;
+}
+html.dark .border-rail {
+    border-color: #2A3034;
+}
+
+/* Avatar initial */
+.avatar-char {
+    background-color: #287F73;
+    color: #ffffff;
+}
+
+/* Quick-access icon container */
+.qa-icon {
+    background-color: #ffffff;
+    border-color: #E2E8F0;
+    color: #64748B;
+}
+html.dark .qa-icon {
+    background-color: #22272B;
+    border-color: #30363B;
+    color: #8C959B;
+}
+.group:hover .qa-icon {
+    background-color: rgba(15, 118, 110, 0.08);
+    border-color: rgba(15, 118, 110, 0.2);
+    color: #0f766e;
+}
+html.dark .group:hover .qa-icon {
+    background-color: #173B36;
+    border-color: rgba(53, 184, 165, 0.35);
+    color: #35B8A5;
 }
 

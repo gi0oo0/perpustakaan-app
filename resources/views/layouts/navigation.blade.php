@@ -31,7 +31,7 @@
 }" x-on:keydown.window="handleGlobalKey($event)" class="relative z-40">
     {{-- ===== Top bar ===== --}}
     <header class="sticky top-0 z-40 lg:pl-[240px]">
-        <div class="flex items-center gap-3 h-14 px-4 sm:px-6 border-b border-white/[0.06] bg-night/70 backdrop-blur-xl">
+        <div class="flex items-center gap-3 h-14 px-4 sm:px-6 border-b border-rail topbar-bar">
             <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden -ml-1 p-2 rounded-[8px] text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors" aria-label="Buka menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
@@ -103,9 +103,9 @@
             <div class="flex-1 lg:hidden"></div>
 
             @if (Auth::user()->isAdmin())
-                <span class="badge-admin hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">Admin</span>
+                <span class="badge-admin hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-[6px] text-xs font-medium">Admin</span>
             @elseif (Auth::user()->role === 'staff')
-                <span class="badge-staff hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">Staff</span>
+                <span class="badge-staff hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-[6px] text-xs font-medium">Staff</span>
             @endif
 
             {{-- User dropdown --}}
@@ -115,7 +115,7 @@
                         @if (Auth::user()->profile_image)
                             <img src="{{ Auth::user()->profile_image_url }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover">
                         @else
-                            <span class="w-8 h-8 rounded-full bg-primary flex items-center justify-center font-display font-semibold text-sm text-white">
+                            <span class="avatar-char w-8 h-8 rounded-full flex items-center justify-center font-display font-semibold text-sm">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </span>
                         @endif
@@ -134,9 +134,9 @@
                             <div class="font-mono text-xs text-white/40 mt-1">NISN: {{ Auth::user()->nisn }}</div>
                         @endif
                         @if (Auth::user()->isAdmin())
-                            <span class="badge-admin inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2">Admin</span>
+                            <span class="badge-admin inline-flex items-center px-2.5 py-0.5 rounded-[6px] text-xs font-medium mt-2">Admin</span>
                         @elseif (Auth::user()->role === 'staff')
-                            <span class="badge-staff inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-2">Staff</span>
+                            <span class="badge-staff inline-flex items-center px-2.5 py-0.5 rounded-[6px] text-xs font-medium mt-2">Staff</span>
                         @else
                             <span class="glass-badge-gray mt-2">Anggota</span>
                         @endif
@@ -196,7 +196,7 @@
         </div>
 
         {{-- Mobile search (full-width below top bar) --}}
-        <div class="lg:hidden px-4 sm:px-6 pb-3 bg-night/70 backdrop-blur-xl">
+        <div class="lg:hidden px-4 sm:px-6 pb-3 topbar-bar">
             <div x-data="globalSearch" class="relative w-full">
                 <div class="relative">
                     <span class="absolute inset-y-0 left-3 flex items-center text-white/35 pointer-events-none">
@@ -256,12 +256,12 @@
     </header>
 
     {{-- ===== Sidebar (desktop) ===== --}}
-    <aside class="hidden lg:flex fixed inset-y-0 left-0 w-[240px] z-40 flex-col border-r border-white/[0.06] bg-night-deep">
-        <div class="flex items-center gap-3 px-5 h-14 border-b border-white/[0.06]">
+    <aside class="hidden lg:flex fixed inset-y-0 left-0 w-[240px] z-40 flex-col border-r border-rail bg-night-deep">
+        <div class="flex items-center gap-3 px-5 h-14 border-b border-rail">
             <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-8 h-8 rounded-[8px] object-cover">
             <div>
                 <div class="font-display font-semibold tracking-tight leading-none text-[15px] text-white">Perpustakaan</div>
-                <div class="text-[11px] text-white/40 mt-1">Sistem Manajemen</div>
+                <div class="text-[11px] text-white/30 mt-1">Sistem Manajemen</div>
             </div>
         </div>
 
@@ -302,7 +302,7 @@
             </x-sidebar-link>
         </div>
 
-        <div class="px-3 py-3 border-t border-white/[0.06]">
+        <div class="px-3 py-3 border-t border-rail">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-3 px-3 py-2 rounded-[8px] font-body text-sm text-white/50 hover:text-white hover:bg-white/[0.04] transition-colors duration-150">
@@ -333,8 +333,8 @@
            x-transition:leave="transition ease-in duration-200"
            x-transition:leave-start="translate-x-0"
            x-transition:leave-end="-translate-x-full"
-           class="fixed inset-y-0 left-0 w-[280px] z-50 flex flex-col bg-night-deep border-r border-white/10 shadow-glass-lg lg:hidden">
-        <div class="flex items-center justify-between px-5 h-14 border-b border-white/[0.06]">
+           class="fixed inset-y-0 left-0 w-[280px] z-50 flex flex-col bg-night-deep border-r border-rail shadow-glass-lg lg:hidden">
+        <div class="flex items-center justify-between px-5 h-14 border-b border-rail">
             <div class="flex items-center gap-3">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-8 h-8 rounded-[8px] object-cover">
                 <span class="font-display font-semibold tracking-tight text-[15px] text-white">Perpustakaan</span>
@@ -399,12 +399,12 @@
             </a>
         </div>
 
-        <div class="px-4 py-4 border-t border-white/[0.06]">
+        <div class="px-4 py-4 border-t border-rail">
             <div class="flex items-center gap-3 mb-3 px-1">
                 @if (Auth::user()->profile_image)
                     <img src="{{ Auth::user()->profile_image_url }}" alt="{{ Auth::user()->name }}" class="w-9 h-9 rounded-full object-cover flex-shrink-0">
                 @else
-                    <span class="w-9 h-9 rounded-full bg-primary flex items-center justify-center font-display font-semibold text-sm text-white flex-shrink-0">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                    <span class="avatar-char w-9 h-9 rounded-full flex items-center justify-center font-display font-semibold text-sm flex-shrink-0">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
                 @endif
                 <div class="min-w-0">
                     <p class="font-body text-sm font-semibold text-white truncate">{{ Auth::user()->name }}</p>

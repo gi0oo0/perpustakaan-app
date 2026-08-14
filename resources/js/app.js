@@ -475,13 +475,13 @@ window.confirmDelete = (event, form) => {
         showCancelButton: true,
         confirmButtonText: 'Ya, hapus',
         cancelButtonText: 'Batal',
-        confirmButtonColor: '#DC2626',
-        cancelButtonColor: dark ? '#2A3038' : '#E2E8F0',
-        background: dark ? '#181C21' : '#FFFFFF',
-        color: dark ? '#F1F5F9' : '#0F172A',
+        confirmButtonColor: '#E06B73',
+        cancelButtonColor: dark ? '#30363B' : '#E2E8F0',
+        background: dark ? '#1D2124' : '#FFFFFF',
+        color: dark ? '#F1F3F4' : '#0F172A',
         reverseButtons: true,
         customClass: {
-            popup: dark ? 'rounded-xl border border-[#2A3038]' : 'rounded-xl border border-[#E2E8F0]',
+            popup: dark ? 'rounded-xl border border-[#30363B]' : 'rounded-xl border border-[#E2E8F0]',
         },
     }).then((result) => {
         if (result.isConfirmed) {
@@ -501,13 +501,13 @@ window.confirmReset = (event, form) => {
         showCancelButton: true,
         confirmButtonText: 'Ya, reset',
         cancelButtonText: 'Batal',
-        confirmButtonColor: '#DC2626',
-        cancelButtonColor: dark ? '#2A3038' : '#E2E8F0',
-        background: dark ? '#181C21' : '#FFFFFF',
-        color: dark ? '#F1F5F9' : '#0F172A',
+        confirmButtonColor: '#E06B73',
+        cancelButtonColor: dark ? '#30363B' : '#E2E8F0',
+        background: dark ? '#1D2124' : '#FFFFFF',
+        color: dark ? '#F1F3F4' : '#0F172A',
         reverseButtons: true,
         customClass: {
-            popup: dark ? 'rounded-xl border border-[#2A3038]' : 'rounded-xl border border-[#E2E8F0]',
+            popup: dark ? 'rounded-xl border border-[#30363B]' : 'rounded-xl border border-[#E2E8F0]',
         },
     }).then((result) => {
         if (result.isConfirmed) {

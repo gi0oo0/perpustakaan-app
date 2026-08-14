@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <div>
-            <h2 class="font-display text-2xl font-bold tracking-tight text-white leading-tight">Dashboard</h2>
-            <p class="font-body text-sm text-white/45 mt-1">
+            <h2 class="font-display text-[25px] font-semibold tracking-tight text-white leading-tight">Dashboard</h2>
+            <p class="font-body text-[13px] text-white/30 mt-1">
                 @if (Auth::user()->isStaff())
                     Selamat datang kembali, {{ Auth::user()->name }}.
                 @else
@@ -40,15 +40,15 @@
                 ];
             @endphp
             <div class="panel overflow-hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-4">
+                <div class="grid grid-cols-1 lg:grid-cols-4 divide-y divide-white/[0.05] lg:divide-y-0 lg:divide-x">
                     @foreach ($staffStats as $stat)
-                        <div class="px-5 py-5 border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                            <p class="font-body text-[11px] font-medium uppercase tracking-wider text-white/45 truncate">{{ $stat['label'] }}</p>
+                        <div class="px-6 py-5">
+                            <p class="font-body text-[11px] font-medium uppercase tracking-wider text-white/35 truncate">{{ $stat['label'] }}</p>
                             <p x-data="countUp"
                                data-count="{{ $stat['value'] }}"
                                class="mt-2.5 font-display text-[30px] leading-none font-bold tabular-nums {{ $stat['red'] ? 'text-rose-300' : 'text-white' }}"
                                x-text="displayed.toLocaleString('id-ID')"></p>
-                            <p class="mt-2 font-body text-xs text-white/40 truncate">{{ $stat['sub'] }}</p>
+                            <p class="mt-2 font-body text-xs text-white/30 truncate">{{ $stat['sub'] }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -59,36 +59,36 @@
                 <div class="px-5 py-3.5 border-b border-white/[0.06]">
                     <h3 class="font-display text-[15px] font-semibold text-white">Akses Cepat</h3>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3">
-                    <a href="{{ route('books.index') }}" class="group flex items-center gap-3 px-5 py-4 hover:bg-white/[0.03] transition-colors border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                        <span class="w-9 h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/45 group-hover:text-primary group-hover:border-primary/30 transition-colors flex-shrink-0">
+                <div class="grid grid-cols-1 lg:grid-cols-3 divide-y divide-white/[0.05] lg:divide-y-0 lg:divide-x">
+                    <a href="{{ route('books.index') }}" class="group flex items-center gap-3 px-5 py-4 transition-colors">
+                        <span class="qa-icon w-9 h-9 rounded-[8px] border flex items-center justify-center transition-colors flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['book'] }}"/></svg>
                         </span>
                         <span class="flex-1 min-w-0">
                             <span class="block font-body text-sm font-medium text-white">Katalog Buku</span>
-                            <span class="block font-body text-xs text-white/40 mt-0.5 truncate">Kelola koleksi buku</span>
+                            <span class="block font-body text-xs text-white/30 mt-0.5 truncate">Kelola koleksi buku</span>
                         </span>
-                        <svg class="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
+                        <svg class="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
                     </a>
-                    <a href="{{ route('loans.borrow.create') }}" class="group flex items-center gap-3 px-5 py-4 hover:bg-white/[0.03] transition-colors border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                        <span class="w-9 h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/45 group-hover:text-primary group-hover:border-primary/30 transition-colors flex-shrink-0">
+                    <a href="{{ route('loans.borrow.create') }}" class="group flex items-center gap-3 px-5 py-4 transition-colors">
+                        <span class="qa-icon w-9 h-9 rounded-[8px] border flex items-center justify-center transition-colors flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['plus'] }}"/></svg>
                         </span>
                         <span class="flex-1 min-w-0">
                             <span class="block font-body text-sm font-medium text-white">Pinjam Buku</span>
-                            <span class="block font-body text-xs text-white/40 mt-0.5 truncate">Scan & pinjam buku</span>
+                            <span class="block font-body text-xs text-white/30 mt-0.5 truncate">Scan & pinjam buku</span>
                         </span>
-                        <svg class="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
+                        <svg class="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
                     </a>
-                    <a href="{{ route('loans.return.create') }}" class="group flex items-center gap-3 px-5 py-4 hover:bg-white/[0.03] transition-colors border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                        <span class="w-9 h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/45 group-hover:text-primary group-hover:border-primary/30 transition-colors flex-shrink-0">
+                    <a href="{{ route('loans.return.create') }}" class="group flex items-center gap-3 px-5 py-4 transition-colors">
+                        <span class="qa-icon w-9 h-9 rounded-[8px] border flex items-center justify-center transition-colors flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['book-open'] }}"/></svg>
                         </span>
                         <span class="flex-1 min-w-0">
                             <span class="block font-body text-sm font-medium text-white">Kembalikan Buku</span>
-                            <span class="block font-body text-xs text-white/40 mt-0.5 truncate">Proses pengembalian</span>
+                            <span class="block font-body text-xs text-white/30 mt-0.5 truncate">Proses pengembalian</span>
                         </span>
-                        <svg class="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
+                        <svg class="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
                     </a>
                 </div>
             </div>
@@ -98,13 +98,13 @@
                 <div class="flex items-center justify-between gap-4 px-5 py-4 border-b border-white/[0.06]">
                     <div>
                         <h3 class="font-display text-[15px] font-semibold text-white leading-tight">Statistik</h3>
-                        <p class="font-body text-xs text-white/40 mt-0.5">Aktivitas perpustakaan 6 bulan terakhir</p>
+                        <p class="font-body text-xs text-white/30 mt-0.5">Aktivitas perpustakaan 6 bulan terakhir</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3">
-                    <div class="p-5 lg:border-r lg:border-white/[0.06] lg:col-span-2">
+                <div class="grid grid-cols-1 lg:grid-cols-3 divide-y divide-white/[0.05] lg:divide-y-0 lg:divide-x">
+                    <div class="p-5 lg:col-span-2">
                         <h4 class="font-body text-sm font-medium text-white">Peminjaman per Bulan</h4>
-                        <div class="relative mt-4 h-[280px]">
+                        <div class="relative mt-4 h-[240px]">
                             <canvas id="chartMonthly"></canvas>
                             <div id="emptyMonthly" class="empty-chart hidden">
                                 <p class="font-body text-sm text-white/45">Belum ada data</p>
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="lg:col-span-1 border-t lg:border-t-0 border-white/[0.06]">
+                    <div class="lg:col-span-1">
                         <div class="p-5">
                             <h4 class="font-body text-sm font-medium text-white">Buku Terpopuler</h4>
                             <div class="relative mt-4 h-[110px]">
@@ -122,7 +122,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-5 border-t border-white/[0.06]">
+                        <div class="p-5 border-t border-white/[0.05]">
                             <h4 class="font-body text-sm font-medium text-white">Status Buku</h4>
                             <div class="relative mt-4 h-[90px]">
                                 <canvas id="chartStatus"></canvas>
@@ -137,21 +137,22 @@
             </div>
 
             {{-- Aktivitas Terakhir --}}
-            <div class="panel overflow-hidden">
-                <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-white/[0.06]">
+            <div>
+                <div class="flex items-center justify-between gap-3">
                     <div>
                         <h3 class="font-display text-[15px] font-semibold text-white">Aktivitas Terakhir</h3>
-                        <p class="font-body text-xs text-white/40 mt-0.5">Riwayat peminjaman terbaru</p>
+                        <p class="font-body text-xs text-white/30 mt-0.5">Riwayat peminjaman terbaru</p>
                     </div>
                     <a href="{{ route('loans.index') }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-white/50 hover:text-white transition-colors shrink-0">
-                        Lihat riwayat
+                        Lihat semua riwayat
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
                     </a>
                 </div>
+                <div class="panel overflow-hidden mt-4">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm min-w-[560px]">
                         <thead>
-                            <tr class="border-b border-white/[0.06] text-left font-body text-[11px] uppercase tracking-wider text-white/40">
+                            <tr class="border-b border-white/[0.05] text-left font-body text-[11px] uppercase tracking-wider text-white/30">
                                 <th class="px-5 py-3 font-medium">Buku</th>
                                 <th class="px-5 py-3 font-medium">Anggota</th>
                                 <th class="px-5 py-3 font-medium hidden sm:table-cell">Aktivitas</th>
@@ -162,7 +163,7 @@
                         <tbody>
                             @forelse ($recentActivity as $loan)
                                 @php [$badgeLabel, $badgeClass] = $activityBadge($loan); @endphp
-                                <tr class="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.02] transition-colors">
+                                <tr class="border-b border-white/[0.04] last:border-0 hover:bg-white/[0.05] transition-colors">
                                     <td class="px-5 py-3.5">
                                         <div class="flex items-center gap-3 min-w-0">
                                             @if ($loan->book?->cover_url)
@@ -198,6 +199,7 @@
                         </tbody>
                     </table>
                 </div>
+                </div>
             </div>
         @else
             {{-- ============ MEMBER ============ --}}
@@ -212,15 +214,15 @@
                 ];
             @endphp
             <div class="panel overflow-hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-4">
+                <div class="grid grid-cols-1 lg:grid-cols-4 divide-y divide-white/[0.05] lg:divide-y-0 lg:divide-x">
                     @foreach ($memberStats as $stat)
-                        <div class="px-5 py-5 border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                            <p class="font-body text-[11px] font-medium uppercase tracking-wider text-white/45 truncate">{{ $stat['label'] }}</p>
+                        <div class="px-6 py-5">
+                            <p class="font-body text-[11px] font-medium uppercase tracking-wider text-white/35 truncate">{{ $stat['label'] }}</p>
                             <p x-data="countUp"
                                data-count="{{ $stat['value'] }}"
                                class="mt-2.5 font-display text-[30px] leading-none font-bold tabular-nums {{ $stat['red'] ? 'text-rose-300' : 'text-white' }}"
                                x-text="'{{ $stat['money'] ? 'Rp ' : '' }}' + displayed.toLocaleString('id-ID')"></p>
-                            <p class="mt-2 font-body text-xs text-white/40 truncate">{{ $stat['sub'] }}</p>
+                            <p class="mt-2 font-body text-xs text-white/30 truncate">{{ $stat['sub'] }}</p>
                         </div>
                     @endforeach
                 </div>
@@ -231,36 +233,36 @@
                 <div class="px-5 py-3.5 border-b border-white/[0.06]">
                     <h3 class="font-display text-[15px] font-semibold text-white">Akses Cepat</h3>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3">
-                    <a href="{{ route('books.index') }}" class="group flex items-center gap-3 px-5 py-4 hover:bg-white/[0.03] transition-colors border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                        <span class="w-9 h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/45 group-hover:text-primary group-hover:border-primary/30 transition-colors flex-shrink-0">
+                <div class="grid grid-cols-1 lg:grid-cols-3 divide-y divide-white/[0.05] lg:divide-y-0 lg:divide-x">
+                    <a href="{{ route('books.index') }}" class="group flex items-center gap-3 px-5 py-4 transition-colors">
+                        <span class="qa-icon w-9 h-9 rounded-[8px] border flex items-center justify-center transition-colors flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['book'] }}"/></svg>
                         </span>
                         <span class="flex-1 min-w-0">
                             <span class="block font-body text-sm font-medium text-white">Katalog Buku</span>
-                            <span class="block font-body text-xs text-white/40 mt-0.5 truncate">Jelajahi koleksi perpustakaan</span>
+                            <span class="block font-body text-xs text-white/30 mt-0.5 truncate">Jelajahi koleksi perpustakaan</span>
                         </span>
-                        <svg class="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
+                        <svg class="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
                     </a>
-                    <a href="{{ route('loans.borrow.create') }}" class="group flex items-center gap-3 px-5 py-4 hover:bg-white/[0.03] transition-colors border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                        <span class="w-9 h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/45 group-hover:text-primary group-hover:border-primary/30 transition-colors flex-shrink-0">
+                    <a href="{{ route('loans.borrow.create') }}" class="group flex items-center gap-3 px-5 py-4 transition-colors">
+                        <span class="qa-icon w-9 h-9 rounded-[8px] border flex items-center justify-center transition-colors flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['plus'] }}"/></svg>
                         </span>
                         <span class="flex-1 min-w-0">
                             <span class="block font-body text-sm font-medium text-white">Pinjam Buku</span>
-                            <span class="block font-body text-xs text-white/40 mt-0.5 truncate">Scan & pinjam buku</span>
+                            <span class="block font-body text-xs text-white/30 mt-0.5 truncate">Scan & pinjam buku</span>
                         </span>
-                        <svg class="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
+                        <svg class="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
                     </a>
-                    <a href="{{ route('loans.index') }}" class="group flex items-center gap-3 px-5 py-4 hover:bg-white/[0.03] transition-colors border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
-                        <span class="w-9 h-9 rounded-[8px] bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-white/45 group-hover:text-primary group-hover:border-primary/30 transition-colors flex-shrink-0">
+                    <a href="{{ route('loans.index') }}" class="group flex items-center gap-3 px-5 py-4 transition-colors">
+                        <span class="qa-icon w-9 h-9 rounded-[8px] border flex items-center justify-center transition-colors flex-shrink-0">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['history'] }}"/></svg>
                         </span>
                         <span class="flex-1 min-w-0">
                             <span class="block font-body text-sm font-medium text-white">Riwayat Peminjaman</span>
-                            <span class="block font-body text-xs text-white/40 mt-0.5 truncate">Pantau status & denda</span>
+                            <span class="block font-body text-xs text-white/30 mt-0.5 truncate">Pantau status & denda</span>
                         </span>
-                        <svg class="w-4 h-4 text-white/20 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
+                        <svg class="w-4 h-4 text-white/25 group-hover:text-white/50 transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ $icon['arrow'] }}"/></svg>
                     </a>
                 </div>
             </div>
@@ -271,12 +273,12 @@
                     <div class="flex items-center gap-2.5 px-5 py-3.5 border-b border-amber-500/15">
                         <h3 class="font-display text-[15px] font-semibold text-white">Jatuh Tempo dalam 7 Hari</h3>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div class="grid grid-cols-1 md:grid-cols-2 divide-y divide-white/[0.05] md:divide-y-0 md:divide-x">
                         @foreach ($dueSoon as $loan)
                             @php
                                 $daysLeft = \Carbon\Carbon::today()->diffInDays($loan->due_date, false);
                             @endphp
-                            <div class="flex items-center gap-3 px-5 py-3.5 border-white/[0.06] border-t lg:border-t-0 first:border-t-0 lg:border-l lg:first:border-l-0">
+                            <div class="flex items-center gap-3 px-5 py-3.5">
                                 @if ($loan->book?->cover_url)
                                     <img src="{{ $loan->book->cover_url }}" alt="{{ $loan->book->title }}" class="h-12 w-9 object-cover rounded-[6px] flex-shrink-0 border border-white/10">
                                 @else
@@ -286,7 +288,7 @@
                                 @endif
                                 <div class="flex-1 min-w-0">
                                     <p class="font-body font-medium text-sm text-white truncate">{{ $loan->book->title }}</p>
-                                    <p class="font-body text-xs text-white/40 mt-0.5">{{ $loan->due_date->format('d M Y') }}</p>
+                                    <p class="font-body text-xs text-white/30 mt-0.5">{{ $loan->due_date->format('d M Y') }}</p>
                                 </div>
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full font-body text-[11px] font-medium flex-shrink-0 {{ $daysLeft <= 2 ? 'text-rose-300 bg-rose-500/10' : 'text-amber-300 bg-amber-500/10' }}">
                                     H-{{ $daysLeft }}
@@ -302,7 +304,7 @@
                 <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-white/[0.06]">
                     <div>
                         <h3 class="font-display text-[15px] font-semibold text-white">Pinjaman Aktif Saya</h3>
-                        <p class="font-body text-xs text-white/40 mt-0.5">Buku yang sedang kamu pinjam</p>
+                        <p class="font-body text-xs text-white/30 mt-0.5">Buku yang sedang kamu pinjam</p>
                     </div>
                     <a href="{{ route('loans.index') }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-white/50 hover:text-white transition-colors shrink-0">
                         Lihat riwayat
@@ -359,7 +361,7 @@
                 <div class="flex items-center justify-between gap-4 mb-4">
                     <div>
                         <h3 class="font-display text-[15px] font-semibold text-white leading-tight">Koleksi Buku Terbaru</h3>
-                        <p class="font-body text-xs text-white/40 mt-0.5">Temukan bacaan terbaru di perpustakaan</p>
+                        <p class="font-body text-xs text-white/30 mt-0.5">Temukan bacaan terbaru di perpustakaan</p>
                     </div>
                     <a href="{{ route('books.index') }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-white/50 hover:text-white transition-colors shrink-0">
                         Jelajahi semua
@@ -368,7 +370,7 @@
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
                     @foreach ($recentBooks as $book)
-                        <a href="{{ route('books.show', $book) }}" class="group block border border-white/[0.06] rounded-[8px] p-2.5 hover:border-white/[0.14] transition-colors duration-150">
+                        <a href="{{ route('books.show', $book) }}" class="group block border border-white/[0.05] rounded-[10px] p-2.5 hover:border-white/[0.14] transition-colors duration-150">
                             <div class="relative mb-2.5">
                                 @if ($book->cover_url)
                                     <img src="{{ $book->cover_url }}" alt="{{ $book->title }}" class="w-full aspect-[3/4] object-cover rounded-[6px] border border-white/10">
@@ -399,7 +401,7 @@
                     <div class="flex items-center justify-between gap-3 px-5 py-4 border-b border-white/[0.06]">
                         <div>
                             <h3 class="font-display text-[15px] font-semibold text-white">Riwayat Terakhir</h3>
-                            <p class="font-body text-xs text-white/40 mt-0.5">Buku yang baru kamu kembalikan</p>
+                            <p class="font-body text-xs text-white/30 mt-0.5">Buku yang baru kamu kembalikan</p>
                         </div>
                         <a href="{{ route('loans.index') }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-white/50 hover:text-white transition-colors shrink-0">
                             Semua
@@ -418,7 +420,7 @@
                                 @endif
                                 <div class="flex-1 min-w-0">
                                     <p class="font-body font-medium text-sm text-white truncate">{{ $loan->book->title ?? '-' }}</p>
-                                    <p class="font-body text-xs text-white/40 mt-0.5">Dikembalikan {{ $loan->returned_at->format('d M Y') }}</p>
+                                    <p class="font-body text-xs text-white/30 mt-0.5">Dikembalikan {{ $loan->returned_at->format('d M Y') }}</p>
                                 </div>
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full font-body text-[11px] font-medium flex-shrink-0 {{ $loan->denda > 0 ? 'text-rose-300 bg-rose-500/10' : 'text-emerald-300 bg-emerald-500/10' }}">
                                     {{ $loan->denda > 0 ? 'Rp' . number_format($loan->denda, 0, ',', '.') : 'Tepat waktu' }}
@@ -437,27 +439,27 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const dark = document.documentElement.classList.contains('dark');
                 const palette = {
-                    primary: '#0F766E',
-                    primaryDark: '#14B8A6',
-                    emerald: '#14B8A6',
-                    blue: '#3B82F6',
-                    rose: '#EF4444',
-                    card: dark ? '#181C21' : '#FFFFFF',
-                    border: dark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.08)',
-                    grid: dark ? 'rgba(255, 255, 255, 0.06)' : '#E2E8F0',
-                    muted: dark ? 'rgba(255, 255, 255, 0.45)' : '#64748B',
-                    label: dark ? 'rgba(255, 255, 255, 0.7)' : '#334155',
-                    bar: dark ? 'rgba(45, 212, 191, 0.75)' : 'rgba(15, 118, 110, 0.55)',
-                    barHover: dark ? '#2DD4BF' : '#115E59',
+                    primary: '#35B8A5',
+                    primaryDark: '#35B8A5',
+                    emerald: '#35B8A5',
+                    blue: '#5C9FE8',
+                    rose: '#E06B73',
+                    card: dark ? '#1D2124' : '#FFFFFF',
+                    border: dark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.08)',
+                    grid: dark ? '#282D31' : '#E2E8F0',
+                    muted: dark ? '#747C82' : '#64748B',
+                    label: dark ? '#A5ADB3' : '#334155',
+                    bar: dark ? '#35B8A5' : 'rgba(15, 118, 110, 0.55)',
+                    barHover: dark ? '#2FA794' : '#115E59',
                 };
 
                 const tooltip = {
-                    backgroundColor: dark ? '#181C21' : '#FFFFFF',
-                    borderColor: dark ? '#2A3038' : '#E2E8F0',
+                    backgroundColor: dark ? '#1D2124' : '#FFFFFF',
+                    borderColor: dark ? '#30363B' : '#E2E8F0',
                     borderWidth: 1,
-                    titleColor: dark ? '#F1F5F9' : '#0F172A',
+                    titleColor: dark ? '#F1F3F4' : '#0F172A',
                     titleFont: { weight: '600' },
-                    bodyColor: dark ? 'rgba(241, 245, 249, 0.8)' : '#475569',
+                    bodyColor: dark ? '#A5ADB3' : '#475569',
                     bodyFont: { size: 12 },
                     padding: 10,
                     cornerRadius: 8,
@@ -526,8 +528,8 @@
                                         hoverBackgroundColor: palette.barHover,
                                         borderRadius: 4,
                                         borderSkipped: false,
-                                        barThickness: 12,
-                                        maxBarThickness: 14,
+                                        barThickness: 8,
+                                        maxBarThickness: 8,
                                     }],
                                 },
                                 options: {
