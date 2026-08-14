@@ -44,7 +44,7 @@
 
                 {{-- Scan Area --}}
                 <div id="scan-area" class="glass-inset p-8 text-center relative overflow-hidden scan-pulse rounded-glass">
-                    <div id="reader" class="w-full hidden" style="height: 70vh;"></div>
+                    <div id="reader" class="w-full hidden"></div>
                     <div id="scan-placeholder">
                         <div class="text-5xl mb-4">📷</div>
                         <p class="font-display font-semibold text-white text-lg">Menunggu Scanner...</p>
@@ -192,7 +192,6 @@
                             let size = Math.floor(minEdge * 0.7);
                             return { width: size, height: size };
                         },
-                        aspectRatio: 1.0,
                         formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE]
                     },
                     function onScanSuccess(decodedText) {
@@ -216,7 +215,6 @@
 
             btnStart.addEventListener('click', function () {
                 readerDiv.classList.remove('hidden');
-                readerDiv.style.height = '70vh';
                 scanPlaceholder.classList.add('hidden');
                 scanArea.classList.add('scan-pulse');
                 scanArea.classList.add('glass-inset');
