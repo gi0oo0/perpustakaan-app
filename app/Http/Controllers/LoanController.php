@@ -132,8 +132,9 @@ class LoanController extends Controller
     public function createBorrow()
     {
         $books = Book::where('stock', '>', 0)->latest()->get();
+        $members = User::where('role', 'user')->orderBy('name')->get();
 
-        return view('loans.borrow', compact('books'));
+        return view('loans.borrow', compact('books', 'members'));
     }
 
     public function storeBorrow(Request $request)
@@ -142,6 +143,7 @@ class LoanController extends Controller
             'isbn' => 'required|string',
             'duration_days' => 'required|integer|between:1,90',
             'denda_per_day' => 'required|integer|between:1,100000',
+            'user_id' => 'nullable|integer|exists:users,id',
         ]);
 
         $durationDays = (int) $request->duration_days;
@@ -162,7 +164,18 @@ class LoanController extends Controller
             return back()->withErrors(['isbn' => 'Buku dengan ISBN tersebut tidak ditemukan.'])->withInput();
         }
 
-        $activeLoanCount = Loan::where('user_id', $request->user()->id)
+        $borrower = $request->user();
+        if ($request->user()->isStaff() && $request->filled('user_id')) {
+            $selected = User::whereKey((int) $request->user_id)->where('role', 'user')->first();
+
+            if (! $selected) {
+                return back()->withErrors(['user_id' => 'Anggota yang dipilih tidak ditemukan.'])->withInput();
+            }
+
+            $borrower = $selected;
+        }
+
+        $activeLoanCount = Loan::where('user_id', $borrower->id)
             ->whereNull('returned_at')
             ->count();
 
@@ -172,8 +185,8 @@ class LoanController extends Controller
             ])->withInput();
         }
 
-        return DB::transaction(function () use ($request, $book, $dueDate, $durationDays, $dendaPerDay) {
-            $user = User::whereKey($request->user()->id)->lockForUpdate()->first();
+        return DB::transaction(function () use ($request, $book, $dueDate, $durationDays, $dendaPerDay, $borrower) {
+            $user = User::whereKey($borrower->id)->lockForUpdate()->first();
             $book = Book::where('isbn', $book->isbn)->lockForUpdate()->first();
 
             if ($book->stock <= 0) {
@@ -200,7 +213,7 @@ class LoanController extends Controller
                 ])->withInput();
             }
 
-            $myExistingLoan = Loan::where('user_id', $request->user()->id)
+            $myExistingLoan = Loan::where('user_id', $user->id)
                 ->where('book_id', $book->id)
                 ->whereNull('returned_at')
                 ->first();
@@ -210,7 +223,7 @@ class LoanController extends Controller
             }
 
             Loan::create([
-                'user_id' => $request->user()->id,
+                'user_id' => $user->id,
                 'book_id' => $book->id,
                 'loan_date' => Carbon::today(),
                 'due_date' => $dueDate,
