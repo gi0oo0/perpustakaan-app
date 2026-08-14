@@ -2,10 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --surface: #131a2a;
+    --surface-hover: #1a2236;
+    --surface-raised: #171f31;
+}
+
 @layer base {
     body {
         font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background-color: #070b16;
+        background-color: #0b0f1a;
         color: #ffffff;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -38,7 +44,7 @@
     }
 
     select option {
-        background-color: #0b1220;
+        background-color: #131a2a;
         color: #ffffff;
     }
 }
@@ -46,20 +52,22 @@
 @layer components {
     .text-gradient {
         @apply bg-clip-text text-transparent;
-        background-image: linear-gradient(120deg, #ffffff 0%, #c7d2fe 45%, #a5f3fc 100%);
+        background-image: linear-gradient(120deg, #f8fafc 0%, #cdd3ff 55%, #bfe7ff 100%);
     }
 
     .bg-gradient-accent {
-        background-image: linear-gradient(135deg, #6d5cff 0%, #8b5cf6 55%, #22d3ee 130%);
+        background-image: linear-gradient(135deg, #6d5cff 0%, #7c6cf6 100%);
     }
 
     .bg-gradient-soft {
-        background-image: linear-gradient(135deg, rgba(109, 92, 255, 0.9) 0%, rgba(168, 85, 247, 0.9) 100%);
+        background-image: linear-gradient(135deg, #6d5cff 0%, #7c6cf6 100%);
     }
 
     .glass {
-        @apply bg-white/[0.04] border border-white/10 backdrop-blur-2xl rounded-glass;
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1rem;
+        background-color: var(--surface);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 1px 2px rgba(0, 0, 0, 0.28);
     }
 
     .glass-card {
@@ -67,44 +75,43 @@
     }
 
     .glass-hover {
-        @apply transition-all duration-300 ease-out;
+        @apply transition-all duration-200 ease-out;
     }
     .glass-hover:hover {
-        @apply -translate-y-1 border-white/20 bg-white/[0.06];
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09),
-            0 22px 55px rgba(0, 0, 0, 0.45),
-            0 0 34px rgba(109, 92, 255, 0.12);
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.16);
+        background-color: var(--surface-hover);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 14px 34px -16px rgba(0, 0, 0, 0.6);
     }
 
     .glass-inset {
-        @apply bg-white/[0.03] border border-white/[0.07] rounded-glass-sm;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 0.75rem;
+        background-color: rgba(255, 255, 255, 0.035);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
     .glass-btn {
         @apply inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5
-            font-body text-sm font-medium rounded-glass-full
+            font-body text-sm font-medium rounded-[10px]
             focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-night
             disabled:opacity-50 disabled:pointer-events-none
             transition-all duration-200 ease-out select-none;
     }
 
     .glass-btn-primary {
-        @apply glass-btn text-white bg-gradient-accent hover:shadow-glow hover:brightness-110 active:scale-[0.98];
-        background-size: 160% 160%;
-    }
-    .glass-btn-primary:hover {
-        animation: shimmer 2.5s linear infinite;
+        @apply glass-btn text-white bg-primary hover:bg-primary-hover active:scale-[0.98];
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     }
 
     .glass-btn-secondary {
-        @apply glass-btn text-white/85 bg-white/[0.06] border border-white/10 backdrop-blur-xl
+        @apply glass-btn text-white/85 bg-white/[0.06] border border-white/10
             hover:bg-white/[0.12] hover:text-white hover:border-white/20 active:scale-[0.98];
     }
 
     .glass-btn-danger {
-        @apply glass-btn text-white bg-gradient-to-r from-rose-500 to-rose-600
-            hover:shadow-glow-rose hover:brightness-110 active:scale-[0.98];
+        @apply glass-btn text-white bg-rose-500 hover:bg-rose-600 active:scale-[0.98];
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     }
 
     .glass-btn-ghost {
@@ -112,10 +119,10 @@
     }
 
     .glass-input {
-        @apply w-full bg-white/[0.06] border border-white/10 rounded-glass-sm
+        @apply w-full bg-white/[0.05] border border-white/10 rounded-[10px]
             px-4 py-2.5 font-body text-base sm:text-sm text-white
             placeholder:text-white/35 placeholder:font-light
-            focus:outline-none focus:border-primary/70 focus:ring-2 focus:ring-primary/25
+            focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20
             disabled:opacity-50 disabled:pointer-events-none
             transition-all duration-200;
     }
@@ -126,6 +133,13 @@
         background-repeat: no-repeat;
         background-position: right 0.9rem center;
         background-size: 1rem;
+    }
+
+    .search-input {
+        @apply w-full bg-white/[0.05] border border-white/10 rounded-[10px] h-10 pl-10 pr-10
+            font-body text-sm text-white placeholder:text-white/35
+            focus:outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20
+            transition-colors duration-200;
     }
 
     .glass-badge {
@@ -169,8 +183,8 @@
 
     .card-reveal {
         opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        transform: translateY(16px);
+        transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .card-reveal.is-visible {
         opacity: 1;
@@ -178,12 +192,12 @@
     }
 
     .animate-card {
-        animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
     @keyframes fadeUp {
         from {
             opacity: 0;
-            transform: translateY(18px);
+            transform: translateY(16px);
         }
         to {
             opacity: 1;
@@ -264,6 +278,45 @@
             transform: translateY(0) scale(1);
         }
     }
+
+    .quick-action {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem;
+        min-height: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1rem;
+        background-color: var(--surface);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 1px 2px rgba(0, 0, 0, 0.28);
+        transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+    }
+    .quick-action:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.18);
+        background-color: var(--surface-hover);
+        box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+    }
+
+    .app-grid {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+        -webkit-mask-image: radial-gradient(ellipse 90% 55% at 50% 0%, #000 20%, transparent 78%);
+        mask-image: radial-gradient(ellipse 90% 55% at 50% 0%, #000 20%, transparent 78%);
+    }
+
+    .empty-chart {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 1rem;
+    }
 }
 
 /* ==========================================================================
@@ -285,6 +338,12 @@ html.light .bg-night\/40 {
 }
 html.light .bg-night\/55 {
     background-color: rgba(255, 255, 255, 0.82);
+}
+html.light .bg-night\/60 {
+    background-color: rgba(255, 255, 255, 0.78);
+}
+html.light .bg-night\/70 {
+    background-color: rgba(255, 255, 255, 0.85);
 }
 html.light .bg-night\/80 {
     background-color: rgba(238, 241, 247, 0.92);
@@ -318,6 +377,10 @@ html.light .aurora-grid {
     background-image: linear-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px),
         linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px) !important;
     opacity: 0.8;
+}
+html.light .app-grid {
+    background-image: linear-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.045) 1px, transparent 1px);
 }
 
 .aurora-grid {
@@ -457,7 +520,7 @@ html.light .glass-inset {
 html.light .glass-hover:hover {
     background: rgba(255, 255, 255, 0.85);
     border-color: rgba(15, 23, 42, 0.12);
-    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 12px 34px -14px rgba(15, 23, 42, 0.14);
 }
 html.light .glass-btn-secondary {
     background: rgba(15, 23, 42, 0.06);
@@ -487,6 +550,14 @@ html.light .glass-input::placeholder {
 html.light .glass-select option {
     background-color: #ffffff;
     color: #0f172a;
+}
+html.light .search-input {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(15, 23, 42, 0.14);
+    color: #0f172a;
+}
+html.light .search-input::placeholder {
+    color: rgba(15, 23, 42, 0.4);
 }
 html.light .glass-table tbody td {
     color: rgba(15, 23, 42, 0.85);
@@ -540,6 +611,16 @@ html.light .glass-badge-gray {
     background: rgba(15, 23, 42, 0.07);
     border-color: rgba(15, 23, 42, 0.1);
     color: rgba(15, 23, 42, 0.7);
+}
+
+html.light .quick-action {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(15, 23, 42, 0.08);
+}
+html.light .quick-action:hover {
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.14);
+    box-shadow: 0 12px 32px -16px rgba(15, 23, 42, 0.18);
 }
 
 /* --- Dropdown panel (bg-night/80 sudah ter-cover) --- */

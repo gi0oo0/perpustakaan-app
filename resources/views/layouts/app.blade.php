@@ -23,23 +23,19 @@
     </head>
     <body class="antialiased text-white bg-night">
         <div class="min-h-screen relative overflow-x-clip">
-            {{-- Aurora background --}}
+            {{-- Subtle background: gentle radial glow + faint grid --}}
             <div class="fixed inset-0 -z-10 bg-night overflow-hidden" aria-hidden="true">
-                <div class="absolute -top-40 -left-32 w-[34rem] h-[34rem] rounded-full bg-primary/25 blur-[120px] animate-float"></div>
-                <div class="absolute top-1/4 -right-40 w-[30rem] h-[30rem] rounded-full bg-accent/20 blur-[120px] animate-float-slow"></div>
-                <div class="absolute bottom-[-8rem] left-1/3 w-[32rem] h-[32rem] rounded-full bg-violet/20 blur-[130px] animate-float-fast"></div>
-                <div class="absolute top-[55%] left-[8%] w-72 h-72 rounded-full bg-rose-500/10 blur-[100px] animate-float-slow"></div>
-
-                <div class="aurora-grid absolute inset-0 opacity-[0.035]"></div>
-                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-night/80"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_-10%,rgba(109,92,255,0.12),transparent_60%)]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_100%_100%,rgba(56,189,248,0.06),transparent_60%)]"></div>
+                <div class="app-grid absolute inset-0"></div>
             </div>
 
             @include('layouts.navigation')
 
             <main class="relative lg:pl-[264px]">
-                <div class="px-5 sm:px-8 py-8 max-w-[1440px] mx-auto">
+                <div class="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1400px] mx-auto">
                     @if (isset($header))
-                        <header class="mb-8 animate-fade-up">
+                        <header class="mb-6 lg:mb-7">
                             {{ $header }}
                         </header>
                     @endif

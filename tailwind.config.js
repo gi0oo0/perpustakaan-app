@@ -12,7 +12,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                display: ['"Plus Jakarta Sans"', 'Inter', ...defaultTheme.fontFamily.sans],
+                display: ['Inter', ...defaultTheme.fontFamily.sans],
                 body: ['Inter', ...defaultTheme.fontFamily.sans],
             },
             colors: {
@@ -31,10 +31,15 @@ export default {
                     DEFAULT: '#a855f7',
                     soft: '#c084fc',
                 },
+                surface: {
+                    DEFAULT: '#131a2a',
+                    hover: '#1a2236',
+                    raised: '#171f31',
+                },
                 night: {
-                    DEFAULT: '#070b16',
-                    deep: '#04060d',
-                    card: '#0b1220',
+                    DEFAULT: '#0b0f1a',
+                    deep: '#070a12',
+                    card: '#131a2a',
                 },
                 danger: '#fb5e63',
                 success: '#34d399',
@@ -42,18 +47,20 @@ export default {
                 info: '#38bdf8',
             },
             boxShadow: {
-                glass: '0 8px 32px rgba(0, 0, 0, 0.35)',
-                'glass-lg': '0 24px 70px rgba(0, 0, 0, 0.5)',
-                glow: '0 0 28px rgba(109, 92, 255, 0.35)',
-                'glow-cyan': '0 0 28px rgba(34, 211, 238, 0.3)',
-                'glow-rose': '0 0 28px rgba(244, 114, 182, 0.3)',
+                glass: '0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px -12px rgba(0, 0, 0, 0.55)',
+                'glass-lg': '0 24px 70px rgba(0, 0, 0, 0.55)',
+                card: '0 1px 2px rgba(0, 0, 0, 0.2), 0 10px 30px -15px rgba(0, 0, 0, 0.5)',
+                'card-hover': '0 14px 40px -15px rgba(0, 0, 0, 0.6)',
+                glow: '0 0 18px rgba(109, 92, 255, 0.22)',
+                'glow-cyan': '0 0 18px rgba(34, 211, 238, 0.2)',
+                'glow-rose': '0 0 18px rgba(244, 114, 182, 0.2)',
                 'inset-hairline': 'inset 0 1px 0 rgba(255, 255, 255, 0.06)',
             },
             borderRadius: {
-                glass: '1.25rem',
-                'glass-sm': '0.875rem',
-                'glass-lg': '1.75rem',
-                'glass-xl': '2rem',
+                glass: '1rem',
+                'glass-sm': '0.75rem',
+                'glass-lg': '1.375rem',
+                'glass-xl': '1.5rem',
                 'glass-full': '9999px',
             },
             animation: {

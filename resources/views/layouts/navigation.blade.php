@@ -9,7 +9,13 @@
         if (typing) return;
         if (e.key === '/') {
             e.preventDefault();
-            const input = document.querySelector('[data-global-search-input]');
+            let input = null;
+            for (const el of document.querySelectorAll('[data-global-search-input]')) {
+                if (el.offsetParent !== null) {
+                    input = el;
+                    break;
+                }
+            }
             if (input) {
                 input.focus();
                 input.select();
@@ -25,32 +31,32 @@
 }" x-on:keydown.window="handleGlobalKey($event)" class="relative z-40">
     {{-- ===== Top bar (mobile + desktop utility) ===== --}}
     <header class="sticky top-0 z-40 lg:pl-[264px]">
-        <div class="flex items-center gap-3 h-16 px-5 sm:px-8 border-b border-white/[0.07] bg-night/40 backdrop-blur-2xl">
-            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden -ml-1 p-2 rounded-glass-sm text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors" aria-label="Buka menu">
+        <div class="flex items-center gap-3 h-16 px-4 sm:px-6 border-b border-white/[0.07] bg-night/70 backdrop-blur-xl">
+            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden -ml-1 p-2 rounded-[10px] text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors" aria-label="Buka menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/></svg>
             </button>
 
             <div class="lg:hidden flex items-center gap-2 flex-1">
                 <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-7 h-7 rounded-lg object-cover">
-                <span class="font-display font-bold tracking-tight">Perpustakaan</span>
+                <span class="font-display font-bold tracking-tight text-white">Perpustakaan</span>
             </div>
 
             <div class="hidden lg:flex items-center gap-2 text-white/35 text-xs font-medium tracking-wide uppercase shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 <span>Sistem Manajemen Perpustakaan</span>
             </div>
 
-            <div class="hidden md:block flex-1 max-w-xl mx-auto px-4">
+            <div class="hidden lg:block flex-1 max-w-xl mx-auto px-4">
                 <div x-data="globalSearch" class="relative w-full">
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-3.5 flex items-center text-white/30 pointer-events-none">
+                        <span class="absolute inset-y-0 left-3 flex items-center text-white/35 pointer-events-none">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         </span>
                         <input data-global-search-input x-ref="input" type="text" x-model="query" @input="doSearch"
                                @keydown.escape="reset" autocomplete="off"
                                placeholder="Cari buku, penulis, ISBN..."
-                               class="glass-input pl-10 pr-12 w-full">
-                        <kbd class="absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-semibold text-white/30 border border-white/10 rounded-glass-sm px-1.5 pointer-events-none">/</kbd>
+                               class="search-input">
+                        <kbd class="absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-semibold text-white/30 border border-white/10 rounded px-1.5 pointer-events-none">/</kbd>
                     </div>
 
                     {{-- Results dropdown --}}
@@ -104,7 +110,7 @@
                 <span class="text-white/35" x-text="now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' })"></span>
             </div>
 
-            <div class="flex-1 md:hidden"></div>
+            <div class="flex-1 lg:hidden"></div>
 
             @if (Auth::user()->isAdmin())
                 <span class="glass-badge-violet hidden sm:inline-flex">Admin</span>
@@ -115,11 +121,11 @@
             {{-- User dropdown --}}
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
-                    <button class="flex items-center gap-2.5 p-1.5 pr-2 pl-1.5 rounded-glass-full hover:bg-white/[0.06] transition-all duration-200 group">
+                    <button class="flex items-center gap-2.5 p-1.5 pr-2 pl-1.5 rounded-full hover:bg-white/[0.06] transition-colors duration-200 group">
                         @if (Auth::user()->profile_image)
-                            <img src="{{ Auth::user()->profile_image_url }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover shadow-glow">
+                            <img src="{{ Auth::user()->profile_image_url }}" alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover">
                         @else
-                            <span class="w-8 h-8 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white shadow-glow">
+                            <span class="w-8 h-8 rounded-full bg-gradient-soft flex items-center justify-center font-display font-semibold text-sm text-white">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </span>
                         @endif
@@ -176,7 +182,7 @@
                         Profil Saya
                     </x-dropdown-link>
                     <div x-data="themeToggle" class="p-1.5 border-t border-white/10">
-                        <button @click="toggle" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-glass-sm text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors font-body text-sm">
+                        <button @click="toggle" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-[10px] text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors font-body text-sm">
                             <template x-if="dark">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                             </template>
@@ -198,20 +204,79 @@
                 </x-slot>
             </x-dropdown>
         </div>
+
+        {{-- Mobile search (full-width below top bar) --}}
+        <div class="lg:hidden px-4 sm:px-6 pb-3 bg-night/70 backdrop-blur-xl">
+            <div x-data="globalSearch" class="relative w-full">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-3 flex items-center text-white/35 pointer-events-none">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </span>
+                    <input data-global-search-input x-ref="input" type="text" x-model="query" @input="doSearch"
+                           @keydown.escape="reset" autocomplete="off"
+                           placeholder="Cari buku, penulis, ISBN..."
+                           class="search-input">
+                    <kbd class="absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-semibold text-white/30 border border-white/10 rounded px-1.5 pointer-events-none">/</kbd>
+                </div>
+
+                <div x-show="open" @click.outside="reset()"
+                     x-transition:enter="transition ease-out duration-150"
+                     x-transition:enter-start="opacity-0 -translate-y-2"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-100"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0"
+                     class="absolute left-0 right-0 top-full mt-2 glass rounded-glass shadow-glass-lg overflow-hidden z-50"
+                     style="display: none;">
+                    <div class="max-h-96 overflow-y-auto">
+                        <template x-if="loading">
+                            <div class="px-4 py-3 space-y-2">
+                                <div class="search-skeleton h-12 rounded-glass-sm"></div>
+                                <div class="search-skeleton h-12 rounded-glass-sm"></div>
+                                <div class="search-skeleton h-12 rounded-glass-sm"></div>
+                            </div>
+                        </template>
+                        <template x-if="!loading && results.length === 0">
+                            <div class="px-4 py-8 text-center">
+                                <div class="text-3xl mb-2">🔍</div>
+                                <p class="font-body text-sm text-white/50">Buku tidak ditemukan</p>
+                            </div>
+                        </template>
+                        <template x-for="r in results" :key="r.id">
+                            <button @click="go(r.url)" class="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.06] transition-colors text-start">
+                                <template x-if="r.cover_image">
+                                    <img :src="r.cover_image" :alt="r.title" class="h-11 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
+                                </template>
+                                <template x-if="!r.cover_image">
+                                    <div class="h-11 w-8 rounded-md bg-white/[0.06] border border-white/10 flex items-center justify-center text-base flex-shrink-0">📖</div>
+                                </template>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-display font-medium text-sm text-white truncate" x-text="r.title"></p>
+                                    <p class="font-body text-xs text-white/40 truncate" x-text="r.author + ' · ' + (r.isbn || '-')"></p>
+                                </div>
+                                <span class="glass-badge flex-shrink-0" :class="r.available ? 'glass-badge-green' : 'glass-badge-red'">
+                                    <span x-text="'Stok ' + r.stock"></span>
+                                </span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
     </header>
 
     {{-- ===== Sidebar (desktop) ===== --}}
-    <aside class="hidden lg:flex fixed inset-y-0 left-0 w-[264px] z-40 flex-col border-r border-white/[0.07] bg-night/55 backdrop-blur-2xl">
-        <div class="flex items-center gap-3 px-6 h-16 border-b border-white/[0.07]">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-10 h-10 rounded-lg object-cover shadow-glow">
+    <aside class="hidden lg:flex fixed inset-y-0 left-0 w-[264px] z-40 flex-col border-r border-white/[0.07] bg-night-deep">
+        <div class="flex items-center gap-3 px-5 h-16 border-b border-white/[0.07]">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-9 h-9 rounded-[10px] object-cover">
             <div>
-                <div class="font-display font-bold tracking-tight leading-none">Perpustakaan</div>
+                <div class="font-display font-bold tracking-tight leading-none text-white">Perpustakaan</div>
                 <div class="text-[11px] text-white/40 mt-1 font-medium">Sistem Manajemen</div>
             </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-3 py-6 space-y-1.5">
-            <p class="px-3 pb-2 text-[11px] font-semibold tracking-widest uppercase text-white/30">Menu Utama</p>
+        <div class="flex-1 overflow-y-auto px-3 py-5 space-y-1">
+            <p class="px-3 pb-2 pt-1 text-[11px] font-semibold tracking-widest uppercase text-white/30">Menu Utama</p>
 
             <x-sidebar-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" label="Dashboard">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
@@ -247,7 +312,7 @@
             </x-sidebar-link>
         </div>
 
-        <div class="px-4 py-4 border-t border-white/[0.07]">
+        <div class="px-3 py-4 border-t border-white/[0.07]">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full glass-btn-secondary justify-start text-xs">
@@ -278,50 +343,69 @@
            x-transition:leave="transition ease-in duration-200"
            x-transition:leave-start="translate-x-0"
            x-transition:leave-end="-translate-x-full"
-           class="fixed inset-y-0 left-0 w-[280px] z-50 flex flex-col bg-night border-r border-white/10 shadow-glass-lg lg:hidden">
-        <div class="flex items-center justify-between px-6 h-16 border-b border-white/[0.07]">
+           class="fixed inset-y-0 left-0 w-[280px] z-50 flex flex-col bg-night-deep border-r border-white/10 shadow-glass-lg lg:hidden">
+        <div class="flex items-center justify-between px-5 h-16 border-b border-white/[0.07]">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-10 h-10 rounded-lg object-cover shadow-glow">
-                <span class="font-display font-bold tracking-tight">Perpustakaan</span>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Perpustakaan" class="w-9 h-9 rounded-[10px] object-cover">
+                <span class="font-display font-bold tracking-tight text-white">Perpustakaan</span>
             </div>
-            <button @click="sidebarOpen = false" class="p-2 rounded-glass-sm text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors" aria-label="Tutup menu">
+            <button @click="sidebarOpen = false" class="p-2 rounded-[10px] text-white/60 hover:text-white hover:bg-white/[0.06] transition-colors" aria-label="Tutup menu">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-3 py-6 space-y-1.5">
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-glass-sm font-body text-sm transition-colors {{ request()->routeIs('dashboard') ? 'text-white bg-white/[0.08]' : 'text-white/60 hover:text-white hover:bg-white/[0.06]' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Dashboard
-            </a>
-            <a href="{{ route('books.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-glass-sm font-body text-sm transition-colors {{ request()->routeIs('books.*') ? 'text-white bg-white/[0.08]' : 'text-white/60 hover:text-white hover:bg-white/[0.06]' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                Katalog Buku
-            </a>
-            <a href="{{ route('loans.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-glass-sm font-body text-sm transition-colors {{ request()->routeIs('loans.index') ? 'text-white bg-white/[0.08]' : 'text-white/60 hover:text-white hover:bg-white/[0.06]' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                Riwayat Peminjaman
-            </a>
-            <a href="{{ route('loans.borrow.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-glass-sm font-body text-sm transition-colors {{ request()->routeIs('loans.borrow.*') ? 'text-white bg-white/[0.08]' : 'text-white/60 hover:text-white hover:bg-white/[0.06]' }}">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v16m8-8H4"/></svg>
-                Pinjam Buku
-            </a>
+        <div class="flex-1 overflow-y-auto px-3 py-5 space-y-1">
+            <p class="px-3 pb-2 pt-1 text-[11px] font-semibold tracking-widest uppercase text-white/30">Menu Utama</p>
+
+            @php
+                $links = [
+                    ['route' => 'dashboard', 'active' => request()->routeIs('dashboard'), 'label' => 'Dashboard',
+                     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>'],
+                    ['route' => 'books.index', 'active' => request()->routeIs('books.*'), 'label' => 'Katalog Buku',
+                     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>'],
+                    ['route' => 'loans.index', 'active' => request()->routeIs('loans.index'), 'label' => 'Riwayat Peminjaman',
+                     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>'],
+                    ['route' => 'loans.borrow.create', 'active' => request()->routeIs('loans.borrow.*'), 'label' => 'Pinjam Buku',
+                     'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 4v16m8-8H4"/>'],
+                ];
+            @endphp
+            @foreach ($links as $link)
+                <a href="{{ route($link['route']) }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[10px] font-body text-sm {{ $link['active'] ? 'text-white bg-white/[0.07] [&>svg]:text-violet-400' : 'text-white/55 hover:text-white hover:bg-white/[0.05] [&>svg]:text-white/40 hover:[&>svg]:text-white/70 transition-colors duration-150' }}">
+                    @if ($link['active'])
+                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary"></span>
+                    @endif
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $link['icon'] !!}</svg>
+                    <span class="flex-1">{{ $link['label'] }}</span>
+                </a>
+            @endforeach
+
             @if (Auth::user()->isStaff())
-                <a href="{{ route('loans.return.create') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-glass-sm font-body text-sm transition-colors {{ request()->routeIs('loans.return.*') ? 'text-white bg-white/[0.08]' : 'text-white/60 hover:text-white hover:bg-white/[0.06]' }}">
+                <a href="{{ route('loans.return.create') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[10px] font-body text-sm {{ request()->routeIs('loans.return.*') ? 'text-white bg-white/[0.07] [&>svg]:text-violet-400' : 'text-white/55 hover:text-white hover:bg-white/[0.05] [&>svg]:text-white/40 hover:[&>svg]:text-white/70 transition-colors duration-150' }}">
+                    @if (request()->routeIs('loans.return.*'))
+                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary"></span>
+                    @endif
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    Kembalikan Buku
+                    <span class="flex-1">Kembalikan Buku</span>
                 </a>
             @endif
+
             @if (Auth::user()->isAdmin())
                 <p class="px-3 pt-5 pb-2 text-[11px] font-semibold tracking-widest uppercase text-white/30">Administrasi</p>
-                <a href="{{ route('users.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-glass-sm font-body text-sm transition-colors {{ request()->routeIs('users.*') ? 'text-white bg-white/[0.08]' : 'text-white/60 hover:text-white hover:bg-white/[0.06]' }}">
+                <a href="{{ route('users.index') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[10px] font-body text-sm {{ request()->routeIs('users.*') ? 'text-white bg-white/[0.07] [&>svg]:text-violet-400' : 'text-white/55 hover:text-white hover:bg-white/[0.05] [&>svg]:text-white/40 hover:[&>svg]:text-white/70 transition-colors duration-150' }}">
+                    @if (request()->routeIs('users.*'))
+                        <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary"></span>
+                    @endif
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                    Manajemen Anggota
+                    <span class="flex-1">Manajemen Anggota</span>
                 </a>
             @endif
-            <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-glass-sm font-body text-sm transition-colors {{ request()->routeIs('profile.*') ? 'text-white bg-white/[0.08]' : 'text-white/60 hover:text-white hover:bg-white/[0.06]' }}">
+
+            <a href="{{ route('profile.edit') }}" class="relative flex items-center gap-3 px-3 py-2.5 rounded-[10px] font-body text-sm {{ request()->routeIs('profile.*') ? 'text-white bg-white/[0.07] [&>svg]:text-violet-400' : 'text-white/55 hover:text-white hover:bg-white/[0.05] [&>svg]:text-white/40 hover:[&>svg]:text-white/70 transition-colors duration-150' }}">
+                @if (request()->routeIs('profile.*'))
+                    <span class="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-primary"></span>
+                @endif
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Pengaturan Akun
+                <span class="flex-1">Pengaturan Akun</span>
             </a>
         </div>
 
