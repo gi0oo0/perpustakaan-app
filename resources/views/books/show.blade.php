@@ -23,8 +23,10 @@
                              class="relative w-full max-w-xs rounded-glass-lg shadow-glass-lg group-hover:scale-[1.02] transition-transform duration-500">
                     </div>
                 @else
-                    <div class="w-full max-w-xs h-80 rounded-glass-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-7xl">
-                        📖
+                    @php($coverColor = ['#334155', '#6B8F71', '#B8A58A', '#647F9E', '#A86F5E', '#7C8465', '#64748B', '#A4777E'][$book->id % 8])
+                    <div class="cover w-full max-w-xs h-80 rounded-glass-lg border border-white/10 p-6 flex flex-col justify-end" style="background-color: {{ $coverColor }};">
+                        <p class="font-semibold leading-snug text-xl">{{ $book->title }}</p>
+                        <p class="text-xs mt-2 opacity-80">{{ $book->author }}</p>
                     </div>
                 @endif
             </div>
@@ -107,7 +109,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                             Cetak Label
                         </a>
-                        <form action="{{ route('books.destroy', $book) }}" method="POST" class="delete-form-detail">
+                        <form action="{{ route('books.destroy', $book) }}" method="POST" @submit="confirmDelete($event, $el)">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="glass-btn-danger">
@@ -120,31 +122,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.querySelectorAll('.delete-form-detail').forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Yakin ingin menghapus?',
-                    text: 'Data buku yang dihapus tidak dapat dikembalikan.',
-                    icon: 'warning',
-                    background: '#0b1220',
-                    color: '#ffffff',
-                    iconColor: '#fbbf24',
-                    showCancelButton: true,
-                    confirmButtonColor: '#fb5e63',
-                    cancelButtonColor: '#3a3f52',
-                    confirmButtonText: 'Ya, Hapus!',
-                    cancelButtonText: 'Batal',
-                    reverseButtons: true,
-                    customClass: { popup: 'rounded-2xl border border-white/10' }
-                }).then(function(result) {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-    </script>
 </x-app-layout>

@@ -1,7 +1,9 @@
 <section>
     <header>
         <div class="flex items-center gap-3 mb-1">
-            <span class="w-9 h-9 rounded-glass-sm bg-sky-400/10 border border-sky-400/20 flex items-center justify-center text-lg">🔒</span>
+            <span class="w-9 h-9 rounded-glass-sm bg-sky-400/10 border border-sky-400/20 flex items-center justify-center">
+                <svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </span>
             <h2 class="font-display font-semibold text-lg text-white">
                 {{ __('Update Password') }}
             </h2>

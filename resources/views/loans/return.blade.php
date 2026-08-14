@@ -33,7 +33,7 @@
                 <div id="scan-area" class="glass-inset p-8 text-center relative overflow-hidden scan-pulse rounded-glass">
                     <div id="reader" class="w-full hidden"></div>
                     <div id="scan-placeholder">
-                        <div class="text-5xl mb-4">📷</div>
+                        <svg class="w-12 h-12 mx-auto mb-4 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         <p class="font-display font-semibold text-white text-lg">Menunggu Scanner...</p>
                         <p class="font-body text-sm text-white/40 mt-1">Klik tombol di bawah untuk mulai</p>
                     </div>
@@ -133,7 +133,7 @@
                 <p class="font-body text-sm text-white/40 mb-4">Buku yang aktif dipinjam</p>
                 @if ($activeLoans->isEmpty())
                     <div class="text-center py-10">
-                        <div class="text-4xl mb-3">✅</div>
+                        <svg class="w-10 h-10 mx-auto mb-3 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         <p class="font-body text-sm text-white/40">Tidak ada buku dipinjam</p>
                     </div>
                 @else
@@ -144,7 +144,8 @@
                                     @if ($loan->book->cover_url)
                                         <img src="{{ $loan->book->cover_url }}" alt="{{ $loan->book->title }}" class="h-12 w-9 object-cover rounded-lg flex-shrink-0 border border-white/10">
                                     @else
-                                        <div class="h-12 w-9 rounded-lg bg-white/[0.06] border border-white/10 flex items-center justify-center text-lg flex-shrink-0">📖</div>
+                                        @php($coverColor = ['#334155', '#6B8F71', '#B8A58A', '#647F9E', '#A86F5E', '#7C8465', '#64748B', '#A4777E'][$loan->book->id % 8])
+                                        <div class="h-12 w-9 rounded-lg border border-white/10 flex-shrink-0" style="background-color: {{ $coverColor }};"></div>
                                     @endif
                                     <div class="flex-1 min-w-0">
                                         <p class="font-display font-medium text-sm text-white truncate">{{ $loan->book->title }}</p>

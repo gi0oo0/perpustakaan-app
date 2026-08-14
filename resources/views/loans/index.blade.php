@@ -124,7 +124,7 @@
                                             <img :src="loan.cover_image" alt="" class="h-10 w-8 object-cover rounded-md border border-white/10">
                                         </template>
                                         <template x-if="!loan.cover_image">
-                                            <div class="h-10 w-8 rounded-md bg-white/[0.06] border border-white/10 flex items-center justify-center text-sm">📖</div>
+                                            <div class="h-10 w-8 rounded-md border border-white/10" :style="'background-color: ' + (['#334155','#6B8F71','#B8A58A','#647F9E','#A86F5E','#7C8465','#64748B','#A4777E'])[Math.abs(loan.id) % 8]"></div>
                                         </template>
                                         <div class="min-w-0">
                                             <p class="font-display font-medium text-sm text-white truncate max-w-[150px]" :title="loan.book_title" x-text="loan.book_title"></p>
@@ -198,7 +198,7 @@
                         <template x-if="filtered.length === 0">
                             <tr>
                                 <td :colspan="isStaff ? 9 : 8" class="py-14 text-center">
-                                    <div class="text-4xl mb-3">📭</div>
+                                    <svg class="w-10 h-10 mx-auto mb-3 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                     <p class="font-display font-semibold text-white">Tidak ada data peminjaman</p>
                                     <p class="font-body text-xs text-white/40 mt-1">Coba ubah filter atau lakukan peminjaman baru.</p>
                                 </td>
