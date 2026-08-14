@@ -80,48 +80,47 @@
         </div>
 
         {{-- Book Grid --}}
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-5">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(min(210px,100%),1fr))] gap-5">
             <template x-for="(book, index) in filtered" :key="book.id">
                 <div class="glass glass-hover group overflow-hidden flex flex-col animate-card" :style="'animation-delay: ' + (index % 8 * 50) + 'ms'">
                     {{-- Cover --}}
-                    <div class="relative aspect-[3/4] overflow-hidden cursor-pointer" @click="previewBook(book)">
+                    <div class="relative aspect-[3/4] overflow-hidden cursor-pointer" @click="previewBook(book)" :style="!book.cover_image ? 'background-color: ' + coverColor(book) : ''">
                         <template x-if="book.cover_image">
-                            <img :src="book.cover_image" :alt="book.title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <img :src="book.cover_image" :alt="book.title" class="w-full h-full object-cover">
                         </template>
                         <template x-if="!book.cover_image">
-                            <div class="w-full h-full flex items-center justify-center text-6xl bg-gradient-to-br from-white/[0.06] to-white/[0.02]">📖</div>
-                        </template>
-                        <div class="absolute inset-0 bg-gradient-to-t from-night/90 via-transparent to-transparent opacity-80"></div>
-
-                        {{-- Badges --}}
-                        <div class="absolute top-3 right-3 flex flex-col items-end gap-1.5">
-                            <template x-if="book.available">
-                                <span class="glass-badge-green">● Tersedia</span>
-                            </template>
-                            <template x-if="!book.available">
-                                <span class="glass-badge-red">● Habis</span>
-                            </template>
-                        </div>
-                        <template x-if="book.kategori">
-                            <div class="absolute top-3 left-3">
-                                <span class="glass-badge-violet" x-text="book.kategori"></span>
+                            <div class="cover absolute inset-0 p-4 flex flex-col">
+                                <div class="flex items-start justify-between gap-2">
+                                    <template x-if="book.kategori">
+                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white/15 border border-white/25" x-text="book.kategori"></span>
+                                    </template>
+                                    <span class="ml-auto px-2 py-0.5 rounded-md text-[10px] font-semibold" :class="book.available ? 'bg-white/20' : 'bg-black/30'">
+                                        <span x-text="book.available ? 'Tersedia' : 'Habis'"></span>
+                                    </span>
+                                </div>
+                                <div class="mt-auto pt-8">
+                                    <h4 class="font-semibold leading-snug" style="font-size:clamp(16px,1.5vw,20px);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden" x-text="book.title"></h4>
+                                    <p class="text-[11px] mt-1.5 opacity-80 truncate" x-text="book.author"></p>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-white/25 flex items-center justify-between">
+                                    <span class="text-[10px] font-medium opacity-90">Stok: <span x-text="book.stock"></span></span>
+                                </div>
                             </div>
                         </template>
-
-                        <div class="absolute bottom-3 left-4 right-4">
-                            <span class="glass-badge" :class="book.available ? 'glass-badge-blue' : 'glass-badge-red'">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                                <span x-text="'Stok: ' + book.stock"></span>
-                            </span>
-                        </div>
                     </div>
 
                     {{-- Info --}}
                     <div class="p-5 flex flex-col flex-1">
-                        <h3 class="font-display font-semibold text-base text-white leading-snug truncate cursor-pointer hover:text-sky-300 transition-colors" :title="book.title" @click="previewBook(book)">
+                        <h3 class="font-display font-semibold text-base text-white leading-snug truncate cursor-pointer hover:text-primary transition-colors" :title="book.title" @click="previewBook(book)">
                             <span x-text="book.title"></span>
                         </h3>
-                        <p class="font-body text-sm text-white/45 mt-1 truncate" x-text="book.author"></p>
+                        <p class="font-body text-sm text-white/50 mt-1 truncate" x-text="book.author"></p>
+
+                        <div class="mt-3">
+                            <span class="glass-badge" :class="book.available ? 'glass-badge-green' : 'glass-badge-red'">
+                                <span x-text="'Stok: ' + book.stock"></span>
+                            </span>
+                        </div>
 
                         <div class="mt-auto pt-4 flex flex-wrap gap-2">
                             <a :href="book.url" class="flex-1 glass-btn-primary text-xs py-2">Detail</a>
@@ -132,7 +131,7 @@
                                 <form :action="book.url" method="POST" @submit="confirmDelete($event, $el)">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="glass-btn-danger text-xs py-2" title="Hapus">
+                                    <button type="submit" class="glass-btn-danger-soft rounded-lg p-2.5" title="Hapus">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                     </button>
                                 </form>
@@ -144,10 +143,16 @@
 
             {{-- Empty State --}}
             <template x-if="filtered.length === 0">
-                <div class="col-span-full glass p-16 flex flex-col items-center justify-center text-center">
-                    <div class="w-24 h-24 rounded-2xl bg-gradient-soft flex items-center justify-center text-4xl shadow-glow mb-5">📚</div>
+                <div class="col-span-full glass p-12 flex flex-col items-center justify-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-primary/10 border border-primary/15 flex items-center justify-center mb-5">
+                        <svg class="w-9 h-9 text-primary-soft" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    </div>
                     <p class="font-display font-semibold text-lg text-white">Tidak ada buku yang cocok</p>
-                    <p class="font-body text-sm text-white/40 mt-1">Coba ubah kata kunci atau filter pencarian.</p>
+                    <p class="font-body text-sm text-white/40 mt-1">Coba ubah kata kunci atau filter yang digunakan.</p>
+                    <button @click="resetFilters" class="glass-btn-primary mt-5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Reset Filter
+                    </button>
                 </div>
             </template>
         </div>
@@ -163,7 +168,7 @@
                             <span class="glass-badge-violet" x-text="$store.bookPreview.data.kategori"></span>
                         </template>
                         <span class="glass-badge" :class="$store.bookPreview.data.available ? 'glass-badge-green' : 'glass-badge-red'">
-                            <span x-text="$store.bookPreview.data.available ? '● Tersedia' : '● Habis'"></span>
+                            <span x-text="$store.bookPreview.data.available ? 'Tersedia' : 'Habis'"></span>
                         </span>
                     </div>
                     <button @click="$dispatch('close-modal', 'book-preview')" class="p-2 rounded-glass-sm text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" aria-label="Tutup">
@@ -177,7 +182,12 @@
                             <img :src="$store.bookPreview.data.cover_image" :alt="$store.bookPreview.data.title" class="w-full rounded-glass-lg shadow-glass-lg border border-white/10">
                         </template>
                         <template x-if="!$store.bookPreview.data.cover_image">
-                            <div class="aspect-[3/4] w-full rounded-glass-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-6xl">📖</div>
+                            <div class="aspect-[3/4] w-full rounded-glass-lg border border-white/10 p-4 flex flex-col justify-end overflow-hidden" :style="'background-color: ' + $store.bookPreview.coverColor($store.bookPreview.data)">
+                                <div class="cover">
+                                    <p class="font-semibold leading-snug" style="font-size:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden" x-text="$store.bookPreview.data.title"></p>
+                                    <p class="text-[11px] mt-1.5 opacity-80 truncate" x-text="$store.bookPreview.data.author"></p>
+                                </div>
+                            </div>
                         </template>
                     </div>
 

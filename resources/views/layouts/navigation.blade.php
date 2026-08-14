@@ -74,7 +74,7 @@
                             </template>
                             <template x-if="!loading && results.length === 0">
                                 <div class="px-4 py-8 text-center">
-                                    <div class="text-3xl mb-2">🔍</div>
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                                     <p class="font-body text-sm text-white/50">Buku tidak ditemukan</p>
                                 </div>
                             </template>
@@ -84,7 +84,7 @@
                                         <img :src="r.cover_image" :alt="r.title" class="h-11 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
                                     </template>
                                     <template x-if="!r.cover_image">
-                                        <div class="h-11 w-8 rounded-md bg-white/[0.06] border border-white/10 flex items-center justify-center text-base flex-shrink-0">📖</div>
+                                        <div class="h-11 w-8 rounded-md border border-white/10 flex-shrink-0" :style="'background-color: ' + (['#334155','#6B8F71','#B8A58A','#647F9E','#A86F5E','#7C8465','#64748B','#A4777E'])[Math.abs(r.id) % 8]"></div>
                                     </template>
                                     <div class="flex-1 min-w-0">
                                         <p class="font-body font-medium text-sm text-white truncate" x-text="r.title"></p>
@@ -228,8 +228,8 @@
                         </template>
                         <template x-if="!loading && results.length === 0">
                             <div class="px-4 py-8 text-center">
-                                <div class="text-3xl mb-2">🔍</div>
-                                <p class="font-body text-sm text-white/50">Buku tidak ditemukan</p>
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                    <p class="font-body text-sm text-white/50">Buku tidak ditemukan</p>
                             </div>
                         </template>
                         <template x-for="r in results" :key="r.id">
@@ -238,7 +238,7 @@
                                     <img :src="r.cover_image" :alt="r.title" class="h-11 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
                                 </template>
                                 <template x-if="!r.cover_image">
-                                    <div class="h-11 w-8 rounded-md bg-white/[0.06] border border-white/10 flex items-center justify-center text-base flex-shrink-0">📖</div>
+                                    <div class="h-11 w-8 rounded-md border border-white/10 flex-shrink-0" :style="'background-color: ' + (['#334155','#6B8F71','#B8A58A','#647F9E','#A86F5E','#7C8465','#64748B','#A4777E'])[Math.abs(r.id) % 8]"></div>
                                 </template>
                                 <div class="flex-1 min-w-0">
                                     <p class="font-body font-medium text-sm text-white truncate" x-text="r.title"></p>

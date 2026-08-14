@@ -102,6 +102,10 @@ document.addEventListener('alpine:init', () => {
 
     Alpine.store('bookPreview', {
         data: null,
+        coverPalette: ['#334155', '#6B8F71', '#B8A58A', '#647F9E', '#A86F5E', '#7C8465', '#64748B', '#A4777E'],
+        coverColor(book) {
+            return this.coverPalette[Math.abs(book.id) % this.coverPalette.length];
+        },
     });
 
     Alpine.data('globalSearch', () => ({
@@ -200,6 +204,13 @@ document.addEventListener('alpine:init', () => {
         kategori: '',
         status: '',
         sort: 'recent',
+        coverColor(book) {
+            return this.$store.bookPreview.coverColor(book);
+        },
+        resetFilters() {
+            this.query = '';
+            window.dispatchEvent(new CustomEvent('selectbox:reset'));
+        },
         previewBook(book) {
             this.$store.bookPreview.data = book;
             this.$dispatch('open-modal', 'book-preview');
@@ -325,6 +336,12 @@ document.addEventListener('alpine:init', () => {
         get selectedLabel() {
             const hit = this.options.find((o) => String(o.value) === String(this.value));
             return hit ? hit.label : this.placeholder;
+        },
+        init() {
+            window.addEventListener('selectbox:reset', () => {
+                this.value = '';
+                this.$dispatch('selectbox:change', '');
+            });
         },
         toggle() {
             this.open = !this.open;

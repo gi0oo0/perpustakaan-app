@@ -1117,3 +1117,30 @@ html.dark .topbar-search::placeholder {
     color: #64748b;
 }
 
+/* Book cover placeholder: keep text white on muted solid colors */
+.cover,
+.cover * {
+    color: #ffffff;
+}
+
+/* Soft danger button (katalog delete) */
+.glass-btn-danger-soft {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+}
+.glass-btn-danger-soft:hover {
+    background-color: #ffe4e4;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+html.dark .glass-btn-danger-soft {
+    background-color: rgba(251, 113, 133, 0.12);
+    border-color: rgba(251, 113, 133, 0.3);
+    color: #fda4af;
+}
+html.dark .glass-btn-danger-soft:hover {
+    background-color: rgba(251, 113, 133, 0.2);
+    color: #fecdd3;
+}
+
