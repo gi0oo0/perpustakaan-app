@@ -25,23 +25,23 @@
         @if (Auth::user()->isStaff())
             {{-- ============ STAFF / ADMIN ============ --}}
             {{-- Summary Cards --}}
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
                 @foreach ([
                     ['label' => 'Total Buku', 'value' => $totalBooks, 'icon' => '📚', 'tint' => 'text-violet-300 bg-violet-400/10 border-violet-400/20', 'glow' => 'shadow-glow'],
                     ['label' => 'Dipinjam', 'value' => $activeLoans, 'icon' => '📦', 'tint' => 'text-sky-300 bg-sky-400/10 border-sky-400/20', 'glow' => 'shadow-glow-cyan'],
                     ['label' => 'Terlambat', 'value' => $overdueLoans, 'icon' => '⏰', 'tint' => 'text-rose-300 bg-rose-400/10 border-rose-400/20', 'glow' => 'shadow-glow-rose'],
                     ['label' => 'Dikembalikan', 'value' => $returnedLoans, 'icon' => '✅', 'tint' => 'text-emerald-300 bg-emerald-400/10 border-emerald-400/20', 'glow' => ''],
                 ] as $stat)
-                    <div class="glass glass-hover p-4 sm:p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-body text-xs font-medium uppercase tracking-wider text-white/40">{{ $stat['label'] }}</p>
+                    <div class="glass glass-hover p-3.5 sm:p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0">
+                                <p class="font-body text-[10px] sm:text-xs font-medium uppercase tracking-wider text-white/40 truncate">{{ $stat['label'] }}</p>
                                 <p x-data="countUp"
                                    data-count="{{ $stat['value'] }}"
-                                   class="font-display text-lg sm:text-2xl font-bold mt-2 tabular-nums"
+                                   class="font-display text-base sm:text-2xl font-bold mt-1.5 sm:mt-2 tabular-nums"
                                    x-text="displayed.toLocaleString('id-ID')"></p>
                             </div>
-                            <span class="w-10 h-10 sm:w-11 sm:h-11 rounded-glass-sm flex items-center justify-center text-lg sm:text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
+                            <span class="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-glass-sm flex items-center justify-center text-base sm:text-xl border flex-shrink-0 {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
                         </div>
                         <div class="mt-3 h-1 rounded-full bg-white/[0.06] overflow-hidden">
                             <div class="h-full rounded-full bg-gradient-accent opacity-80" style="width: {{ min(100, max(8, ($stat['value'] / max(1, $totalBooks)) * 100)) }}%"></div>
@@ -159,18 +159,18 @@
                     ['label' => 'Dipinjam Bulan Ini', 'value' => $totalThisMonth, 'icon' => '📚', 'money' => false, 'tint' => 'text-violet-300 bg-violet-400/10 border-violet-400/20', 'glow' => 'shadow-glow'],
                 ];
             @endphp
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-5">
                 @foreach ($memberStats as $stat)
-                    <div class="glass glass-hover p-4 sm:p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <p class="font-body text-xs font-medium uppercase tracking-wider text-white/40">{{ $stat['label'] }}</p>
+                    <div class="glass glass-hover p-3.5 sm:p-5" style="animation-delay: {{ $loop->index * 80 }}ms;">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="min-w-0">
+                                <p class="font-body text-[10px] sm:text-xs font-medium uppercase tracking-wider text-white/40 truncate">{{ $stat['label'] }}</p>
                                 <p x-data="countUp"
                                    data-count="{{ $stat['value'] }}"
-                                   class="font-display text-lg sm:text-2xl font-bold mt-2 tabular-nums"
+                                   class="font-display text-base sm:text-2xl font-bold mt-1.5 sm:mt-2 tabular-nums"
                                    x-text="'{{ $stat['money'] ? 'Rp ' : '' }}' + displayed.toLocaleString('id-ID')"></p>
                             </div>
-                            <span class="w-10 h-10 sm:w-11 sm:h-11 rounded-glass-sm flex items-center justify-center text-lg sm:text-xl border {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
+                            <span class="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-glass-sm flex items-center justify-center text-base sm:text-xl border flex-shrink-0 {{ $stat['tint'] }} {{ $stat['glow'] }}">{{ $stat['icon'] }}</span>
                         </div>
                     </div>
                 @endforeach
