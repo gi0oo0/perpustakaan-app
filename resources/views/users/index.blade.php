@@ -20,7 +20,7 @@
 
     <div class="space-y-6" x-data="userTable(@js($usersJson))">
         {{-- Live Filters --}}
-        <div class="glass p-5">
+        <div class="glass p-5 relative z-20">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
                 <div class="lg:col-span-2">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Cari</label>
@@ -32,24 +32,24 @@
                     </div>
                 </div>
 
-                <div>
+                <div @selectbox:change="role = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Role</label>
                     <x-select-box :options="[
                         ['value' => '', 'label' => 'Semua Role'],
                         ['value' => 'admin', 'label' => 'Admin'],
                         ['value' => 'staff', 'label' => 'Staff'],
                         ['value' => 'user', 'label' => 'Anggota'],
-                    ]" placeholder="Pilih Role" @selectbox:change="role = $event.detail" />
+                    ]" placeholder="Pilih Role" />
                 </div>
 
-                <div>
+                <div @selectbox:change="sort = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Urutkan</label>
                     <x-select-box :options="[
                         ['value' => 'recent', 'label' => 'Terbaru'],
                         ['value' => 'name', 'label' => 'Nama A-Z'],
                         ['value' => 'nisn', 'label' => 'NISN'],
                         ['value' => 'email', 'label' => 'Email A-Z'],
-                    ]" placeholder="Urutkan" @selectbox:change="sort = $event.detail" />
+                    ]" placeholder="Urutkan" />
                 </div>
             </div>
             <div class="mt-3">

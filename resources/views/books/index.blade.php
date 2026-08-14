@@ -34,7 +34,7 @@
                 collect($kategoriList)->map(fn ($label, $key) => ['value' => $key, 'label' => $label])->values()->all()
             );
         @endphp
-        <div class="glass p-5">
+        <div class="glass p-5 relative z-20">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
                 <div class="lg:col-span-1">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Cari</label>
@@ -46,22 +46,21 @@
                     </div>
                 </div>
 
-                <div>
+                <div @selectbox:change="kategori = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Kategori</label>
-                    <x-select-box :options="$kategoriOptions" placeholder="Pilih Kategori"
-                                  @selectbox:change="kategori = $event.detail" />
+                    <x-select-box :options="$kategoriOptions" placeholder="Pilih Kategori" />
                 </div>
 
-                <div>
+                <div @selectbox:change="status = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Status</label>
                     <x-select-box :options="[
                         ['value' => '', 'label' => 'Semua Status'],
                         ['value' => 'available', 'label' => 'Tersedia'],
                         ['value' => 'borrowed', 'label' => 'Habis'],
-                    ]" placeholder="Pilih Status" @selectbox:change="status = $event.detail" />
+                    ]" placeholder="Pilih Status" />
                 </div>
 
-                <div>
+                <div @selectbox:change="sort = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Urutkan</label>
                     <x-select-box :options="[
                         ['value' => 'recent', 'label' => 'Terbaru'],
@@ -69,7 +68,7 @@
                         ['value' => 'author', 'label' => 'Penulis A-Z'],
                         ['value' => 'year', 'label' => 'Tahun Terbit'],
                         ['value' => 'stock', 'label' => 'Stok'],
-                    ]" placeholder="Urutkan" @selectbox:change="sort = $event.detail" />
+                    ]" placeholder="Urutkan" />
                 </div>
             </div>
             <div class="mt-3 flex items-center justify-between">

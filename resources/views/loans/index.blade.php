@@ -44,7 +44,7 @@
         </div>
 
         {{-- Live Filters --}}
-        <div class="glass p-5">
+        <div class="glass p-5 relative z-20">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
                 <div class="lg:col-span-1">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Cari</label>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div @selectbox:change="status = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Status</label>
                     <x-select-box :options="[
                         ['value' => '', 'label' => 'Semua Status'],
@@ -65,7 +65,7 @@
                         ['value' => 'returned_ontime', 'label' => 'Dikembalikan (Tepat)'],
                         ['value' => 'returned_late', 'label' => 'Dikembalikan (Telat)'],
                         ['value' => 'returned', 'label' => 'Semua Dikembalikan'],
-                    ]" placeholder="Pilih Status" @selectbox:change="status = $event.detail" />
+                    ]" placeholder="Pilih Status" />
                 </div>
 
                 <div>
@@ -78,7 +78,7 @@
                     <input type="date" x-model="dateTo" class="glass-input w-full">
                 </div>
 
-                <div>
+                <div @selectbox:change="sort = $event.detail">
                     <label class="block font-body text-xs font-medium text-white/50 mb-2">Urutkan</label>
                     <x-select-box :options="[
                         ['value' => 'recent', 'label' => 'Terbaru'],
@@ -86,7 +86,7 @@
                         ['value' => 'borrower', 'label' => 'Peminjam A-Z'],
                         ['value' => 'due', 'label' => 'Jatuh Tempo'],
                         ['value' => 'status', 'label' => 'Status'],
-                    ]" placeholder="Urutkan" @selectbox:change="sort = $event.detail" />
+                    ]" placeholder="Urutkan" />
                 </div>
             </div>
             <div class="mt-3">
