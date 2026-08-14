@@ -23,16 +23,14 @@
     </head>
     <body class="antialiased text-white bg-night">
         <div class="min-h-screen relative overflow-x-clip">
-            {{-- Subtle background: gentle radial glow + faint grid --}}
+            {{-- Subtle background: faint single glow, no grid --}}
             <div class="fixed inset-0 -z-10 bg-night overflow-hidden" aria-hidden="true">
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_55%_at_50%_-10%,rgba(109,92,255,0.12),transparent_60%)]"></div>
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_100%_100%,rgba(56,189,248,0.06),transparent_60%)]"></div>
-                <div class="app-grid absolute inset-0"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_70%_45%_at_50%_-10%,rgba(109,92,255,0.07),transparent_60%)]"></div>
             </div>
 
             @include('layouts.navigation')
 
-            <main class="relative lg:pl-[264px]">
+            <main class="relative lg:pl-[240px]">
                 <div class="px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-[1400px] mx-auto">
                     @if (isset($header))
                         <header class="mb-6 lg:mb-7">
