@@ -39,7 +39,7 @@ switch ($width) {
             class="absolute z-50 mt-2 {{ $width }} rounded-glass {{ $alignmentClasses }}"
             style="display: none;"
             @click="open = false">
-        <div class="rounded-glass overflow-hidden {{ $contentClasses }} bg-night/80 border border-white/10 backdrop-blur-2xl shadow-glass-lg">
+        <div class="rounded-glass overflow-hidden {{ $contentClasses }} glass-elevated">
             {{ $content }}
         </div>
     </div>

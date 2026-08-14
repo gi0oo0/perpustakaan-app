@@ -584,11 +584,24 @@ body {
 /* --- Solid-on-color elements keep white text in light mode --- */
 .glass-btn-primary,
 .glass-btn-primary * {
-    color: #0F2421;
+    color: #102522;
 }
 .glass-btn-danger,
 .glass-btn-danger * {
     color: #ffffff;
+}
+html.dark .glass-btn-danger,
+html.dark .glass-btn-danger * {
+    color: #E06B73;
+}
+html.dark .glass-btn-danger {
+    background-color: #3A2225;
+    border-color: rgba(224, 107, 115, 0.35);
+    box-shadow: none;
+}
+html.dark .glass-btn-danger:hover {
+    background-color: #4A2C2F;
+    border-color: rgba(224, 107, 115, 0.5);
 }
 .text-gradient {
     color: #0f172a;
@@ -660,8 +673,51 @@ html.dark input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 html.dark select option {
-    background-color: #1D2124;
+    background-color: #22272B;
     color: #f1f3f4;
+}
+
+/* --- Form controls: force dark surfaces (kills Tailwind preflight white) --- */
+html.dark input:where(:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color'])),
+html.dark select,
+html.dark textarea {
+    background-color: #202428;
+    border-color: #30363B;
+    color: #F1F3F4;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+    color: #747C82;
+}
+html.dark input:hover:not(:disabled),
+html.dark select:hover:not(:disabled),
+html.dark textarea:hover:not(:disabled) {
+    background-color: #252A2E;
+}
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+    background-color: #252A2E;
+    border-color: #35B8A5;
+    outline: none;
+}
+html.dark input[type='checkbox'],
+html.dark input[type='radio'] {
+    background-color: #202428;
+    border-color: #30363B;
+    color: #35B8A5;
+}
+html.dark input:checked {
+    background-color: #35B8A5;
+    border-color: #35B8A5;
+}
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:hover,
+html.dark input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #F1F3F4;
+    -webkit-box-shadow: 0 0 0px 1000px #202428 inset;
+    caret-color: #F1F3F4;
+    transition: background-color 9999s ease-in-out 0s;
 }
 
 /* --- Page background --- */
@@ -790,23 +846,23 @@ html.dark .bg-emerald-400\/10,
 html.dark .bg-emerald-400\/15,
 html.dark .bg-emerald-500\/10,
 html.dark .bg-emerald-400\/\[0\.15\] {
-    background-color: rgba(76, 175, 125, 0.12);
+    background-color: #18352B;
 }
 html.dark .bg-rose-400\/10,
 html.dark .bg-rose-400\/15,
 html.dark .bg-rose-500\/10,
 html.dark .bg-rose-500\/\[0\.06\] {
-    background-color: rgba(224, 107, 115, 0.12);
+    background-color: #3A2225;
 }
 html.dark .bg-amber-400\/10,
 html.dark .bg-amber-400\/15,
 html.dark .bg-amber-400\/\[0\.06\] {
-    background-color: rgba(217, 164, 65, 0.12);
+    background-color: #392F1D;
 }
 html.dark .bg-sky-400\/10,
 html.dark .bg-sky-400\/15,
 html.dark .bg-sky-500\/10 {
-    background-color: rgba(92, 159, 232, 0.12);
+    background-color: #1D3042;
 }
 html.dark .bg-violet-400\/10 {
     background-color: rgba(255, 255, 255, 0.04);
@@ -887,9 +943,20 @@ html.dark .glass-btn-ghost:hover {
 html.dark .glass-input,
 html.dark .glass-select,
 html.dark textarea.glass-input {
-    background-color: #22272B;
+    background-color: #202428;
     border-color: #30363B;
     color: #f1f3f4;
+}
+html.dark .glass-input:hover,
+html.dark .glass-select:hover,
+html.dark textarea.glass-input:hover {
+    background-color: #252A2E;
+    border-color: #3A4146;
+}
+html.dark .glass-input:focus,
+html.dark .glass-select:focus,
+html.dark textarea.glass-input:focus {
+    background-color: #252A2E;
 }
 html.dark .glass-input::placeholder {
     color: #747C82;
@@ -898,38 +965,48 @@ html.dark .glass-select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23A5ADB3' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
 }
 html.dark .search-input {
-    background-color: #22272B;
+    background-color: #202428;
     border-color: #30363B;
     color: #f1f3f4;
+}
+html.dark .search-input:hover {
+    background-color: #252A2E;
+    border-color: #3A4146;
+}
+html.dark .search-input:focus {
+    background-color: #252A2E;
 }
 html.dark .search-input::placeholder {
     color: #747C82;
 }
 html.dark .glass-badge-green {
     color: #4CAF7D;
-    background-color: rgba(76, 175, 125, 0.12);
+    background-color: #18352B;
     border-color: rgba(76, 175, 125, 0.3);
 }
 html.dark .glass-badge-red {
     color: #E06B73;
-    background-color: rgba(224, 107, 115, 0.12);
+    background-color: #3A2225;
     border-color: rgba(224, 107, 115, 0.3);
 }
 html.dark .glass-badge-yellow {
     color: #D9A441;
-    background-color: rgba(217, 164, 65, 0.12);
+    background-color: #392F1D;
     border-color: rgba(217, 164, 65, 0.3);
 }
 html.dark .glass-badge-blue {
     color: #5C9FE8;
-    background-color: rgba(92, 159, 232, 0.12);
+    background-color: #1D3042;
     border-color: rgba(92, 159, 232, 0.3);
 }
 html.dark .glass-badge-violet,
 html.dark .glass-badge-gray {
     color: #A5ADB3;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: #252A2E;
     border-color: rgba(255, 255, 255, 0.09);
+}
+html.dark .glass-table thead {
+    background-color: #22272B;
 }
 html.dark .glass-table thead th {
     color: #8C959B;
@@ -1002,10 +1079,10 @@ html.dark .auth-grid {
 .bg-primary .text-white,
 .bg-primary.text-white,
 .glass-btn-primary .text-white {
-    color: #0F2421;
+    color: #102522;
 }
-.glass-btn-danger .text-white {
-    color: #ffffff;
+html.dark .glass-btn-danger .text-white {
+    color: #E06B73;
 }
 
 /* Sidebar nav item (default) */
@@ -1091,9 +1168,16 @@ html.dark .badge-staff {
     color: #94a3b8;
 }
 html.dark .topbar-search {
-    background-color: #22272B;
+    background-color: #202428;
     border-color: #30363B;
     color: #f1f3f4;
+}
+html.dark .topbar-search:hover {
+    background-color: #252A2E;
+    border-color: #3A4146;
+}
+html.dark .topbar-search:focus {
+    background-color: #252A2E;
 }
 html.dark .topbar-search::placeholder {
     color: #747C82;
@@ -1173,5 +1257,28 @@ html.dark .group:hover .qa-icon {
     background-color: #173B36;
     border-color: rgba(53, 184, 165, 0.35);
     color: #35B8A5;
+}
+
+/* Elevated dropdown / popover surface */
+.glass-elevated {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -2px rgba(15, 23, 42, 0.05), 0 12px 24px -6px rgba(15, 23, 42, 0.1);
+}
+html.dark .glass-elevated {
+    background-color: #22272B;
+    border-color: #30363B;
+}
+
+/* Keyboard shortcut pill */
+.kbd-shortcut {
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #64748B;
+}
+html.dark .kbd-shortcut {
+    background-color: #2A3034;
+    border-color: #3A4146;
+    color: #A5ADB3;
 }
 

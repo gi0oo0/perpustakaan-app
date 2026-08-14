@@ -51,7 +51,7 @@
                                @keydown.escape="reset" autocomplete="off"
                                placeholder="Cari buku..."
                                class="topbar-search w-full h-9 rounded-[8px] pl-9 pr-9 font-body text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-200">
-                        <kbd class="absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-medium text-white/25 border border-white/10 rounded px-1.5 pointer-events-none">/</kbd>
+                        <kbd class="kbd-shortcut absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-medium rounded px-1.5 pointer-events-none">/</kbd>
                     </div>
 
                     {{-- Results dropdown --}}
@@ -62,7 +62,7 @@
                          x-transition:leave="transition ease-in duration-100"
                          x-transition:leave-start="opacity-100"
                          x-transition:leave-end="opacity-0"
-                         class="absolute left-0 right-0 top-full mt-2 glass rounded-[10px] shadow-glass-lg overflow-hidden z-50"
+                         class="absolute left-0 right-0 top-full mt-2 glass-elevated rounded-[10px] overflow-hidden z-50"
                          style="display: none;">
                         <div class="max-h-96 overflow-y-auto">
                             <template x-if="loading">
@@ -206,7 +206,7 @@
                            @keydown.escape="reset" autocomplete="off"
                            placeholder="Cari buku, penulis, ISBN..."
                            class="topbar-search w-full h-9 rounded-[8px] pl-9 pr-9 font-body text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-200">
-                    <kbd class="absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-medium text-white/25 border border-white/10 rounded px-1.5 pointer-events-none">/</kbd>
+                    <kbd class="kbd-shortcut absolute inset-y-0 right-3 hidden sm:flex items-center text-[11px] font-medium rounded px-1.5 pointer-events-none">/</kbd>
                 </div>
 
                 <div x-show="open" @click.outside="reset()"
@@ -216,7 +216,7 @@
                      x-transition:leave="transition ease-in duration-100"
                      x-transition:leave-start="opacity-100"
                      x-transition:leave-end="opacity-0"
-                     class="absolute left-0 right-0 top-full mt-2 glass rounded-[10px] shadow-glass-lg overflow-hidden z-50"
+                     class="absolute left-0 right-0 top-full mt-2 glass-elevated rounded-[10px] overflow-hidden z-50"
                      style="display: none;">
                     <div class="max-h-96 overflow-y-auto">
                         <template x-if="loading">

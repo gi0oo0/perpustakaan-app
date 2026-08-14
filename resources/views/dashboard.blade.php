@@ -152,7 +152,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm min-w-[560px]">
                         <thead>
-                            <tr class="border-b border-white/[0.05] text-left font-body text-[11px] uppercase tracking-wider text-white/30">
+                            <tr class="bg-white/[0.04] border-b border-white/[0.05] text-left font-body text-[11px] uppercase tracking-wider text-white/30">
                                 <th class="px-5 py-3 font-medium">Buku</th>
                                 <th class="px-5 py-3 font-medium">Anggota</th>
                                 <th class="px-5 py-3 font-medium hidden sm:table-cell">Aktivitas</th>
