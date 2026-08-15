@@ -21,7 +21,7 @@
             </x-primary-button>
         </form>
 
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('logout') }}" data-no-auto-loading>
             @csrf
             <button type="submit" class="font-body text-sm text-white/45 hover:text-white transition-colors">
                 {{ __('Log Out') }}

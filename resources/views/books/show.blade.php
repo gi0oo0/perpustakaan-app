@@ -23,7 +23,7 @@
                              class="relative w-full max-w-xs rounded-glass-lg shadow-glass-lg group-hover:scale-[1.02] transition-transform duration-500">
                     </div>
                 @else
-                    @php($coverColor = ['#334155', '#6B8F71', '#B8A58A', '#647F9E', '#A86F5E', '#7C8465', '#64748B', '#A4777E'][$book->id % 8])
+                    @php($coverColor = ['#2E3B4E', '#3A5A53', '#4E3A44', '#52543A', '#39425C', '#5A4636', '#4A4359', '#3E4A48'][$book->id % 8])
                     <div class="cover w-full max-w-xs h-80 rounded-glass-lg border border-white/10 p-6 flex flex-col justify-end" style="background-color: {{ $coverColor }};">
                         <p class="font-semibold leading-snug text-xl">{{ $book->title }}</p>
                         <p class="text-xs mt-2 opacity-80">{{ $book->author }}</p>

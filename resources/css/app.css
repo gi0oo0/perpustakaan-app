@@ -215,6 +215,16 @@
         display: none !important;
     }
 
+    .oc-spinner {
+        animation: oc-spin 0.9s linear infinite;
+        transform-origin: center;
+    }
+    @keyframes oc-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
     .scan-pulse {
         position: relative;
     }
@@ -673,7 +683,7 @@ html.dark input[type='date']::-webkit-calendar-picker-indicator {
 }
 
 html.dark select option {
-    background-color: #22272B;
+    background-color: #202428;
     color: #f1f3f4;
 }
 
@@ -682,7 +692,7 @@ html.dark input:where(:not([type='checkbox']):not([type='radio']):not([type='ran
 html.dark select,
 html.dark textarea {
     background-color: #202428;
-    border-color: #30363B;
+    border-color: rgba(255, 255, 255, 0.07);
     color: #F1F3F4;
 }
 html.dark input::placeholder,
@@ -704,7 +714,7 @@ html.dark textarea:focus {
 html.dark input[type='checkbox'],
 html.dark input[type='radio'] {
     background-color: #202428;
-    border-color: #30363B;
+    border-color: rgba(255, 255, 255, 0.12);
     color: #35B8A5;
 }
 html.dark input:checked {
@@ -725,7 +735,7 @@ html.dark .bg-night {
     background-color: #151719;
 }
 html.dark .bg-night-deep {
-    background-color: #191C1F;
+    background-color: #181B1E;
 }
 html.dark .bg-night\/40 {
     background-color: rgba(21, 23, 25, 0.55);
@@ -827,18 +837,22 @@ html.dark .bg-white\/\[0\.03\] {
 html.dark .bg-white\/\[0\.04\],
 html.dark .bg-white\/\[0\.05\],
 html.dark .bg-white\/\[0\.06\] {
-    background-color: #22272B;
+    background-color: #202428;
 }
 html.dark .bg-white\/\[0\.07\],
 html.dark .bg-white\/\[0\.08\] {
     background-color: #252A2E;
 }
+html.dark .bg-white\/15,
+html.dark .bg-white\/20 {
+    background-color: #252A2E;
+}
 html.dark .bg-white\/\[0\.09\],
 html.dark .bg-white\/\[0\.1\] {
-    background-color: #292E33;
+    background-color: #252A2E;
 }
 html.dark .bg-white\/\[0\.12\] {
-    background-color: #2D3237;
+    background-color: #252A2E;
 }
 
 /* --- Isian semantic (dark) --- */
@@ -876,7 +890,21 @@ html.dark .border-white\/\[0\.06\],
 html.dark .border-white\/\[0\.07\],
 html.dark .border-white\/\[0\.08\],
 html.dark .border-white\/\[0\.1\] {
-    border-color: #30363B;
+    border-color: rgba(255, 255, 255, 0.045);
+}
+
+html.dark .border-white\/20,
+html.dark .border-white\/25,
+html.dark .border-white\/\[0\.12\],
+html.dark .border-white\/\[0\.14\],
+html.dark .border-white\/\[0\.15\] {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark .divide-white\/\[0\.05\] > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-white\/\[0\.06\] > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-white\/\[0\.07\] > :not([hidden]) ~ :not([hidden]) {
+    border-color: rgba(255, 255, 255, 0.04);
 }
 
 html.dark .border-emerald-400\/20,
@@ -908,29 +936,35 @@ html.dark .border-violet-400\/20 {
 
 /* --- Component overrides (dark) --- */
 html.dark .glass {
-    background-color: #1D2124;
-    border-color: #30363B;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    background-color: #1B1F22;
+    border-color: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
 }
 html.dark .glass-inset {
-    background-color: #22272B;
-    border-color: #30363B;
+    background-color: #202428;
+    border-color: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
 }
 html.dark .glass-hover:hover {
-    background-color: #22272B;
-    border-color: #3A4146;
+    background-color: #202428;
+    border-color: rgba(255, 255, 255, 0.10);
+    box-shadow: none;
 }
 html.dark .glass-btn:focus-visible {
     --tw-ring-offset-color: #151719;
 }
+html.dark .glass-btn-primary {
+    box-shadow: none;
+}
 html.dark .glass-btn-secondary {
-    background: #22272B;
-    border-color: #30363B;
+    background: #202428;
+    border-color: rgba(255, 255, 255, 0.07);
     color: #A5ADB3;
+    box-shadow: none;
 }
 html.dark .glass-btn-secondary:hover {
-    background: #262B30;
-    border-color: #3A4146;
+    background: #252A2E;
+    border-color: rgba(255, 255, 255, 0.12);
     color: #f1f3f4;
 }
 html.dark .glass-btn-ghost {
@@ -944,14 +978,14 @@ html.dark .glass-input,
 html.dark .glass-select,
 html.dark textarea.glass-input {
     background-color: #202428;
-    border-color: #30363B;
+    border-color: rgba(255, 255, 255, 0.07);
     color: #f1f3f4;
 }
 html.dark .glass-input:hover,
 html.dark .glass-select:hover,
 html.dark textarea.glass-input:hover {
     background-color: #252A2E;
-    border-color: #3A4146;
+    border-color: rgba(255, 255, 255, 0.12);
 }
 html.dark .glass-input:focus,
 html.dark .glass-select:focus,
@@ -966,23 +1000,24 @@ html.dark .glass-select {
 }
 html.dark .search-input {
     background-color: #202428;
-    border-color: #30363B;
+    border-color: rgba(255, 255, 255, 0.07);
     color: #f1f3f4;
 }
 html.dark .search-input:hover {
     background-color: #252A2E;
-    border-color: #3A4146;
+    border-color: rgba(255, 255, 255, 0.12);
 }
 html.dark .search-input:focus {
     background-color: #252A2E;
+    border-color: rgba(53, 184, 165, 0.55);
 }
 html.dark .search-input::placeholder {
     color: #747C82;
 }
 html.dark .glass-badge-green {
-    color: #4CAF7D;
+    color: #58AF8D;
     background-color: #18352B;
-    border-color: rgba(76, 175, 125, 0.3);
+    border-color: rgba(76, 175, 125, 0.25);
 }
 html.dark .glass-badge-red {
     color: #E06B73;
@@ -1006,7 +1041,7 @@ html.dark .glass-badge-gray {
     border-color: rgba(255, 255, 255, 0.09);
 }
 html.dark .glass-table thead {
-    background-color: #22272B;
+    background-color: #202428;
 }
 html.dark .glass-table thead th {
     color: #8C959B;
@@ -1015,10 +1050,10 @@ html.dark .glass-table tbody td {
     color: #C8CDD2;
 }
 html.dark .glass-table tbody tr {
-    border-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.04);
 }
 html.dark .glass-table tbody tr:hover {
-    background-color: #22272B;
+    background-color: #202428;
 }
 html.dark .glass-link {
     color: #35B8A5;
@@ -1027,20 +1062,24 @@ html.dark .glass-link:hover {
     color: #2FA794;
 }
 html.dark .quick-action {
-    background-color: #1D2124;
-    border-color: #30363B;
+    background-color: #1B1F22;
+    border-color: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
 }
 html.dark .quick-action:hover {
-    background-color: #22272B;
-    border-color: #3A4146;
+    background-color: #202428;
+    border-color: rgba(255, 255, 255, 0.10);
+    box-shadow: none;
 }
 html.dark .summary-card {
-    background-color: #1D2124;
-    border-color: #30363B;
+    background-color: #1B1F22;
+    border-color: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
 }
 html.dark .panel {
-    background-color: #1D2124;
-    border-color: #30363B;
+    background-color: #1B1F22;
+    border-color: rgba(255, 255, 255, 0.045);
+    box-shadow: none;
 }
 html.dark .text-gradient {
     color: #f1f3f4;
@@ -1119,14 +1158,14 @@ html.dark .nav-item > svg {
     color: #8C959B;
 }
 html.dark .nav-item:hover {
-    background-color: #22272B;
+    background-color: #202428;
     color: #f1f3f4;
 }
 html.dark .nav-item:hover > svg {
     color: #A5ADB3;
 }
 html.dark .nav-active {
-    background-color: #173B36;
+    background-color: rgba(53, 184, 165, 0.14);
     color: #35B8A5;
 }
 html.dark .nav-active > svg {
@@ -1169,15 +1208,16 @@ html.dark .badge-staff {
 }
 html.dark .topbar-search {
     background-color: #202428;
-    border-color: #30363B;
+    border-color: rgba(255, 255, 255, 0.07);
     color: #f1f3f4;
 }
 html.dark .topbar-search:hover {
     background-color: #252A2E;
-    border-color: #3A4146;
+    border-color: rgba(255, 255, 255, 0.12);
 }
 html.dark .topbar-search:focus {
     background-color: #252A2E;
+    border-color: rgba(53, 184, 165, 0.55);
 }
 html.dark .topbar-search::placeholder {
     color: #747C82;
@@ -1220,7 +1260,7 @@ html.dark .glass-btn-danger-soft:hover {
     backdrop-filter: blur(12px);
 }
 html.dark .topbar-bar {
-    background-color: #191C1F;
+    background-color: #181B1E;
 }
 
 /* Subtle rail border (sidebar right, header bottom) */
@@ -1228,7 +1268,7 @@ html.dark .topbar-bar {
     border-color: #E2E8F0;
 }
 html.dark .border-rail {
-    border-color: #2A3034;
+    border-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Avatar initial */
@@ -1244,8 +1284,8 @@ html.dark .border-rail {
     color: #64748B;
 }
 html.dark .qa-icon {
-    background-color: #22272B;
-    border-color: #30363B;
+    background-color: #202428;
+    border-color: rgba(255, 255, 255, 0.06);
     color: #8C959B;
 }
 .group:hover .qa-icon {
@@ -1266,8 +1306,9 @@ html.dark .group:hover .qa-icon {
     box-shadow: 0 4px 6px -2px rgba(15, 23, 42, 0.05), 0 12px 24px -6px rgba(15, 23, 42, 0.1);
 }
 html.dark .glass-elevated {
-    background-color: #22272B;
-    border-color: #30363B;
+    background-color: #202428;
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: none;
 }
 
 /* Keyboard shortcut pill */
@@ -1277,8 +1318,8 @@ html.dark .glass-elevated {
     color: #64748B;
 }
 html.dark .kbd-shortcut {
-    background-color: #2A3034;
-    border-color: #3A4146;
+    background-color: #202428;
+    border-color: rgba(255, 255, 255, 0.10);
     color: #A5ADB3;
 }
 

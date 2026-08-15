@@ -100,8 +100,14 @@
                         <h3 class="font-display text-[15px] font-semibold text-white leading-tight">Statistik</h3>
                         <p class="font-body text-xs text-white/30 mt-0.5">Aktivitas perpustakaan 6 bulan terakhir</p>
                     </div>
+                    <button id="stats-retry" type="button"
+                            class="hidden inline-flex items-center gap-1.5 h-[32px] px-3.5 rounded-[7px] bg-[#202428] border border-white/[0.08] text-xs font-medium text-[#A5ADB3] hover:bg-[#252A2E] hover:text-white transition-colors">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Muat Ulang
+                    </button>
                 </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 divide-y divide-white/[0.05] lg:divide-y-0 lg:divide-x">
+                <x-page-loading-state min-height="280px" size="30" />
+                <div class="grid grid-cols-1 lg:grid-cols-3 divide-y divide-white/[0.05] lg:divide-y-0 lg:divide-x" x-cloak x-show="!$store.loading.busy">
                     <div class="p-5 lg:col-span-2">
                         <h4 class="font-body text-sm font-medium text-white">Peminjaman per Bulan</h4>
                         <div class="relative mt-4 h-[240px]">
@@ -444,18 +450,18 @@
                     emerald: '#35B8A5',
                     blue: '#5C9FE8',
                     rose: '#E06B73',
-                    card: dark ? '#1D2124' : '#FFFFFF',
+                    card: dark ? '#1B1F22' : '#FFFFFF',
                     border: dark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(15, 23, 42, 0.08)',
-                    grid: dark ? '#282D31' : '#E2E8F0',
-                    muted: dark ? '#747C82' : '#64748B',
-                    label: dark ? '#A5ADB3' : '#334155',
+                    grid: dark ? 'rgba(255, 255, 255, 0.045)' : '#E2E8F0',
+                    muted: dark ? '#687176' : '#64748B',
+                    label: dark ? '#6F787D' : '#334155',
                     bar: dark ? '#35B8A5' : 'rgba(15, 118, 110, 0.55)',
                     barHover: dark ? '#2FA794' : '#115E59',
                 };
 
                 const tooltip = {
-                    backgroundColor: dark ? '#1D2124' : '#FFFFFF',
-                    borderColor: dark ? '#30363B' : '#E2E8F0',
+                    backgroundColor: dark ? '#1B1F22' : '#FFFFFF',
+                    borderColor: dark ? 'rgba(255, 255, 255, 0.08)' : '#E2E8F0',
                     borderWidth: 1,
                     titleColor: dark ? '#F1F3F4' : '#0F172A',
                     titleFont: { weight: '600' },
@@ -477,6 +483,7 @@
                 Chart.defaults.color = palette.muted;
                 Chart.defaults.borderColor = palette.border;
 
+                Alpine.store('loading').begin();
                 fetch('{{ route("dashboard.stats") }}')
                     .then(res => res.json())
                     .then(data => {
@@ -589,7 +596,12 @@
                     .catch(err => {
                         console.error('Gagal memuat data statistik:', err);
                         window.toast('Gagal memuat data statistik', 'error');
-                    });
+                        document.getElementById('stats-retry').classList.remove('hidden');
+                    })
+                    .finally(() => Alpine.store('loading').end());
+                document.getElementById('stats-retry').addEventListener('click', function () {
+                    window.location.reload();
+                });
             });
         </script>
     @endif

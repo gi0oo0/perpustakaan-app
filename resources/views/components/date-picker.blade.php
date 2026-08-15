@@ -5,7 +5,8 @@
      @keydown.escape="open = false"
      {{ $attributes->merge(['class' => 'relative']) }}>
     <button type="button" @click="toggle"
-            class="glass-input w-full flex items-center justify-between gap-2 cursor-pointer"
+            class="glass-input w-full flex items-center justify-between gap-2 cursor-pointer transition-colors duration-150"
+            :class="open ? 'border-[#2DB7A8]/60' : ''"
             aria-haspopup="dialog" :aria-expanded="open ? 'true' : 'false'">
         <span class="truncate font-body" :class="value ? 'text-white' : 'text-white/35'" x-text="label"></span>
         <svg class="w-4 h-4 flex-shrink-0 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,42 +22,42 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
          :class="align === 'right' ? 'right-0' : 'left-0'"
-         class="absolute z-50 mt-1.5 w-72 max-w-[calc(100vw-2rem)] rounded-glass border border-white/10 bg-night/90 backdrop-blur-2xl shadow-glass-lg p-3.5">
+         class="absolute z-50 mt-1.5 w-[296px] max-w-[calc(100vw-2rem)] rounded-[12px] border border-white/[0.06] bg-[#1B1F22] shadow-[0_8px_24px_rgba(0,0,0,0.25)] p-3">
         {{-- Header --}}
-        <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center justify-between mb-2.5">
             <template x-if="mode === 'calendar'">
                 <button type="button" @click="prevMonth"
-                        class="p-1.5 rounded-glass-sm text-white/50 hover:text-white hover:bg-white/[0.07] transition-colors" aria-label="Bulan sebelumnya">
+                        class="w-8 h-8 flex items-center justify-center rounded-[8px] text-[#A5ADB3] hover:text-white hover:bg-white/[0.05] transition-colors duration-150" aria-label="Bulan sebelumnya">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
             </template>
             <template x-if="mode === 'monthYear'">
                 <button type="button" @click="prevYear"
-                        class="p-1.5 rounded-glass-sm text-white/50 hover:text-white hover:bg-white/[0.07] transition-colors" aria-label="Tahun sebelumnya">
+                        class="w-8 h-8 flex items-center justify-center rounded-[8px] text-[#A5ADB3] hover:text-white hover:bg-white/[0.05] transition-colors duration-150" aria-label="Tahun sebelumnya">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
             </template>
             <button type="button" @click="toggleMode"
-                    class="flex items-center gap-1.5 px-2 py-1 rounded-glass-sm hover:bg-white/[0.07] transition-colors">
+                    class="flex items-center gap-1.5 h-8 px-2 rounded-[8px] hover:bg-white/[0.05] transition-colors duration-150">
                 <template x-if="mode === 'calendar'">
-                    <span class="font-display font-semibold text-sm text-white capitalize" x-text="monthLabel"></span>
+                    <span class="font-display font-semibold text-sm text-[#F1F3F4] capitalize" x-text="monthLabel"></span>
                 </template>
                 <template x-if="mode === 'monthYear'">
                     <input type="number" x-model.number="yearInput" @keydown.enter="applyYear" @blur="applyYear" @click.stop
                            min="1900" max="2100"
-                           class="w-16 bg-white/[0.06] border border-white/10 rounded-glass-sm px-1.5 py-0.5 text-center font-display font-semibold text-sm text-white focus:outline-none focus:border-primary/70">
+                           class="w-16 bg-[#202428] border border-white/[0.08] rounded-[8px] px-1.5 py-1 text-center font-display font-semibold text-sm text-[#F1F3F4] focus:outline-none focus:border-[#2DB7A8]">
                 </template>
-                <svg class="w-3 h-3 text-white/35" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                <svg class="w-3 h-3 text-[#747C82]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <template x-if="mode === 'calendar'">
                 <button type="button" @click="nextMonth"
-                        class="p-1.5 rounded-glass-sm text-white/50 hover:text-white hover:bg-white/[0.07] transition-colors" aria-label="Bulan berikutnya">
+                        class="w-8 h-8 flex items-center justify-center rounded-[8px] text-[#A5ADB3] hover:text-white hover:bg-white/[0.05] transition-colors duration-150" aria-label="Bulan berikutnya">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
             </template>
             <template x-if="mode === 'monthYear'">
                 <button type="button" @click="nextYear"
-                        class="p-1.5 rounded-glass-sm text-white/50 hover:text-white hover:bg-white/[0.07] transition-colors" aria-label="Tahun berikutnya">
+                        class="w-8 h-8 flex items-center justify-center rounded-[8px] text-[#A5ADB3] hover:text-white hover:bg-white/[0.05] transition-colors duration-150" aria-label="Tahun berikutnya">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
             </template>
@@ -66,8 +67,8 @@
         <div x-show="mode === 'monthYear'" x-cloak class="grid grid-cols-3 gap-1.5 mb-1">
             <template x-for="(mn, mi) in monthNames" :key="mn">
                 <button type="button" @click="goMonth(mi)"
-                        class="py-2 rounded-glass-sm font-body text-xs transition-colors"
-                        :class="mi === month ? 'bg-primary/20 text-white font-semibold' : 'text-white/70 hover:bg-white/[0.08] hover:text-white'"
+                        class="py-2 rounded-[8px] font-body text-xs transition-colors duration-150"
+                        :class="mi === month ? 'bg-[#2DB7A8]/15 text-white font-semibold' : 'text-[#A5ADB3] hover:bg-white/[0.05] hover:text-white'"
                         x-text="mn"></button>
             </template>
         </div>
@@ -75,7 +76,7 @@
         {{-- Weekday header --}}
         <div x-show="mode === 'calendar'" class="grid grid-cols-7 gap-1 mb-1">
             <template x-for="w in weekdays" :key="w">
-                <span class="text-center text-[10px] font-semibold uppercase tracking-wide text-white/35" x-text="w"></span>
+                <span class="text-center text-[10px] font-medium tracking-wider text-[#7F898F]" x-text="w"></span>
             </template>
         </div>
 
@@ -87,25 +88,25 @@
                 </template>
                 <template x-if="d !== null">
                     <button type="button" @click="selectDate(d)"
-                            class="h-9 rounded-lg font-body text-sm transition-colors"
+                            class="h-8 rounded-[8px] font-body text-[13px] transition-colors duration-150"
                             :class="isSelected(d)
-                                ? 'bg-primary text-white font-semibold shadow-glow'
+                                ? 'bg-[#2DB7A8] text-[#0E201D] font-semibold'
                                 : (isToday(d)
-                                    ? 'text-primary border border-primary/50 font-medium hover:bg-primary/10'
-                                    : 'text-white/70 hover:bg-white/[0.08] hover:text-white')"
+                                    ? 'text-[#2DB7A8] border border-[#2DB7A8]/45 font-medium hover:bg-[#2DB7A8]/10'
+                                    : 'text-[#A5ADB3] hover:bg-[#252A2E] hover:text-white')"
                             x-text="d"></button>
                 </template>
             </template>
         </div>
 
         {{-- Footer --}}
-        <div class="mt-3 pt-3 border-t border-white/10 flex items-center gap-2">
+        <div class="mt-3 pt-3 border-t border-white/[0.045] flex items-center gap-2">
             <button type="button" @click="setToday"
-                    class="flex-1 py-1.5 rounded-glass-sm font-body text-xs font-medium text-white/70 hover:text-white hover:bg-white/[0.07] transition-colors">
+                    class="flex-1 h-8 rounded-[8px] font-body text-xs font-medium text-[#A5ADB3] hover:text-[#2DB7A8] hover:bg-white/[0.05] transition-colors duration-150">
                 Hari Ini
             </button>
             <button type="button" @click="clear"
-                    class="flex-1 py-1.5 rounded-glass-sm font-body text-xs font-medium text-rose-300/80 hover:text-rose-300 hover:bg-rose-500/10 transition-colors">
+                    class="flex-1 h-8 rounded-[8px] font-body text-xs font-medium text-[#E7A0A5] hover:bg-white/[0.05] transition-colors duration-150">
                 Bersihkan
             </button>
         </div>

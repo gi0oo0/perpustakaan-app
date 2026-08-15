@@ -5,11 +5,12 @@
      @keydown.escape="open = false"
      {{ $attributes->merge(['class' => 'relative']) }}>
     <button type="button" @click="toggle"
-            class="glass-input w-full flex items-center justify-between gap-2 cursor-pointer"
+            class="glass-input w-full flex items-center justify-between gap-2 cursor-pointer transition-colors duration-150"
+            :class="open ? 'border-[#2DB7A8]/60' : ''"
             aria-haspopup="listbox" :aria-expanded="open ? 'true' : 'false'">
         <span class="truncate font-body" :class="value ? 'text-white' : 'text-white/35'" x-text="selectedLabel"></span>
-        <svg class="w-4 h-4 flex-shrink-0 transition-transform duration-200"
-             :class="open ? 'rotate-180 text-white/70' : 'text-white/40'"
+        <svg class="w-4 h-4 flex-shrink-0 transition-transform duration-150"
+             :class="open ? 'rotate-180 text-[#A5ADB3]' : 'text-[#A5ADB3]'"
              fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
         </svg>
@@ -22,13 +23,13 @@
          x-transition:leave="transition ease-in duration-100"
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0"
-         class="absolute z-50 mt-1.5 w-full max-h-60 overflow-y-auto rounded-glass border border-white/10 bg-night/90 backdrop-blur-2xl shadow-glass-lg">
+         class="absolute z-[60] mt-1.5 w-full max-h-[240px] overflow-y-auto rounded-[8px] border border-white/[0.07] bg-[#202428] shadow-[0_8px_24px_rgba(0,0,0,0.28)] p-1">
         <template x-for="opt in options" :key="opt.value">
             <button type="button" @click="select(opt)"
-                    class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 font-body text-sm text-start transition-colors"
-                    :class="String(opt.value) === String(value) ? 'text-white bg-white/[0.07] font-medium' : 'text-white/60 hover:text-white hover:bg-white/[0.05]'">
+                    class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-[6px] font-body text-[13px] text-start transition-colors duration-150"
+                    :class="String(opt.value) === String(value) ? 'bg-[#2DB7A8]/[0.12] text-[#2DB7A8] font-medium' : 'text-[#F1F3F4] hover:bg-[#252A2E]'">
                 <span class="truncate" x-text="opt.label"></span>
-                <svg class="w-4 h-4 flex-shrink-0" :class="String(opt.value) === String(value) ? 'text-primary' : 'opacity-0'"
+                <svg class="w-4 h-4 flex-shrink-0 transition-opacity duration-150" :class="String(opt.value) === String(value) ? 'text-[#2DB7A8]' : 'opacity-0'"
                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"/>
                 </svg>

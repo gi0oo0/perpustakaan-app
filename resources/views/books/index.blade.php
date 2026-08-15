@@ -89,8 +89,8 @@
                             <img :src="book.cover_image" :alt="book.title" class="w-full h-full object-cover">
                         </template>
                         <template x-if="!book.cover_image">
-                            <div class="cover absolute inset-0 p-4 flex flex-col">
-                                <div class="flex items-start justify-between gap-2">
+                            <div class="cover absolute inset-0 flex flex-col">
+                                <div class="px-4 pt-4 flex items-start justify-between gap-2">
                                     <template x-if="book.kategori">
                                         <span class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white/15 border border-white/25" x-text="book.kategori"></span>
                                     </template>
@@ -98,11 +98,14 @@
                                         <span x-text="book.available ? 'Tersedia' : 'Habis'"></span>
                                     </span>
                                 </div>
-                                <div class="mt-auto pt-8">
-                                    <h4 class="font-semibold leading-snug" style="font-size:clamp(16px,1.5vw,20px);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden" x-text="book.title"></h4>
-                                    <p class="text-[11px] mt-1.5 opacity-80 truncate" x-text="book.author"></p>
+                                <div class="mt-auto px-5 pb-2 text-center">
+                                    <p class="text-[9px] uppercase tracking-[0.22em] opacity-50 mb-2">Perpustakaan Sekolah</p>
+                                    <h4 class="font-semibold leading-snug text-center"
+                                        style="font-size:clamp(16px,1.4vw,19px);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;word-break:normal;text-align:center"
+                                        x-text="book.title"></h4>
+                                    <p class="text-[11px] mt-2 opacity-80 truncate" x-text="book.author"></p>
                                 </div>
-                                <div class="mt-4 pt-3 border-t border-white/25 flex items-center justify-between">
+                                <div class="mt-4 pt-3 border-t border-white/25 px-4 pb-4 flex items-center justify-between">
                                     <span class="text-[10px] font-medium opacity-90">Stok: <span x-text="book.stock"></span></span>
                                 </div>
                             </div>
@@ -123,7 +126,7 @@
                         </div>
 
                         <div class="mt-auto pt-4 flex flex-wrap gap-2">
-                            <a :href="book.url" class="flex-1 glass-btn-primary text-xs py-2">Detail</a>
+                            <a :href="book.url" class="flex-1 inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-[#2DB7A8] bg-[#2DB7A8]/10 border border-[#2DB7A8]/20 hover:bg-[#2DB7A8]/15 transition-colors">Detail</a>
                             <template x-if="isAdmin">
                                 <a :href="book.edit_url" class="flex-1 glass-btn-secondary text-xs py-2">Edit</a>
                             </template>
@@ -183,9 +186,10 @@
                         </template>
                         <template x-if="!$store.bookPreview.data.cover_image">
                             <div class="aspect-[3/4] w-full rounded-glass-lg border border-white/10 p-4 flex flex-col justify-end overflow-hidden" :style="'background-color: ' + $store.bookPreview.coverColor($store.bookPreview.data)">
-                                <div class="cover">
-                                    <p class="font-semibold leading-snug" style="font-size:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden" x-text="$store.bookPreview.data.title"></p>
-                                    <p class="text-[11px] mt-1.5 opacity-80 truncate" x-text="$store.bookPreview.data.author"></p>
+                                <div class="cover text-center">
+                                    <p class="text-[9px] uppercase tracking-[0.22em] opacity-50 mb-2">Perpustakaan Sekolah</p>
+                                    <p class="font-semibold leading-snug text-center" style="font-size:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;word-break:normal" x-text="$store.bookPreview.data.title"></p>
+                                    <p class="text-[11px] mt-2 opacity-80 truncate" x-text="$store.bookPreview.data.author"></p>
                                 </div>
                             </div>
                         </template>

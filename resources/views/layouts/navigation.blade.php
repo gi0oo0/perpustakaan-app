@@ -66,10 +66,8 @@
                          style="display: none;">
                         <div class="max-h-96 overflow-y-auto">
                             <template x-if="loading">
-                                <div class="px-4 py-3 space-y-2">
-                                    <div class="search-skeleton h-12 rounded-[8px]"></div>
-                                    <div class="search-skeleton h-12 rounded-[8px]"></div>
-                                    <div class="search-skeleton h-12 rounded-[8px]"></div>
+                                <div class="flex items-center justify-center py-5">
+                                    <x-loading-spinner size="20" stroke="2.5" />
                                 </div>
                             </template>
                             <template x-if="!loading && results.length === 0">
@@ -84,7 +82,7 @@
                                         <img :src="r.cover_image" :alt="r.title" class="h-11 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
                                     </template>
                                     <template x-if="!r.cover_image">
-                                        <div class="h-11 w-8 rounded-md border border-white/10 flex-shrink-0" :style="'background-color: ' + (['#334155','#6B8F71','#B8A58A','#647F9E','#A86F5E','#7C8465','#64748B','#A4777E'])[Math.abs(r.id) % 8]"></div>
+                                        <div class="h-11 w-8 rounded-md border border-white/10 flex-shrink-0" :style="'background-color: ' + (['#2E3B4E','#3A5A53','#4E3A44','#52543A','#39425C','#5A4636','#4A4359','#3E4A48'])[Math.abs(r.id) % 8]"></div>
                                     </template>
                                     <div class="flex-1 min-w-0">
                                         <p class="font-body font-medium text-sm text-white truncate" x-text="r.title"></p>
@@ -220,10 +218,8 @@
                      style="display: none;">
                     <div class="max-h-96 overflow-y-auto">
                         <template x-if="loading">
-                            <div class="px-4 py-3 space-y-2">
-                                <div class="search-skeleton h-12 rounded-[8px]"></div>
-                                <div class="search-skeleton h-12 rounded-[8px]"></div>
-                                <div class="search-skeleton h-12 rounded-[8px]"></div>
+                            <div class="flex items-center justify-center py-5">
+                                <x-loading-spinner size="20" stroke="2.5" />
                             </div>
                         </template>
                         <template x-if="!loading && results.length === 0">
@@ -238,7 +234,7 @@
                                     <img :src="r.cover_image" :alt="r.title" class="h-11 w-8 object-cover rounded-md border border-white/10 flex-shrink-0">
                                 </template>
                                 <template x-if="!r.cover_image">
-                                    <div class="h-11 w-8 rounded-md border border-white/10 flex-shrink-0" :style="'background-color: ' + (['#334155','#6B8F71','#B8A58A','#647F9E','#A86F5E','#7C8465','#64748B','#A4777E'])[Math.abs(r.id) % 8]"></div>
+                                    <div class="h-11 w-8 rounded-md border border-white/10 flex-shrink-0" :style="'background-color: ' + (['#2E3B4E','#3A5A53','#4E3A44','#52543A','#39425C','#5A4636','#4A4359','#3E4A48'])[Math.abs(r.id) % 8]"></div>
                                 </template>
                                 <div class="flex-1 min-w-0">
                                     <p class="font-body font-medium text-sm text-white truncate" x-text="r.title"></p>
@@ -303,7 +299,7 @@
         </div>
 
         <div class="px-3 py-3 border-t border-rail">
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('logout') }}" data-no-auto-loading>
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-3 px-3 py-2 rounded-[8px] font-body text-sm text-white/50 hover:text-white hover:bg-white/[0.04] transition-colors duration-150">
                     <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
@@ -411,7 +407,7 @@
                     <p class="font-body text-xs text-white/45 truncate">{{ Auth::user()->email }}</p>
                 </div>
             </div>
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('logout') }}" data-no-auto-loading>
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-3 px-3 py-2 rounded-[8px] font-body text-sm text-white/50 hover:text-white hover:bg-white/[0.04] transition-colors duration-150">
                     <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>

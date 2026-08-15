@@ -17,6 +17,34 @@ document.addEventListener('alpine:init', () => {
         },
     });
 
+    Alpine.store('loading', {
+        pending: 0,
+        active: false,
+        timer: null,
+        begin() {
+            this.pending += 1;
+            if (this.timer) clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
+                this.active = true;
+            }, 150);
+        },
+        end() {
+            this.pending = Math.max(0, this.pending - 1);
+            if (this.pending === 0) {
+                if (this.timer) clearTimeout(this.timer);
+                this.active = false;
+            }
+        },
+        async run(promise) {
+            this.begin();
+            try {
+                return await promise;
+            } finally {
+                this.end();
+            }
+        },
+    });
+
     Alpine.data('reveal', () => ({
         init() {
             this.$el.classList.add('card-reveal');
@@ -102,7 +130,7 @@ document.addEventListener('alpine:init', () => {
 
     Alpine.store('bookPreview', {
         data: null,
-        coverPalette: ['#334155', '#6B8F71', '#B8A58A', '#647F9E', '#A86F5E', '#7C8465', '#64748B', '#A4777E'],
+        coverPalette: ['#2E3B4E', '#3A5A53', '#4E3A44', '#52543A', '#39425C', '#5A4636', '#4A4359', '#3E4A48'],
         coverColor(book) {
             return this.coverPalette[Math.abs(book.id) % this.coverPalette.length];
         },
@@ -321,9 +349,38 @@ document.addEventListener('alpine:init', () => {
 
     Alpine.data('filePicker', () => ({
         fileName: '',
+        fileSize: 0,
+        isCsv: false,
+        submitting: false,
+        setFile(file) {
+            if (!file) {
+                this.fileName = '';
+                this.fileSize = 0;
+                this.isCsv = false;
+                return;
+            }
+            this.fileName = file.name;
+            this.fileSize = file.size;
+            this.isCsv = /\.csv$/i.test(file.name) || file.type === 'text/csv';
+        },
         onPick(event) {
-            const file = event.target.files[0];
-            this.fileName = file ? file.name : '';
+            this.setFile(event.target.files[0]);
+        },
+        onDrop(event) {
+            const file = event.dataTransfer.files[0];
+            if (!file) return;
+            try {
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                this.$refs.fileInput.files = dt.files;
+            } catch (e) {}
+            this.setFile(file);
+        },
+        get fileSizeLabel() {
+            if (!this.fileSize) return '';
+            if (this.fileSize < 1024) return this.fileSize + ' B';
+            if (this.fileSize < 1048576) return (this.fileSize / 1024).toFixed(1) + ' KB';
+            return (this.fileSize / 1048576).toFixed(2) + ' MB';
         },
     }));
 
@@ -518,3 +575,23 @@ window.confirmReset = (event, form) => {
 };
 
 Alpine.start();
+
+document.addEventListener('submit', function (event) {
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement)) return;
+    if (form.hasAttribute('data-no-auto-loading')) return;
+    if (form.hasAttribute('onsubmit')) return;
+    if (form.hasAttribute('@submit')) return;
+
+    const btn = form.querySelector('button[type="submit"]');
+    if (!btn || btn.disabled) return;
+    if (btn.hasAttribute(':disabled') || btn.hasAttribute('x-show') || btn.querySelector('template')) return;
+
+    btn.disabled = true;
+    const label = btn.getAttribute('data-loading-text') || 'Menyimpan...';
+    btn.innerHTML =
+        '<span class="inline-flex items-center justify-center gap-2">' +
+        '<svg class="oc-spinner w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>' +
+        '<span>' + label + '</span>' +
+        '</span>';
+});

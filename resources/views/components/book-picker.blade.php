@@ -14,12 +14,41 @@
         <input type="text" x-model="bookQuery" placeholder="Cari judul, penulis, ISBN..." class="search-input pl-10" autocomplete="off">
     </div>
 
-    <select x-model="bookKategori" class="glass-select mt-2 h-10 text-sm">
-        <option value="">Semua Kategori</option>
-        <template x-for="k in categories" :key="k">
-            <option :value="k" x-text="k"></option>
-        </template>
-    </select>
+    <div class="relative mt-2" x-data="{ bookCatOpen: false }" @click.outside="bookCatOpen = false">
+        <button type="button" @click="bookCatOpen = !bookCatOpen"
+                class="glass-input w-full flex items-center justify-between gap-2 cursor-pointer transition-colors duration-150"
+                :class="bookCatOpen ? 'border-[#2DB7A8]/60' : ''"
+                aria-haspopup="listbox" :aria-expanded="bookCatOpen ? 'true' : 'false'">
+            <span class="truncate font-body" :class="bookKategori ? 'text-white' : 'text-white/35'" x-text="bookKategori || 'Semua Kategori'"></span>
+            <svg class="w-4 h-4 flex-shrink-0 transition-transform duration-150" :class="bookCatOpen ? 'rotate-180 text-[#A5ADB3]' : 'text-[#A5ADB3]'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+        </button>
+
+        <div x-show="bookCatOpen" x-cloak
+             x-transition:enter="transition ease-out duration-150"
+             x-transition:enter-start="opacity-0 -translate-y-1"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-100"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="absolute z-[60] mt-1.5 w-full max-h-[240px] overflow-y-auto rounded-[8px] border border-white/[0.07] bg-[#202428] shadow-[0_8px_24px_rgba(0,0,0,0.28)] p-1">
+            <button type="button" @click="bookKategori = ''; bookCatOpen = false"
+                    class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-[6px] font-body text-[13px] text-start transition-colors duration-150"
+                    :class="bookKategori === '' ? 'bg-[#2DB7A8]/[0.12] text-[#2DB7A8] font-medium' : 'text-[#F1F3F4] hover:bg-[#252A2E]'">
+                <span class="truncate">Semua Kategori</span>
+                <svg class="w-4 h-4 flex-shrink-0 transition-opacity duration-150" :class="bookKategori === '' ? 'text-[#2DB7A8]' : 'opacity-0'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"/></svg>
+            </button>
+            <template x-for="k in categories" :key="k">
+                <button type="button" @click="bookKategori = k; bookCatOpen = false"
+                        class="w-full flex items-center justify-between gap-2 h-9 px-3 rounded-[6px] font-body text-[13px] text-start transition-colors duration-150"
+                        :class="bookKategori === k ? 'bg-[#2DB7A8]/[0.12] text-[#2DB7A8] font-medium' : 'text-[#F1F3F4] hover:bg-[#252A2E]'">
+                    <span class="truncate" x-text="k"></span>
+                    <svg class="w-4 h-4 flex-shrink-0 transition-opacity duration-150" :class="bookKategori === k ? 'text-[#2DB7A8]' : 'opacity-0'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7"/></svg>
+                </button>
+            </template>
+        </div>
+    </div>
 
     <div class="mt-3 space-y-2 max-h-[520px] overflow-y-auto pr-1">
         <template x-for="b in filteredBooks" :key="b.isbn">
